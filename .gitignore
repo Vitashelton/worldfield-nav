@@ -1,0 +1,18 @@
+# Generated experiment data and local environments
+cache/
+data/
+envs/
+logs/
+outputs/
+paper_assets/figures/*
+paper_assets/videos/*
+paper_assets/tables/*
+experiments/runs/*
+
+# Keep directory markers and documentation tracked.
+!paper_assets/**/.gitkeep
+!experiments/runs/.gitkeep
+
+__pycache__/
+*.py[cod]
+.pytest_cache/

@@ -1,0 +1,62 @@
+schema_version: 1
+project: WorldFlow
+preliminary:
+  S0:
+    name: persistent_world_field
+    status: completed
+    output: outputs/exp001
+    accepted: true
+  S1:
+    name: counterfactual_ego_rollout
+    status: completed
+    output: outputs/exp002_counterfactual_ego_flow
+    accepted: true
+  S2:
+    name: transport_revelation
+    status: completed
+    output: outputs/exp003_transport_revelation
+    accepted: true
+    limitation: >
+      Newly observed area was sparse in the current short trajectories.
+      Mechanism supported, but insufficient as paper-level model evidence.
+formal:
+  B1:
+    name: multiscene_counterfactual_benchmark
+    status: planned
+    scope: pilot_harness_only_no_model_training
+    active_plan: docs/exec-plans/active/B1_paper_benchmark.md
+    config: configs/benchmark/b1_pilot.yaml
+    model_baselines:
+      - M0-Transport
+      - M1-Direct
+      - M2-RSSM
+      - M3-WorldFlow
+    runs: []
+  B2:
+    name: world_model_prediction
+    status: blocked_by_B1_scale_up_gate
+  B3:
+    name: unseen_scene_generalization
+    status: blocked_by_B2
+  B4:
+    name: long_horizon_rollout
+    status: blocked_by_B2
+  B5:
+    name: ablation
+    status: blocked_by_B2
+  B6:
+    name: closed_loop_navigation
+    status: blocked_by_B2
+  B7:
+    name: ranger_real_robot
+    status: blocked_by_B6
+gates:
+  B1_to_B2_scale_up:
+    status: blocked_by_B1
+    required_evidence:
+      - revelation_distribution_and_frozen_threshold
+      - matched_action_duration_and_translation_budget
+      - required_paper_figures_and_tables
+      - measured_disk_budget
+      - measured_generation_throughput
+    allows: B2_scale_dataset_generation_only

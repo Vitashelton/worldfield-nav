@@ -1,0 +1,36 @@
+schema_version: 1
+benchmark_id: B1
+status: split_inventory_pending
+seed: 20260902
+field:
+  channels: [occupancy, height, visibility, age]
+  grid_shape: [128, 128]
+  extent_m: [10.0, 10.0]
+  cell_m: 0.078125
+splits:
+  train: []
+  validation: []
+  unseen_test: []
+  selection_rule: >
+    Populate only after P0 confirms ten distinct locally installed Habitat-GS
+    scenes. Do not download or silently substitute scenes.
+episodes:
+  contexts: [open_space, turn_corner, doorway_occlusion]
+  branches: [straight, left, right, mixed_turn]
+  matched_counterfactual: true
+  smoke_starts_per_scene: 1
+  full_starts_per_scene: null
+horizons_s: [0.5, 1.0, 2.0, 3.0]
+metrics:
+  - occupancy_iou
+  - height_mae_shared_visible
+  - visibility_iou
+  - revelation_f1
+  - rollout_drift
+baselines:
+  - B0_transport_only
+outputs:
+  root: outputs/formal/B1
+  paper_assets_root: paper_assets
+  resumable: true
+  avoid_duplicate_rgb_depth: true

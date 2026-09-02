@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "worldfield-nav"
+version = "0.1.0"
+description = "WorldFlow research harness for persistent indoor world-field prediction"
+requires-python = ">=3.10"
+dependencies = ["numpy", "PyYAML"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["world_field", "datasets", "models", "evaluation", "visualization"]
