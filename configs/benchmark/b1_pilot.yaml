@@ -1,32 +1,67 @@
 schema_version: 1
 benchmark_id: B1
-status: split_inventory_pending
+status: p0_frozen_p1_not_authorized
 seed: 20260902
 field:
-  channels: [occupancy, height, visibility, age]
-  grid_shape: [128, 128]
-  extent_m: [10.0, 10.0]
+  channels:
+  - occupancy
+  - height
+  - visibility
+  - age
+  grid_shape:
+  - 128
+  - 128
+  extent_m:
+  - 10.0
+  - 10.0
   cell_m: 0.078125
 splits:
-  train: []
-  validation: []
-  unseen_test: []
-  selection_rule: >
-    Populate only after P0 confirms ten distinct locally installed Habitat-GS
-    scenes. Do not download or silently substitute scenes.
+  train:
+  - scene01
+  - scene02
+  - scene03
+  - scene09
+  - interior_0405_840145
+  validation:
+  - scene04
+  - scene05
+  unseen_test:
+  - scene56
+  - scene57
+  - scene58
+  selection_rule: P0 fixed split; official Habitat-GS assets only.
 episodes:
-  contexts: [open_space, turn_corner, doorway_occlusion]
-  branches: [straight, left, right, mixed_turn]
+  contexts:
+  - open_space
+  - turn_corner
+  - doorway_occlusion
+  branches:
+  - straight
+  - left
+  - right
+  - mixed_turn
   matched_counterfactual: true
-  smoke_starts_per_scene: 1
-  full_starts_per_scene: null
-horizons_s: [0.5, 1.0, 2.0, 3.0]
+  candidate_starts_per_scene_target: 30
+  action_controls:
+    representation: continuous (v, omega, dt)
+    dt_s: 0.2
+    sample_hz: 5
+    duration_s: 3.0
+    requested_translation_m: 1.0499999999999998
+    families_are_labels_only: true
+    execution_note: Habitat discrete turn+forward proxy; controls and realized motion
+      are saved.
+horizons_s:
+- 0.5
+- 1.0
+- 2.0
+- 3.0
 metrics:
-  - occupancy_iou
-  - height_mae_shared_visible
-  - visibility_iou
-  - revelation_f1
-  - rollout_drift
+- occupancy_iou
+- height_mae_shared_visible
+- visibility_iou
+- revelation_f1
+- rollout_drift
 baselines:
 - M0-Transport
 outputs:
@@ -34,3 +69,148 @@ outputs:
   paper_assets_root: paper_assets
   resumable: true
   avoid_duplicate_rgb_depth: true
+revelation_probe:
+  metric: initially unknown -> observed union area at 3 s
+  threshold_m2: 27.13775634765625
+  rule: max(4 field cells, 25th percentile of positive P0 branch areas)
+  eligibility: 'open: valid; corner/doorway: every matched family >= threshold'
+  summary:
+    benchmark: B1 P0 revelation probe
+    sample_hz: 5
+    horizons_s:
+    - 0.5
+    - 1.0
+    - 2.0
+    - 3.0
+    candidate_starts: 253
+    branch_probes: 1012
+    candidates_per_scene:
+      scene01: 22
+      scene02: 26
+      scene03: 24
+      scene09: 22
+      interior_0405_840145: 30
+      scene04: 27
+      scene05: 30
+      scene56: 22
+      scene57: 30
+      scene58: 20
+    sampling_attempts_by_scene:
+      scene01: 600
+      scene02: 600
+      scene03: 600
+      scene09: 600
+      interior_0405_840145: 393
+      scene04: 600
+      scene05: 60
+      scene56: 600
+      scene57: 351
+      scene58: 600
+    contexts_per_scene:
+      scene01:
+        open_space: 10
+        turn_corner: 2
+        doorway_occlusion: 10
+      scene02:
+        open_space: 6
+        turn_corner: 10
+        doorway_occlusion: 10
+      scene03:
+        open_space: 10
+        turn_corner: 4
+        doorway_occlusion: 10
+      scene09:
+        open_space: 10
+        turn_corner: 2
+        doorway_occlusion: 10
+      interior_0405_840145:
+        open_space: 10
+        turn_corner: 10
+        doorway_occlusion: 10
+      scene04:
+        open_space: 10
+        turn_corner: 7
+        doorway_occlusion: 10
+      scene05:
+        open_space: 10
+        turn_corner: 10
+        doorway_occlusion: 10
+      scene56:
+        open_space: 10
+        turn_corner: 2
+        doorway_occlusion: 10
+      scene57:
+        open_space: 10
+        turn_corner: 10
+        doorway_occlusion: 10
+      scene58:
+        open_space: 10
+        doorway_occlusion: 10
+    by_context:
+      open_space:
+        count: 384
+        median_m2: 47.064208984375
+        p25_m2: 39.15252685546875
+        p75_m2: 55.5206298828125
+      turn_corner:
+        count: 228
+        median_m2: 19.464111328125
+        p25_m2: 8.5205078125
+        p75_m2: 29.08782958984375
+      doorway_occlusion:
+        count: 400
+        median_m2: 53.8818359375
+        p25_m2: 42.6910400390625
+        p75_m2: 63.189697265625
+    by_action_family:
+      straight:
+        count: 253
+        median_m2: 40.576171875
+        p25_m2: 22.314453125
+        p75_m2: 49.0234375
+      left:
+        count: 253
+        median_m2: 48.7548828125
+        p25_m2: 33.0078125
+        p75_m2: 61.85302734375
+      right:
+        count: 253
+        median_m2: 48.602294921875
+        p25_m2: 31.25
+        p75_m2: 60.9130859375
+      mixed_turn:
+        count: 253
+        median_m2: 45.458984375
+        p25_m2: 25.946044921875
+        p75_m2: 56.48193359375
+    eligible_starts: 188
+    eligible_by_context:
+      open_space: 96
+      doorway_occlusion: 86
+      turn_corner: 6
+    threshold_m2: 27.13775634765625
+    control:
+      duration_s: 3.0
+      dt_s: 0.2
+      requested_translation_m: 1.0499999999999998
+      families:
+      - straight
+      - left
+      - right
+      - mixed_turn
+    acceptance:
+      at_least_30_candidates_attempted_each_scene: true
+      all_candidates_have_four_branches: true
+      passed: true
+      eligible_corner_and_doorway: true
+      all_contexts_covered: true
+  figures:
+  - paper_assets/figures/b1_p0_action_family_boxplot.png
+  - paper_assets/figures/b1_p0_context_magnitude_vs_contrast.png
+  - paper_assets/figures/b1_p0_counterfactual_contrast_boxplot.png
+  - paper_assets/figures/b1_p0_delta_revelation_distribution.png
+  - paper_assets/figures/b1_p0_revelation_cdf.png
+  - paper_assets/figures/b1_p0_revelation_distribution.png
+  - paper_assets/figures/b1_p0_revelation_mask_pair_examples.png
+  - paper_assets/figures/b1_p0_split_overview.png
+  - paper_assets/figures/b1_p0_threshold_selection.png
