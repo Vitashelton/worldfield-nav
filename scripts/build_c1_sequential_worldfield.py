@@ -193,6 +193,23 @@ class SparseField:
         return phi, origin
 
 
+def fuse_fields(lidar_phi: np.ndarray, rgbd_phi: np.ndarray) -> np.ndarray:
+    """Fuse two causal geometry fields while retaining modality provenance on disk.
+
+    LiDAR takes precedence where it has support; RGB-D fills dense local gaps.
+    Visibility is their union and age is the most recent observation age.
+    """
+    lidar_seen, rgbd_seen = lidar_phi[2] > 0, rgbd_phi[2] > 0
+    observed = lidar_seen | rgbd_seen
+    result = np.zeros_like(lidar_phi)
+    result[0] = np.where(lidar_seen, lidar_phi[0], rgbd_phi[0])
+    result[1] = np.where(lidar_seen, lidar_phi[1], rgbd_phi[1])
+    result[2] = observed.astype(np.float32)
+    result[3].fill(float(max(lidar_phi[3].max(), rgbd_phi[3].max())))
+    result[3][observed] = np.minimum(lidar_phi[3][observed], rgbd_phi[3][observed])
+    return result
+
+
 def pattern_commands(pattern: str, ticks: int) -> list[tuple[str | None, str]]:
     """Fixed loops designed to include turns and return toward prior support."""
     if pattern == "return_loop":
@@ -268,13 +285,18 @@ def generate_trajectory(config: dict[str, Any], output_root: Path, spec: Traject
     try:
         agent = sim.initialize_agent(0)
         agent.set_state(select_start(sim, agent, spec.seed))
-        causal = SparseField(ticks)
+        rgbd_memory = SparseField(ticks)
+        lidar_memory = SparseField(ticks)
         rgbs: list[np.ndarray] = []
         depths: list[np.ndarray] = []
         poses: list[np.ndarray] = []
         sensor_poses: list[np.ndarray] = []
         all_points: list[np.ndarray] = []
         causal_fields: list[np.ndarray] = []
+        lidar_geometry: list[np.ndarray] = []
+        rgbd_geometry: list[np.ndarray] = []
+        visibility: list[np.ndarray] = []
+        information_age: list[np.ndarray] = []
         origins: list[np.ndarray] = []
         lidar = np.zeros((ticks, MAX_LIDAR_POINTS, 3), dtype=np.float32)
         lidar_counts = np.zeros(ticks, dtype=np.int32)
@@ -290,32 +312,46 @@ def generate_trajectory(config: dict[str, Any], output_root: Path, spec: Traject
             depth = np.nan_to_num(np.asarray(observation["depth"], dtype=np.float32), nan=0.0, posinf=0.0, neginf=0.0)
             c2w = camera_to_world(sim)
             points = depth_to_world(depth, c2w, k, FIELD_STRIDE)
-            causal.update(points, frame)
-            pose = pose_wxyz(agent)
-            phi, origin = causal.snapshot(pose[[0, 2]], frame)
             sparse_points = depth_to_world(depth, c2w, k, int(config["observations"]["sim_lidar"]["depth_stride"]))[:MAX_LIDAR_POINTS]
+            rgbd_memory.update(points, frame)
+            lidar_memory.update(sparse_points, frame)
+            pose = pose_wxyz(agent)
+            rgbd_phi, origin = rgbd_memory.snapshot(pose[[0, 2]], frame)
+            lidar_phi, lidar_origin = lidar_memory.snapshot(pose[[0, 2]], frame)
+            if not np.array_equal(origin, lidar_origin):
+                raise RuntimeError("RGB-D and LiDAR field origins diverged")
+            phi = fuse_fields(lidar_phi, rgbd_phi)
             lidar[frame, :len(sparse_points)] = sparse_points
             lidar_counts[frame] = len(sparse_points)
             rgbs.append(rgb); depths.append(depth); poses.append(pose); sensor_poses.append(c2w); all_points.append(points)
-            causal_fields.append(phi); origins.append(origin); global_coverage.append(len(causal.cells) * CELL_M * CELL_M)
-        oracle = SparseField(ticks)
+            causal_fields.append(phi); lidar_geometry.append(lidar_phi[:2]); rgbd_geometry.append(rgbd_phi[:2])
+            visibility.append(phi[2:3]); information_age.append(phi[3:4]); origins.append(origin)
+            global_coverage.append(len(set(lidar_memory.cells) | set(rgbd_memory.cells)) * CELL_M * CELL_M)
+        oracle_lidar = SparseField(ticks)
+        oracle_rgbd = SparseField(ticks)
         for frame, points in enumerate(all_points):
-            oracle.update(points, frame)
-        oracle_fields = [oracle.snapshot(pose[[0, 2]], ticks - 1)[0] for pose in poses]
+            oracle_rgbd.update(points, frame)
+            oracle_lidar.update(points[::max(1, int(config["observations"]["sim_lidar"]["depth_stride"]) // FIELD_STRIDE)], frame)
+        oracle_fields = [fuse_fields(oracle_lidar.snapshot(pose[[0, 2]], ticks - 1)[0], oracle_rgbd.snapshot(pose[[0, 2]], ticks - 1)[0]) for pose in poses]
         causal_array = np.stack(causal_fields).astype(np.float32)
         oracle_array = np.stack(oracle_fields).astype(np.float32)
+        lidar_geometry_array = np.stack(lidar_geometry).astype(np.float32)
+        rgbd_geometry_array = np.stack(rgbd_geometry).astype(np.float32)
+        visibility_array = np.stack(visibility).astype(np.float32)
+        information_age_array = np.stack(information_age).astype(np.float32)
         rgb_array = np.stack(rgbs).astype(np.uint8)
         depth_array = np.stack(depths).astype(np.float32)
         pose_array = np.stack(poses).astype(np.float32)
         sensor_pose_array = np.stack(sensor_poses).astype(np.float32)
         origin_array = np.stack(origins).astype(np.float32)
         timestamps = np.arange(ticks, dtype=np.float32) * dt_s
-        if not all(np.isfinite(x).all() for x in (depth_array, pose_array, sensor_pose_array, causal_array, oracle_array, origin_array, lidar)):
+        if not all(np.isfinite(x).all() for x in (depth_array, pose_array, sensor_pose_array, causal_array, oracle_array, lidar_geometry_array, rgbd_geometry_array, visibility_array, information_age_array, origin_array, lidar)):
             raise RuntimeError(f"Non-finite C1 data in {spec.trajectory_id}")
         sequence = directory / "sequence.npz"
         temporary = directory / "sequence.tmp.npz"
         np.savez_compressed(temporary, rgb=rgb_array, depth=depth_array, sim_lidar_xyz=lidar, sim_lidar_count=lidar_counts,
                             agent_pose_wxyz=pose_array, sensor_pose_c2w=sensor_pose_array, timestamps_s=timestamps,
+                            G_lidar=lidar_geometry_array, G_rgbd=rgbd_geometry_array, V=visibility_array, A=information_age_array,
                             causal_field=causal_array, oracle_field=oracle_array, field_origin_xz=origin_array)
         os.replace(temporary, sequence)
         elapsed = time.perf_counter() - started
@@ -335,7 +371,7 @@ def generate_trajectory(config: dict[str, Any], output_root: Path, spec: Traject
             "sample_hz": hz,
             "duration_s": float(trajectory["duration_s"]),
             "absolute_pose": {"array": "agent_pose_wxyz", "format": "x,y,z,qw,qx,qy,qz", "world_frame": "Habitat X,Y,Z"},
-            "field": {"channels": ["occupancy", "height", "visibility", "information_age"], "plane": "Habitat world X-Z; Y is height", "extent_m": FIELD_M, "grid": GRID, "origin_array": "field_origin_xz"},
+            "field": {"channels": ["occupancy", "height", "visibility", "information_age"], "plane": "Habitat world X-Z; Y is height", "extent_m": FIELD_M, "grid": GRID, "origin_array": "field_origin_xz", "per_frame_arrays": {"G_lidar": "occupancy,height; causal LiDAR-primary geometry", "G_rgbd": "occupancy,height; causal dense RGB-D geometry", "V": "causal fused visibility", "A": "causal deterministic information age", "causal_field": "fused [G,V,A] online state", "oracle_field": "full-trajectory offline reference only"}},
             "observations": {"rgb": "rgb", "depth": "depth", "sim_lidar": {"xyz_array": "sim_lidar_xyz", "count_array": "sim_lidar_count", "source": "deterministic_depth_geometry_subsample", "real_robot_replacement": "/livox/lidar"}},
             "causality": {"online_input": "causal_field", "causal_observations": "0:t inclusive", "oracle_reference": "oracle_field", "oracle_observations": "entire completed trajectory", "oracle_online_forbidden": True},
             "controls": {"continuous_v_omega_dt": controls, "simulator_execution": "discrete turn+forward proxy; actual absolute poses recorded"},

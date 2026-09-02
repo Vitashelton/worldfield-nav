@@ -13,9 +13,9 @@ start Nav2, or continue the archived B1 counterfactual benchmark.
   or unrelated data.
 - Generate three deterministic trajectories per scene: 30 total, each 15--30
   seconds at 10Hz.
-- Store RGB, depth, absolute robot pose, `P_t^sim-lidar`, causal O/H/V/A,
-  oracle O/H/V/A, world-field origin, timestamp, scene ID, and trajectory ID
-  per frame.
+- Store timestamp, absolute robot pose, RGB, depth, `P_t^sim-lidar`,
+  `G_lidar`, `G_rgbd`, `V`, `A`, causal fused field, oracle reference field,
+  world-field origin, scene ID, and trajectory ID per frame.
 - `P_t^sim-lidar` is a deterministic sparse geometric point observation made
   from simulator depth/geometry. It is an interface proxy for future real
   `/livox/lidar`, not an exact Livox scan simulation.

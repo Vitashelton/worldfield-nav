@@ -31,7 +31,7 @@ Every crop records its world origin. The crop may follow the robot, but cell coo
 
 `Phi_transport + X_t -> learned WorldFlow Update -> Phi_t`
 
-In C1, `P_t^sim-lidar` is a deterministic, sparse point subset constructed from Habitat-GS depth/geometry. It is an interface-compatible proxy, not a claim of accurate Mid-360S/Livox scan simulation. On Ranger Mini it is replaced by the real `/livox/lidar` stream.
+In C1, `P_t^sim-lidar` is a deterministic, sparse point subset constructed from Habitat-GS depth/geometry. The data schema persists `G_lidar` and `G_rgbd` separately, then records fused causal `V`, `A`, and O/H/V/A. It is an interface-compatible proxy, not a claim of accurate Mid-360S/Livox scan simulation. On Ranger Mini it is replaced by the real `/livox/lidar` stream.
 
 The update operator, rather than a per-frame reconstruction, is the method core. It decides what persistent information to retain, what multimodal observation to inject, and how visibility and freshness condition the update.
 

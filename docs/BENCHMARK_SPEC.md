@@ -16,7 +16,7 @@ C1 contains three deterministic continuous robot trajectories per scene, for 30 
 
 ## Per-frame data contract
 
-Every frame stores timestamp, absolute robot pose, RGB data or reproducible reference, depth data or reproducible reference, `P_t^sim-lidar`, causal O/H/V/A field, oracle O/H/V/A field, world-field origin, scene ID, and trajectory ID. Fields and poses must be finite. The on-disk schema must be readable through a single PyTorch Dataset/DataLoader implementation.
+Every frame stores timestamp, absolute robot pose, RGB data or reproducible reference, depth data or reproducible reference, `P_t^sim-lidar`, causal `G_lidar`, causal `G_rgbd`, causal `V`, deterministic causal `A`, causal fused O/H/V/A field, oracle O/H/V/A field, world-field origin, scene ID, and trajectory ID. Fields and poses must be finite. The on-disk schema must be readable through a single PyTorch Dataset/DataLoader implementation.
 
 `P_t^sim-lidar` is a sparse, deterministic geometric observation derived from Habitat-GS geometry/depth. It supports the LiDAR branch from the first data stage without claiming a precise Mid-360S scan model. Its schema is deliberately compatible with replacement by real `/livox/lidar` points.
 
