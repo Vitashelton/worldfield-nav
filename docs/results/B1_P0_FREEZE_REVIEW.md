@@ -25,7 +25,7 @@ branch rows (each start has four action-family rows).
   context scarcity rather than thresholding.
 - The single global threshold is also unfavorable to corners: corner branch
   revelation has median 19.464 m² and P25 8.521 m², below the frozen 27.138 m²
-  threshold. Of 42 raw corner starts, only 6 remain eligible.
+  threshold. Of 57 raw corner starts, only 6 remain eligible.
 - The current freeze has no per-context threshold and no post-threshold
   context-quota mechanism. It uses a global threshold with `open: valid` and
   `corner/doorway: every matched family >= threshold`; the probe only targets
