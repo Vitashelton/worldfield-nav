@@ -45,8 +45,12 @@ formal:
       - paper_assets/tables/b1_p0_summary.csv
       figures:
       - paper_assets/figures/b1_p0_action_family_boxplot.png
+      - paper_assets/figures/b1_p0_context_magnitude_vs_contrast.png
+      - paper_assets/figures/b1_p0_counterfactual_contrast_boxplot.png
+      - paper_assets/figures/b1_p0_delta_revelation_distribution.png
       - paper_assets/figures/b1_p0_revelation_cdf.png
       - paper_assets/figures/b1_p0_revelation_distribution.png
+      - paper_assets/figures/b1_p0_revelation_mask_pair_examples.png
       - paper_assets/figures/b1_p0_split_overview.png
       - paper_assets/figures/b1_p0_threshold_selection.png
     p0_acceptance:
