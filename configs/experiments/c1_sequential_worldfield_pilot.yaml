@@ -1,0 +1,9 @@
+schema_version: 1
+experiment_id: C1
+phase: pilot_generation
+name: sequential_multimodal_worldfield_dataset
+benchmark_config: configs/benchmark/c1_sequential_worldfield.yaml
+no_dinov3: true
+no_model_training: true
+no_nav2: true
+no_predictive_rollout: true

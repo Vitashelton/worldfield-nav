@@ -1,0 +1,41 @@
+schema_version: 1
+benchmark_id: C1
+status: active
+seed: 20260902
+field:
+  channels: [occupancy, height, visibility, information_age]
+  grid_shape: [128, 128]
+  extent_m: [10.0, 10.0]
+  cell_m: 0.078125
+split:
+  train: [scene01, scene02, scene03, scene09, interior_0405_840145]
+  validation: [scene04, scene05]
+  unseen_test: [scene56, scene57, scene58]
+trajectory:
+  trajectories_per_scene: 3
+  duration_s: 15.0
+  sample_hz: 10
+  dt_s: 0.1
+  linear_speed_mps: 0.35
+  turn_deg_per_tick: 3.0
+  deterministic_patterns: [return_loop, corner_loop, doorway_sweep]
+observations:
+  rgb: {height: 192, width: 192, hfov_deg: 90.0}
+  depth: {near_m: 0.01, far_m: 10.0}
+  sim_lidar:
+    representation: xyz_world_m
+    source: deterministic_depth_geometry_subsample
+    max_points_per_frame: 2048
+    depth_stride: 6
+causality:
+  online_input: causal_field
+  oracle_reference: oracle_field
+  oracle_online_forbidden: true
+storage:
+  root: outputs/formal/C1/pilot
+  resumable: true
+  trajectory_format: npz_compressed
+  store_rgb_depth_data: true
+outputs:
+  figures_root: paper_assets/figures
+  videos_root: paper_assets/videos

@@ -2,44 +2,55 @@
 
 ## Status
 
-This is the target model contract, not current implementation authorization.
-Learned-model work begins only when the active execution plan permits it.
+This is the target model contract. C1 authorizes sequential RGB-D/pose/sim-LiDAR data generation only; it does not authorize DINOv3 extraction, learned-model training, real LiDAR acquisition, or navigation execution.
 
-## World state
+## Persistent multimodal field
 
-The physical metric field is world-aligned on the X-Z plane. Its initial
-channels are `O` occupancy, `H` height, `V` visibility/observation state, and
-`A` information age. The initial resolution is 128x128 covering 10m x 10m
-(0.078125m/cell). A learned visual latent `Z` may be appended later.
+The field is world-aligned on Habitat world X-Z; Habitat world Y is height. The initial local crop is 128x128 over 10m x 10m (0.078125m/cell):
 
-`A` is a deterministic memory state: it is updated from observation/visibility
-events and elapsed time, not a primary neural prediction target. A model may
-consume `A` as context, while evaluation focuses learned prediction capacity on
-physical geometry, visibility/revelation, and `Z` when authorized.
+`Phi_t = [G_t, Z_t, V_t, A_t]`
 
-## Computation graph
+- `G_t`: metric geometry. The LiDAR branch is primary; RGB-D provides complementary dense local geometry.
+- `Z_t`: frozen-DINOv3 visual features lifted with RGB-D and pose into world field cells. It is absent from C1 feature extraction.
+- `V_t`: observation state, including which cells received a modality observation.
+- `A_t`: deterministic age since last observation. It is updated by time and visibility events, not a principal neural prediction target.
 
-`RGB -> frozen DINOv3 dense features`
+Every crop records its world origin. The crop may follow the robot, but cell coordinates retain world correspondence through that origin.
 
-`Depth + pose -> geometry-aware lifting -> persistent metric latent field Phi_t`
+## Observation branches and update graph
 
-`hypothetical u_(t:t+H) = [(v, omega, dt)] -> kinematic integration -> future robot poses`
+`RGB -> frozen DINOv3 dense feature -> visual branch`
 
-`Phi_t + integrated future poses -> deterministic SE(2) world-aligned crop transport -> transported state`
+`Depth + pose -> dense local geometry -> RGB-D branch`
 
-`transported state + current context + actions -> learned field update/revelation`
+`P_t^lidar + pose -> sparse metric geometry -> LiDAR branch`
 
-`-> Phi_(t+1) -> autoregressive Phi_(t+1:t+H)`
+`[visual, RGB-D, LiDAR] -> geometry-aware world lifting -> X_t`
 
-The hypothetical action is a continuous `(v, omega, dt)` sequence, not a
-discrete turn label. Its kinematic integration yields the future SE(2) robot
-poses that drive field/crop transport. In a globally world-aligned tensor, ego
-rotation affects the integrated trajectory; the regridded crop uses the induced
-world displacement rather than an artificial tensor rotation.
+`Phi_(t-1) + measured pose delta -> deterministic world-field transport -> Phi_transport`
+
+`Phi_transport + X_t -> learned WorldFlow Update -> Phi_t`
+
+In C1, `P_t^sim-lidar` is a deterministic, sparse point subset constructed from Habitat-GS depth/geometry. It is an interface-compatible proxy, not a claim of accurate Mid-360S/Livox scan simulation. On Ranger Mini it is replaced by the real `/livox/lidar` stream.
+
+The update operator, rather than a per-frame reconstruction, is the method core. It decides what persistent information to retain, what multimodal observation to inject, and how visibility and freshness condition the update.
+
+## Causal and oracle separation
+
+`causal_field_t` may use observations `0:t` only and is the sole eligible online/model input. `oracle_field_t` is built offline from all observations in the completed trajectory solely as a geometry-completeness reference target. Oracle fields must never be passed to online updates, models, planners, or causal metrics.
+
+## Baselines
+
+- `M0 Frame-Only`: current RGB-D and LiDAR geometry lifted at the current frame, with no persistent temporal memory.
+- `M1 Geometric Memory`: deterministic RGB-D/LiDAR/pose fusion without learned update.
+- `M2 ConvGRU Memory`: a sequential learned memory baseline.
+- `M3 WorldFlow`: transport plus learned multimodal visual-geometric field update.
 
 ## Non-negotiable properties
 
-- The output is a future world-state rollout, not a scalar score.
-- Future RGB/depth cannot be used to construct a prediction at inference time.
-- DINOv3 stays frozen by default and is not the claimed contribution.
-- The learned term is evaluated against M0-Transport, M1-Direct, and M2-RSSM.
+- The learned output is a persistent field, never only a navigation score.
+- Pose and all geometry use an explicit shared world frame.
+- LiDAR remains a first-class metric branch, not merely a localization aid.
+- DINOv3 is frozen by default and is not the claimed contribution.
+- Information age remains deterministic.
+- Future observations and oracle fields cannot leak into online inputs.

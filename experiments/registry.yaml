@@ -16,90 +16,32 @@ preliminary:
     status: completed
     output: outputs/exp003_transport_revelation
     accepted: true
-    limitation: 'Newly observed area was sparse in the current short trajectories.
-      Mechanism supported, but insufficient as paper-level model evidence.
-
-      '
-formal:
+    limitation: Newly observed area was sparse in the short trajectories; this is preliminary mechanism evidence only.
   B1:
     name: multiscene_counterfactual_benchmark
-    status: p1_manifest_built_artifact_blocker
-    scope: pilot_harness_only_no_model_training
-    active_plan: docs/exec-plans/active/B1_paper_benchmark.md
-    config: configs/benchmark/b1_pilot.yaml
-    model_baselines:
-    - M0-Transport
-    - M1-Direct
-    - M2-RSSM
-    - M3-WorldFlow
+    status: archived_preliminary_validation
+    archived_plan: docs/exec-plans/completed/preliminary/B1_counterfactual_benchmark.md
+    retained_outputs:
+      - outputs/formal/B1
+      - paper_assets/figures/b1_p0_*.png
+      - paper_assets/tables/b1_p0_*.csv
+    reason: Counterfactual rollout is now an optional WorldFlow capability, not the paper identity.
     runs:
-    - experiments/runs/B1/20260902T065535Z/run.json
-    - experiments/runs/B1/20260902T082551Z/run.json
-    - experiments/runs/B1/20260902T084833Z/run.json
-    - experiments/runs/B1/20260902T091104Z/run.json
-    - experiments/runs/B1/20260902T095920Z/run.json
-    - experiments/runs/B1/20260902T100418Z/run.json
-    last_run: experiments/runs/B1/20260902T100418Z/run.json
-    p0_outputs:
-      metrics: outputs/formal/B1/p0/metrics.json
-      tables:
-      - paper_assets/tables/b1_p0_revelation_candidates.csv
-      - paper_assets/tables/b1_p0_summary.csv
-      figures:
-      - paper_assets/figures/b1_p0_action_family_boxplot.png
-      - paper_assets/figures/b1_p0_context_magnitude_vs_contrast.png
-      - paper_assets/figures/b1_p0_counterfactual_contrast_boxplot.png
-      - paper_assets/figures/b1_p0_delta_revelation_distribution.png
-      - paper_assets/figures/b1_p0_revelation_cdf.png
-      - paper_assets/figures/b1_p0_revelation_distribution.png
-      - paper_assets/figures/b1_p0_revelation_mask_pair_examples.png
-      - paper_assets/figures/b1_p0_split_overview.png
-      - paper_assets/figures/b1_p0_threshold_selection.png
-    p0_acceptance:
-      at_least_30_candidates_attempted_each_scene: true
-      all_candidates_have_four_branches: true
-      passed: true
-      eligible_corner_and_doorway: true
-      all_contexts_covered: true
-    p1_manifest:
-      status: built_but_acceptance_blocked
-      config: configs/experiments/b1_p1_manifest.yaml
-      manifest: outputs/formal/B1/p1_manifest/manifest.json
-      repeat_manifest: outputs/formal/B1/p1_manifest_repeat/manifest.json
-      metrics: outputs/formal/B1/p1_manifest/metrics.json
-      episode_count: 40
-      unique_starts: 10
-      byte_equivalent_second_build: true
-      exact_horizon_clock: true
-      kinematic_relative_pose_integration: true
-      absolute_start_pose_available: false
-      OHVA_snapshots_available: false
-      blocker: P0 did not persist absolute poses or O/H/V/A arrays; no simulation rerun authorized
-  B2:
-    name: world_model_prediction
-    status: blocked_by_B1_scale_up_gate
-  B3:
-    name: unseen_scene_generalization
-    status: blocked_by_B2
-  B4:
-    name: long_horizon_rollout
-    status: blocked_by_B2
-  B5:
-    name: ablation
-    status: blocked_by_B2
-  B6:
-    name: closed_loop_navigation
-    status: blocked_by_B2
-  B7:
-    name: ranger_real_robot
-    status: blocked_by_B6
-gates:
-  B1_to_B2_scale_up:
-    status: blocked_by_B1
-    required_evidence:
-    - revelation_distribution_and_frozen_threshold
-    - matched_action_duration_and_translation_budget
-    - required_paper_figures_and_tables
-    - measured_disk_budget
-    - measured_generation_throughput
-    allows: B2_scale_dataset_generation_only
+      - experiments/runs/B1/20260902T065535Z/run.json
+      - experiments/runs/B1/20260902T082551Z/run.json
+      - experiments/runs/B1/20260902T084833Z/run.json
+      - experiments/runs/B1/20260902T091104Z/run.json
+      - experiments/runs/B1/20260902T095920Z/run.json
+      - experiments/runs/B1/20260902T100418Z/run.json
+formal:
+  C1:
+    name: sequential_multimodal_worldfield_dataset_pilot
+    status: active
+    active_plan: docs/exec-plans/active/C1_sequential_worldfield_dataset.md
+    config: configs/benchmark/c1_sequential_worldfield.yaml
+    model_baselines: [M0-Frame-Only, M1-Geometric-Memory, M2-ConvGRU-Memory, M3-WorldFlow]
+    runs: []
+future_optional:
+  action_conditioned_rollout:
+    status: optional_not_active
+    role: planning_query_mode_after_persistent_state_evidence

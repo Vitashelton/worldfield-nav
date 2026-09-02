@@ -2,49 +2,32 @@
 
 ## Scope
 
-The formal benchmark evaluates counterfactual future world-field prediction in
-Habitat-GS. It is multi-scene, split-fixed, reproducible, and horizon-resolved.
+WorldFlow is evaluated as a sequential multimodal world-state task, not as a counterfactual rollout benchmark. The first dataset stage is C1, a small, deterministic Habitat-GS pilot that validates data integrity, three observation branches, and causal/oracle separation before any learned model is trained.
 
-## Pilot B1 split contract
+## Fixed C1 split and trajectories
 
-The B1 pilot targets five train scenes, two validation scenes, and three
-unseen-test scenes. Resolve local assets first. If fewer than ten valid distinct
-scenes are installed, acquire only the final missing pilot scenes from official
-Habitat-GS assets; do not download a complete scene collection. Commit exact
-identifiers, provenance, version/checksum, and local paths in the B1 config.
+Reuse the frozen Habitat-GS assets and split:
 
-Before freezing starts, run deterministic probe trajectories to measure the
-unknown-to-observed-area distribution by context and action family. Freeze a
-quantitative revelation threshold, its rationale, and eligible-start list in
-the config. Formal corner/doorway episodes must exceed that threshold; nearly
-zero-revelation candidates are rejected.
+- Train: `scene01`, `scene02`, `scene03`, `scene09`, `interior_0405_840145`
+- Validation: `scene04`, `scene05`
+- Unseen test: `scene56`, `scene57`, `scene58`
 
-## Episodes and actions
+C1 contains three deterministic continuous robot trajectories per scene, for 30 trajectories total. Each is 15--30 seconds at 10Hz and should naturally include forward motion, turns, doorway/corner views, occlusion, and revisit where the scene permits. This pilot does not require artificial context balancing and does not rerun B1 revelation probes.
 
-For each scene, sample deterministic starts across open areas, turns, and
-doorway/occlusion transitions. Each start has matched action branches sharing
-the same initial `Phi_t`, start pose, seed, fixed 3.0s duration, and sampling
-clock. `straight`, `left`, `right`, and `mixed_turn` are action-family labels;
-every branch stores a continuous sequence of `(v, omega, dt)` controls, its
-kinematically integrated poses, translational distance, and mismatch against
-the matched translational-motion budget.
+## Per-frame data contract
 
-## Horizons and metrics
+Every frame stores timestamp, absolute robot pose, RGB data or reproducible reference, depth data or reproducible reference, `P_t^sim-lidar`, causal O/H/V/A field, oracle O/H/V/A field, world-field origin, scene ID, and trajectory ID. Fields and poses must be finite. The on-disk schema must be readable through a single PyTorch Dataset/DataLoader implementation.
 
-Sample at a fixed rate of at least 5Hz and store exact GT at 0.5, 1.0, 2.0, and
-3.0 seconds. Formal benchmark episodes missing 0.5s are invalid; another frame
-may never be relabeled as 0.5s.
+`P_t^sim-lidar` is a sparse, deterministic geometric observation derived from Habitat-GS geometry/depth. It supports the LiDAR branch from the first data stage without claiming a precise Mid-360S scan model. Its schema is deliberately compatible with replacement by real `/livox/lidar` points.
 
-Partition every metric into persistent-known and newly-revealed regions.
-Required reporting includes Known-IoU, height MAE on jointly visible known
-cells, visibility IoU, Reveal-IoU, Reveal-F1, revelation latent similarity when
-`Z` exists, and Persistent Drift. Report split, scene, action family, and
-horizon—not only an aggregate average.
+## Causal/oracle contract
 
-## Baselines and outputs
+The causal field at `t` fuses observations up to and including `t`; it is the only field an online method may use. The oracle field is an offline fusion of the complete trajectory and serves only as a completeness/reference target. The schema, metadata, and evaluation code must make this separation explicit.
 
-Required model families are M0-Transport (deterministic transport-only),
-M1-Direct (direct neural field predictor), M2-RSSM (RSSM-style latent
-state-space predictor), and M3-WorldFlow. Formal outputs include matched
-GT/M0/M1/M2/M3 figures, long-horizon rollouts, unseen-scene comparison, metrics
-tables, and a run record. Paper assets belong under `paper_assets/`.
+## Future formal model evaluation
+
+Once a learned stage is authorized, compare M0 Frame-Only, M1 Geometric Memory, M2 ConvGRU Memory, and M3 WorldFlow. Evaluate geometry completeness, temporal stability/revisit consistency, visibility-aware state quality, cross-modal ablations, and navigation value by split. Action-conditioned rollout is optional evidence, not a required benchmark axis.
+
+## C1 non-final diagnostics
+
+Report trajectory/frame count, storage, throughput, finite O/H/V/A ratio, causal coverage growth, causal-versus-oracle geometry completeness, and a verified visible-to-occluded-to-revisited case. These are pilot diagnostics, not final paper claims.

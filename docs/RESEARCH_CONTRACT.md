@@ -2,41 +2,46 @@
 
 ## Working title
 
-**WorldFlow: Action-Conditioned Persistent Latent World-Field Evolution for
-Indoor Mobile Robot Navigation**
+**WorldFlow: Persistent Multimodal World Models for Indoor Robot Perception and Navigation**
 
 ## Scientific question
 
-Can an indoor mobile robot maintain a persistent metric latent world state and
-imagine how that world would evolve under hypothetical future robot actions?
+Can an indoor robot use RGB-D, LiDAR geometry, pose, and frozen foundation visual features to maintain a world-aligned metric latent field over time, and can a motion-aware learned update make that state more stable and complete than frame-wise perception or naive memory under viewpoint change, occlusion, and revisit?
 
-## State, input, and output
+## Central object
 
-`Phi_t = [geometry, visibility, memory, latent representation]`
+`Phi_t = [G_t, Z_t, V_t, A_t]`
 
-Input: the current persistent world field and a hypothetical future robot
-action sequence. Output: the future persistent world-field rollout
-`Phi_(t+1:t+H)`.
+- `G`: metric geometry. LiDAR point clouds are the primary metric-geometry stream; RGB-D supplies complementary dense local geometry.
+- `Z`: world-aligned visual latent lifted from frozen DINOv3 RGB features.
+- `V`: observation and visibility state.
+- `A`: deterministic information age / memory freshness.
+
+`Phi_t` is the persistent internal world state. Pose does not constitute a second world representation: it aligns all observation streams in the shared world frame.
 
 ## Core method
 
-1. Frozen DINOv3 visual representation.
-2. Geometry-aware metric lifting.
-3. Persistent latent world field.
-4. Deterministic ego-motion transport.
-5. Learned action-conditioned field update/revelation.
-6. Autoregressive future rollout.
+1. RGB is encoded by frozen DINOv3 dense features.
+2. LiDAR-like points, RGB-D geometry, and visual features are lifted into a shared metric observation field `X_t` with pose.
+3. The preceding field is deterministically transported using the measured pose delta.
+4. A learned WorldFlow update fuses transported memory and the new multimodal observation field: `Phi_t = U_theta(T(Phi_(t-1), Delta p_t), X_t)`.
+5. Perception, world understanding, and navigation query the same `Phi_t`.
+
+## Simulator-to-robot modality contract
+
+Habitat-GS C1 generates RGB, depth, absolute pose, and `P_t^sim-lidar`: a deterministic LiDAR-like geometric observation constructed from simulator depth/geometry. C1 does not attempt an exact Livox scan pattern. The data interface preserves separate LiDAR, RGB-D, and visual branches so the real Ranger Mini stream can replace `P_t^sim-lidar` with `/livox/lidar` without redesigning the field pipeline.
+
+## Optional predictive extension
+
+Action-conditioned future rollout is an optional planning-query mode: `Phi_t + a_(t:t+H) -> Phi_hat_(t+1:t+H)`. It is not the current central scientific question, training requirement, or paper identity.
 
 ## Not the paper
 
-- Scalar trajectory scoring.
-- Human trajectory forecasting or autonomous driving.
+- A counterfactual-action benchmark paper.
+- Scalar trajectory scoring, human forecasting, autonomous driving, or manipulation.
 - Pure occupancy forecasting or visual video generation.
 - Habitat-GS itself.
 
-## Downstream task and final evidence
+## Final evidence
 
-The downstream task is indoor mobile-robot predictive navigation. Final paper
-evidence must cover a controlled Habitat-GS benchmark, unseen-scene prediction,
-counterfactual world imagination, closed-loop navigation, and Ranger Mini
-real-robot validation.
+The paper must demonstrate persistent multimodal state quality under viewpoint change, occlusion, and revisit; comparison against frame-only and memory baselines; navigation value from the resulting state; and Ranger Mini real-robot validation. Predictive rollout may be added only after this core evidence is established.

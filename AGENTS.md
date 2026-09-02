@@ -2,10 +2,13 @@
 
 ## Mission and authority
 
-WorldFlow studies action-conditioned persistent metric world-field evolution
-for indoor mobile-robot navigation. It is not autonomous driving, manipulation,
-human forecasting, generic occupancy prediction, video generation, or a
-Habitat-GS benchmark paper.
+WorldFlow studies persistent multimodal world fields for indoor mobile-robot
+perception and navigation. Its central object is a world-aligned internal state
+updated from RGB-D, LiDAR geometry, pose, and (when authorized) frozen visual
+features. Action-conditioned rollout is optional evidence, not the project
+identity. It is not autonomous driving, manipulation, human forecasting,
+generic occupancy prediction, video generation, or a Habitat-GS benchmark
+paper.
 
 Research authority is deliberately separated from implementation:
 
@@ -43,21 +46,21 @@ invent the next research phase.
 ## Representation and model boundary
 
 Physical field channels are `O` occupancy, `H` height, `V` visibility, and
-`A` information age. A future `Z` visual latent is permitted only when the
-model spec and active plan authorize learned-model work. DINOv3 is a frozen
-backbone, never the contribution.
+`A` information age; a future `Z` visual latent is permitted only when the
+model spec and active plan authorize learned-model work. LiDAR is a first-class
+metric-geometry stream, RGB-D is complementary dense geometry, and pose aligns
+all streams in the world frame. DINOv3 is frozen and never the contribution.
 
-WorldFlow predicts future world fields from a persistent current field and a
-hypothetical action sequence. It must not collapse into a scalar risk score or
-trajectory ranker. Deterministic SE(2) transport is the required physical
-baseline; learned updates model action-conditioned evolution/revelation.
+WorldFlow maintains `Phi_t` through deterministic pose transport and a learned
+multimodal observation update. It must not collapse into a scalar risk score or
+trajectory ranker. Future action rollout is an optional planning query only.
 
 ## Formal experiment contract
 
-Formal experiments require fixed splits, multiple starts and matched actions,
-per-horizon metrics, quantitative and qualitative comparisons, immutable run
-records, and reproducible config. Required baseline families: B0 transport,
-B1 direct neural field predictor, B2 RSSM-style latent predictor, and Ours.
+Formal experiments require fixed splits, sequential trajectories, quantitative
+and qualitative comparisons, immutable run records, and reproducible config.
+Required baseline families are M0 Frame-Only, M1 Geometric Memory, M2 ConvGRU
+Memory, and M3 WorldFlow.
 
 Use `python scripts/run_experiment.py` for every formal run. It records an
 immutable run manifest and updates `experiments/registry.yaml`; do not manually
