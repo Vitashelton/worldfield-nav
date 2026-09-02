@@ -1,0 +1,16 @@
+schema_version: 1
+experiment_id: B1
+phase: P1
+name: deterministic_episode_manifest
+benchmark_config: configs/benchmark/b1_pilot.yaml
+candidate_source: paper_assets/tables/b1_p0_revelation_candidates.csv
+selected_starts: one eligible start per selected scene
+branches: [straight, left, right, mixed_turn]
+clock:
+  gt_sample_hz: 10
+  gt_dt_s: 0.1
+  control_hz: 5
+  control_dt_s: 0.2
+  duration_s: 3.0
+  horizons_s: [0.5, 1.0, 2.0, 3.0]
+no_simulation: true

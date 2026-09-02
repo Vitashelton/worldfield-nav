@@ -23,7 +23,7 @@ preliminary:
 formal:
   B1:
     name: multiscene_counterfactual_benchmark
-    status: p0_completed_p1_not_authorized
+    status: p1_manifest_built_artifact_blocker
     scope: pilot_harness_only_no_model_training
     active_plan: docs/exec-plans/active/B1_paper_benchmark.md
     config: configs/benchmark/b1_pilot.yaml
@@ -37,7 +37,9 @@ formal:
     - experiments/runs/B1/20260902T082551Z/run.json
     - experiments/runs/B1/20260902T084833Z/run.json
     - experiments/runs/B1/20260902T091104Z/run.json
-    last_run: experiments/runs/B1/20260902T091104Z/run.json
+    - experiments/runs/B1/20260902T095920Z/run.json
+    - experiments/runs/B1/20260902T100418Z/run.json
+    last_run: experiments/runs/B1/20260902T100418Z/run.json
     p0_outputs:
       metrics: outputs/formal/B1/p0/metrics.json
       tables:
@@ -59,6 +61,20 @@ formal:
       passed: true
       eligible_corner_and_doorway: true
       all_contexts_covered: true
+    p1_manifest:
+      status: built_but_acceptance_blocked
+      config: configs/experiments/b1_p1_manifest.yaml
+      manifest: outputs/formal/B1/p1_manifest/manifest.json
+      repeat_manifest: outputs/formal/B1/p1_manifest_repeat/manifest.json
+      metrics: outputs/formal/B1/p1_manifest/metrics.json
+      episode_count: 40
+      unique_starts: 10
+      byte_equivalent_second_build: true
+      exact_horizon_clock: true
+      kinematic_relative_pose_integration: true
+      absolute_start_pose_available: false
+      OHVA_snapshots_available: false
+      blocker: P0 did not persist absolute poses or O/H/V/A arrays; no simulation rerun authorized
   B2:
     name: world_model_prediction
     status: blocked_by_B1_scale_up_gate
