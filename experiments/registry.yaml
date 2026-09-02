@@ -16,22 +16,45 @@ preliminary:
     status: completed
     output: outputs/exp003_transport_revelation
     accepted: true
-    limitation: >
-      Newly observed area was sparse in the current short trajectories.
+    limitation: 'Newly observed area was sparse in the current short trajectories.
       Mechanism supported, but insufficient as paper-level model evidence.
+
+      '
 formal:
   B1:
     name: multiscene_counterfactual_benchmark
-    status: planned
+    status: p0_completed_p1_not_authorized
     scope: pilot_harness_only_no_model_training
     active_plan: docs/exec-plans/active/B1_paper_benchmark.md
     config: configs/benchmark/b1_pilot.yaml
     model_baselines:
-      - M0-Transport
-      - M1-Direct
-      - M2-RSSM
-      - M3-WorldFlow
-    runs: []
+    - M0-Transport
+    - M1-Direct
+    - M2-RSSM
+    - M3-WorldFlow
+    runs:
+    - experiments/runs/B1/20260902T065535Z/run.json
+    - experiments/runs/B1/20260902T082551Z/run.json
+    - experiments/runs/B1/20260902T084833Z/run.json
+    - experiments/runs/B1/20260902T091104Z/run.json
+    last_run: experiments/runs/B1/20260902T091104Z/run.json
+    p0_outputs:
+      metrics: outputs/formal/B1/p0/metrics.json
+      tables:
+      - paper_assets/tables/b1_p0_revelation_candidates.csv
+      - paper_assets/tables/b1_p0_summary.csv
+      figures:
+      - paper_assets/figures/b1_p0_action_family_boxplot.png
+      - paper_assets/figures/b1_p0_revelation_cdf.png
+      - paper_assets/figures/b1_p0_revelation_distribution.png
+      - paper_assets/figures/b1_p0_split_overview.png
+      - paper_assets/figures/b1_p0_threshold_selection.png
+    p0_acceptance:
+      at_least_30_candidates_attempted_each_scene: true
+      all_candidates_have_four_branches: true
+      passed: true
+      eligible_corner_and_doorway: true
+      all_contexts_covered: true
   B2:
     name: world_model_prediction
     status: blocked_by_B1_scale_up_gate
@@ -54,9 +77,9 @@ gates:
   B1_to_B2_scale_up:
     status: blocked_by_B1
     required_evidence:
-      - revelation_distribution_and_frozen_threshold
-      - matched_action_duration_and_translation_budget
-      - required_paper_figures_and_tables
-      - measured_disk_budget
-      - measured_generation_throughput
+    - revelation_distribution_and_frozen_threshold
+    - matched_action_duration_and_translation_budget
+    - required_paper_figures_and_tables
+    - measured_disk_budget
+    - measured_generation_throughput
     allows: B2_scale_dataset_generation_only
