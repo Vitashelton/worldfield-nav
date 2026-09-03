@@ -1,0 +1,27 @@
+schema_version: 1
+benchmark_id: G1
+seed: 20260903
+backbone: hf_hub:timm/vit_small_patch16_dinov3.lvd1689m
+source: outputs/formal/C1/pilot
+audit_trajectories:
+  train: [interior_0405_840145_traj00, scene05_traj00]
+  validation: [scene04_traj00]
+  unseen: [scene56_traj00]
+pair_regimes:
+  small: [8, 12]
+  medium: [8, 35]
+  large: [8, 80]
+  revisit: [8, 23]
+geometry:
+  image_size: [192, 192]
+  depth_agreement_m: 0.12
+  world_residual_m: 0.08
+  max_correspondences_per_pair: 192
+  patch_stride: 16
+  hard_negative_min_world_distance_m: 0.50
+no_training: true
+no_full_dataset_extraction: true
+execution_gate:
+  requires_cuda_gpu: true
+  prohibit_cpu_fallback: true
+  prohibit_checkpoint_download_without_gpu: true

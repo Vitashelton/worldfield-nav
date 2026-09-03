@@ -11,4 +11,4 @@ dependencies = ["numpy", "PyYAML"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["world_field", "datasets", "models", "evaluation", "visualization"]
+packages = ["world_field", "datasets", "models", "evaluation", "visualization", "geoanchor"]

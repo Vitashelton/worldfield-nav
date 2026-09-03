@@ -2,46 +2,42 @@
 
 ## Working title
 
-**WorldFlow: Persistent Visual-Geometric World Fields for Indoor Robot Perception and Navigation**
+**GeoAnchor: LiDAR-Anchored Adaptation of Foundation Visual Features for
+Embodied Navigation**
 
 ## Scientific question
 
-Can an indoor robot use RGB-D, LiDAR geometry, pose, and frozen foundation visual features to maintain a world-aligned metric latent field over time, and can a motion-aware learned update make that state more stable and complete than frame-wise perception or naive memory under viewpoint change, occlusion, and revisit?
+Are frozen foundation visual features physically consistent enough for a moving
+robot under viewpoint change, occlusion, and revisit? If not, can metric
+geometry provide reliable physical-correspondence supervision for lightweight
+adaptation?
 
-## Central object
+## Modalities
 
-`Phi_t = [G_t, Z_t, V_t, A_t]`
+Simulation uses Habitat-GS RGB, depth, sim-LiDAR-like geometry, and absolute
+pose. The later robot platform is Ranger Mini 2.0 with D435i RGB-D, Mid-360S
+geometry, LIO pose, and Nav2. LLM/API task planning is a future system
+demonstration only, not a G1 component or core contribution.
 
-- `G`: metric geometry. LiDAR point clouds are the primary metric-geometry stream; RGB-D supplies complementary dense local geometry.
-- `Z`: world-aligned visual latent lifted from frozen DINOv3 RGB features.
-- `V`: observation and visibility state.
-- `A`: deterministic information age / memory freshness.
+## Current evidence rule
 
-`Phi_t` is the persistent internal world state. Pose does not constitute a second world representation: it aligns all observation streams in the shared world frame.
+G1 is problem validation, not an adapter claim. A cross-view positive pair
+means two image patches observe the same physical world surface, proven by
+depth, intrinsics, absolute pose, reprojection, visibility/occlusion tests,
+and bounded world-coordinate residual. Image appearance never creates a
+positive pair.
 
-## Core method
+## Go/no-go rule
 
-1. RGB is encoded by frozen DINOv3 dense features.
-2. LiDAR-like points, RGB-D geometry, and visual features are lifted into a shared metric observation field `X_t` with pose.
-3. The preceding field is deterministically transported using the measured pose delta.
-4. A learned WorldFlow update fuses transported memory and the new multimodal observation field: `Phi_t = U_theta(T(Phi_(t-1), Delta p_t), X_t)`.
-5. Perception, world understanding, and navigation query the same `Phi_t`.
-
-## Simulator-to-robot modality contract
-
-Habitat-GS C1 generates RGB, depth, absolute pose, and `P_t^sim-lidar`: a deterministic LiDAR-like geometric observation constructed from simulator depth/geometry. C1 does not attempt an exact Livox scan pattern. The data interface preserves separate LiDAR, RGB-D, and visual branches so the real Ranger Mini stream can replace `P_t^sim-lidar` with `/livox/lidar` without redesigning the field pipeline.
-
-## Optional predictive extension
-
-Action-conditioned future rollout is an optional planning-query mode: `Phi_t + a_(t:t+H) -> Phi_hat_(t+1:t+H)`. It is not the current central scientific question, training requirement, or paper identity.
+Adapter development is justified only when frozen DINOv3 has reproducible,
+multi-scene degradation on large-viewpoint or revisit pairs while geometric
+correspondence remains valid. Evidence includes at least one of: a >=10 point
+R@1 drop versus small-view pairs, >=0.10 positive-cosine drop, or substantial
+positive-negative margin collapse. Otherwise stop and report NO-GO.
 
 ## Not the paper
 
-- A counterfactual-action benchmark paper.
-- Scalar trajectory scoring, human forecasting, autonomous driving, or manipulation.
-- Pure occupancy forecasting or visual video generation.
-- Habitat-GS itself.
-
-## Final evidence
-
-The paper must demonstrate persistent multimodal state quality under viewpoint change, occlusion, and revisit; comparison against frame-only and memory baselines; navigation value from the resulting state; and Ranger Mini real-robot validation. Predictive rollout may be added only after this core evidence is established.
+- Persistent-world-field modeling, traditional mapping, or a DINOv3 paper.
+- End-to-end visual control, a new planner, Nav2 redesign, or LLM task
+  planning.
+- An adapter claimed before the frozen-feature audit demonstrates need.

@@ -1,86 +1,58 @@
-# WorldFlow Research Harness
+# GeoAnchor Research Harness
 
 ## Mission and authority
 
-WorldFlow studies persistent multimodal world fields for indoor mobile-robot
-perception and navigation. Its central object is a world-aligned internal state
-updated from RGB-D, LiDAR geometry, pose, and (when authorized) frozen visual
-features. Action-conditioned rollout is optional evidence, not the project
-identity. It is not autonomous driving, manipulation, human forecasting,
-generic occupancy prediction, video generation, or a Habitat-GS benchmark
-paper.
+This repository currently studies **GeoAnchor: LiDAR-Anchored Adaptation of
+Foundation Visual Features for Embodied Navigation**.
 
-Research authority is deliberately separated from implementation:
+The current question is whether frozen foundation visual features remain
+physically consistent for a moving robot under viewpoint change, occlusion,
+and revisit—and, only if they do not, whether metric geometry can supply
+reliable physical-correspondence supervision for lightweight adaptation.
 
-1. `docs/RESEARCH_CONTRACT.md` defines the scientific question and exclusions.
-2. `docs/MODEL_SPEC.md` defines the authorized model target.
-3. `docs/BENCHMARK_SPEC.md` defines data, splits, metrics, and baselines.
-4. Exactly one plan in `docs/exec-plans/active/` authorizes current work.
+Authority order:
 
-If these conflict, stop and report the conflict. Do not silently redesign the
-research or begin an adjacent phase.
+1. `docs/RESEARCH_CONTRACT.md`
+2. `docs/MODEL_SPEC.md`
+3. `docs/BENCHMARK_SPEC.md`
+4. Exactly one plan in `docs/exec-plans/active/`
 
-## Required task workflow
+Do not independently alter this direction. If documents conflict, stop and
+report the conflict.
 
-Before substantive work, read this file, the research contract, and the single
-active plan. Inspect relevant code, then take the smallest step that advances
-that plan. Run only `python scripts/sanity_check.py` as the default preflight.
+## Archived infrastructure
 
-When an active plan meets its acceptance criteria: save results, register the
-run, write its result note, move the plan to `completed/`, and stop. Never
-invent the next research phase.
+WorldFlow S0--S2, B1, C1, E0, C2, their outputs, paper assets, Habitat-GS
+assets, simulation locks, and model environment are retained preliminary
+infrastructure. Do not delete, regenerate, or reinterpret them as GeoAnchor
+paper evidence. In particular, do not continue archived E0/C2, download
+DINOv3 beyond the authorized public smoke, or train a WorldFlow model.
 
-## Runtime and safety constraints
+## G1 boundary
+
+G1 uses completed C1 RGB, depth, sim-LiDAR-like geometry, absolute pose, and
+known occlusion/revisit case only. It authorizes the DINOv3 two-image smoke and
+a small frozen-feature physical-correspondence audit. It does not authorize
+adapter training, full-dataset extraction, navigation, Nav2, real robot work,
+or LLM planning.
+
+Positive pairs are created exclusively by metric correspondence: back-project
+RGB patches with depth and pose, reproject into another frame, then validate
+in-frame bounds, depth/occlusion agreement, and world-coordinate residual.
+Never use image appearance to define a positive pair.
+
+## Runtime policy
 
 - Primary root: `/root/autodl-tmp/worldfield_nav`.
-- Habitat-GS, PyTorch, CUDA, and the current GPU setup are already verified.
-- Do not reinstall PyTorch/CUDA, recreate environments, broadly audit the
-  system, rebuild Habitat-GS without a concrete CUDA binary error, or rerun
-  S0--S2 unless explicitly requested.
-- Use error-driven debugging. Keep the 128x128 field and mixed precision by
-  default; a larger model is not evidence of better research.
-- Habitat-GS is the controllable data generator. Do not add Habitat-Lab,
-  dynamic avatars, GAMMA, unrelated datasets, or a new scene without an active
-  plan explicitly authorizing it.
+- Preserve the verified simulator and C1 output. Do not reinstall PyTorch/CUDA,
+  recreate environments, broadly audit, or rebuild Habitat-GS without a real
+  error.
+- DINOv3 is a frozen audit baseline in G1, not a claimed contribution.
+- Use `python scripts/run_experiment.py` for formal execution and register
+  outputs under `paper_assets/` and `experiments/registry.yaml`.
 
-## Immutable simulation environment
+## Done and reporting
 
-The verified simulation environment is immutable. Do not install
-foundation-model or training dependencies into it. In particular, do not run
-`pip install transformers`, `pip install -U numpy`, `pip install -U pillow`, or
-`pip install timm` in `/root/miniconda3` unless an active plan explicitly
-authorizes an environment migration. Foundation-model extraction, training, and
-evaluation belong in the isolated model environment on the data disk. Do not
-change C1 data or its completed records during environment work.
-
-## Representation and model boundary
-
-Physical field channels are `O` occupancy, `H` height, `V` visibility, and
-`A` information age; a future `Z` visual latent is permitted only when the
-model spec and active plan authorize learned-model work. LiDAR is a first-class
-metric-geometry stream, RGB-D is complementary dense geometry, and pose aligns
-all streams in the world frame. DINOv3 is frozen and never the contribution.
-
-WorldFlow maintains `Phi_t` through deterministic pose transport and a learned
-multimodal observation update. It must not collapse into a scalar risk score or
-trajectory ranker. Future action rollout is an optional planning query only.
-
-## Formal experiment contract
-
-Formal experiments require fixed splits, sequential trajectories, quantitative
-and qualitative comparisons, immutable run records, and reproducible config.
-Required baseline families are M0 Frame-Only, M1 Geometric Memory, M2 ConvGRU
-Memory, and M3 WorldFlow.
-
-Use `python scripts/run_experiment.py` for every formal run. It records an
-immutable run manifest and updates `experiments/registry.yaml`; do not manually
-overwrite a formal result. Store paper-quality figures/videos/tables under
-`paper_assets/`, not just debug plots under `outputs/`.
-
-## Definition of done and reporting
-
-A task is done only when code runs, required metrics and paper assets exist,
-the exact config and run status are registered, and limitations are written.
-Report concisely: execution, numbers, output paths, limitations, and whether
-acceptance criteria passed. Do not narrate installation or propose new research
-unless explicitly asked.
+Complete only the active plan's acceptance criteria, save its results, update
+the registry, archive the plan, and stop. Reports state numerical evidence,
+paths, limitations, and the explicit GO/NO-GO decision.

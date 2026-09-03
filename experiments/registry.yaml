@@ -1,73 +1,38 @@
 schema_version: 1
-project: WorldFlow
-preliminary:
-  S0:
-    name: persistent_world_field
-    status: completed
+project: GeoAnchor
+preliminary_infrastructure:
+  WorldFlow_S0:
+    status: archived_after_research_pivot
     output: outputs/exp001
-    accepted: true
-  S1:
-    name: counterfactual_ego_rollout
-    status: completed
+  WorldFlow_S1:
+    status: archived_after_research_pivot
     output: outputs/exp002_counterfactual_ego_flow
-    accepted: true
-  S2:
-    name: transport_revelation
-    status: completed
+  WorldFlow_S2:
+    status: archived_after_research_pivot
     output: outputs/exp003_transport_revelation
-    accepted: true
-    limitation: Newly observed area was sparse in the short trajectories; this is
-      preliminary mechanism evidence only.
-  B1:
-    name: multiscene_counterfactual_benchmark
-    status: archived_preliminary_validation
-    archived_plan: docs/exec-plans/completed/preliminary/B1_counterfactual_benchmark.md
-    retained_outputs:
-    - outputs/formal/B1
-    - paper_assets/figures/b1_p0_*.png
-    - paper_assets/tables/b1_p0_*.csv
-    reason: Counterfactual rollout is now an optional WorldFlow capability, not the
-      paper identity.
-    runs:
-    - experiments/runs/B1/20260902T065535Z/run.json
-    - experiments/runs/B1/20260902T082551Z/run.json
-    - experiments/runs/B1/20260902T084833Z/run.json
-    - experiments/runs/B1/20260902T091104Z/run.json
-    - experiments/runs/B1/20260902T095920Z/run.json
-    - experiments/runs/B1/20260902T100418Z/run.json
-formal:
-  C1:
-    name: sequential_multimodal_worldfield_dataset_pilot
-    status: completed
-    completed_plan: docs/exec-plans/completed/C1_sequential_worldfield_dataset.md
-    result_note: docs/results/C1_SEQUENTIAL_WORLDFIELD_DATASET.md
-    accepted: true
-    config: configs/benchmark/c1_sequential_worldfield.yaml
+  WorldFlow_B1:
+    status: archived_after_research_pivot
+    output: outputs/formal/B1
+  WorldFlow_C1:
+    status: archived_after_research_pivot
     output: outputs/formal/C1/pilot
-    metrics: outputs/formal/C1/pilot/metrics.json
-    model_baselines:
-    - M0-Frame-Only
-    - M1-Geometric-Memory
-    - M2-ConvGRU-Memory
-    - M3-WorldFlow
-    runs:
-    - experiments/runs/C1/20260902T104146Z/run.json
-    - experiments/runs/C1/20260903T012656Z/run.json
-    last_run: experiments/runs/C1/20260903T012656Z/run.json
-  C2:
-    name: multimodal_latent_worldfield
-    status: paused_for_environment_isolation
-    paused_plan: docs/exec-plans/paused/C2_multimodal_latent_worldfield.md
-    pause_reason: simulation_model_environment_isolation
-    config: configs/benchmark/c2_multimodal_latent_worldfield.yaml
+    retained_value: reusable RGB/depth/sim-LiDAR-like geometry/pose infrastructure
+  WorldFlow_E0:
+    status: archived_after_research_pivot
+    archived_plan: docs/exec-plans/completed/preliminary/E0_environment_isolation.md
+  WorldFlow_C2:
+    status: archived_after_research_pivot
+    archived_plan: docs/exec-plans/completed/preliminary/C2_multimodal_latent_worldfield.md
+  reason: persistent multimodal field modeling is retained as preliminary infrastructure but is no longer the paper identity.
+formal:
+  G1:
+    name: crossview_foundation_feature_audit
+    status: blocked_waiting_for_gpu
+    active_plan: docs/exec-plans/active/G1_crossview_foundation_feature_audit.md
+    config: configs/benchmark/g1_crossview_feature_audit.yaml
     source: outputs/formal/C1/pilot
-    model_baselines:
-    - M0-Frame-Only
-    - M1-Geometric-Memory
-    - M2-ConvGRU-Memory
-    - M3-WorldFlow
+    execution_gate: cuda_gpu_required_no_cpu_fallback
     runs: []
-future_optional:
-  action_conditioned_rollout:
-    status: optional_not_active
-    role: planning_query_mode_after_persistent_state_evidence
+future:
+  geoanchor_adapter:
+    status: blocked_by_G1_go_decision
