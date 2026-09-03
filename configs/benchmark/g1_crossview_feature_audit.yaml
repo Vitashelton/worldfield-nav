@@ -8,9 +8,10 @@ audit_trajectories:
   validation: [scene04_traj00]
   unseen: [scene56_traj00]
 pair_regimes:
-  small: [8, 12]
-  medium: [8, 35]
-  large: [8, 80]
+  small: [0, 12]
+  medium: [0, 45]
+  large: [0, 60]
+  occluded: [8, 15]
   revisit: [8, 23]
 geometry:
   image_size: [192, 192]

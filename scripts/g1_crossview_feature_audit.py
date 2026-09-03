@@ -26,21 +26,26 @@ def load_config(path): return yaml.safe_load(path.read_text())
 
 
 def pairs():
-    # Small representative slice only: train/validation/unseen plus known revisit.
+    # Fixed physical-motion regimes, selected by a geometry-only preflight.  All
+    # three split roles retain overlap at 0.42 m / 0 deg (small), 1.56 m / 30 deg
+    # (medium), and ~1.8 m / 75 deg (large), respectively.
     return [
-        ("interior_0405_840145_traj00", 8, 12, "train", "small"),
-        ("interior_0405_840145_traj00", 8, 35, "train", "medium"),
-        ("interior_0405_840145_traj00", 8, 80, "train", "large"),
+        ("interior_0405_840145_traj00", 0, 12, "train", "small"),
+        ("interior_0405_840145_traj00", 0, 45, "train", "medium"),
+        ("interior_0405_840145_traj00", 0, 60, "train", "large"),
+        # The known visible -> occluded -> revisit sequence is retained
+        # explicitly.  The occluded pair may legitimately yield no positives.
+        ("interior_0405_840145_traj00", 8, 15, "train", "occluded"),
         ("interior_0405_840145_traj00", 8, 23, "train", "revisit"),
         ("scene05_traj00", 0, 12, "train", "small"),
         ("scene05_traj00", 0, 45, "train", "medium"),
-        ("scene05_traj00", 0, 90, "train", "large"),
+        ("scene05_traj00", 0, 60, "train", "large"),
         ("scene04_traj00", 0, 12, "validation", "small"),
         ("scene04_traj00", 0, 45, "validation", "medium"),
-        ("scene04_traj00", 0, 90, "validation", "large"),
+        ("scene04_traj00", 0, 60, "validation", "large"),
         ("scene56_traj00", 0, 12, "unseen", "small"),
         ("scene56_traj00", 0, 45, "unseen", "medium"),
-        ("scene56_traj00", 0, 90, "unseen", "large"),
+        ("scene56_traj00", 0, 60, "unseen", "large"),
     ]
 
 
@@ -81,7 +86,7 @@ def main():
     figures, tables = ROOT / "paper_assets/figures", ROOT / "paper_assets/tables"; figures.mkdir(parents=True, exist_ok=True); tables.mkdir(parents=True, exist_ok=True)
     model = timm.create_model(MODEL, pretrained=True).cuda().eval(); model_cfg = resolve_model_data_config(model)
     grid = int(model_cfg["input_size"][-1] // 16)
-    all_rows, exemplars = [], []
+    all_rows, exemplars, pair_counts = [], [], {}
     started = time.perf_counter()
     for traj, a, b, split, regime in pairs():
         source = ROOT / "outputs/formal/C1/pilot/trajectories" / traj / "sequence.npz"
@@ -98,6 +103,7 @@ def main():
             )
         corr = mine_correspondences(depth_a, c2w_a, depth_b, c2w_b, grid, grid, cfg["geometry"]["depth_agreement_m"], cfg["geometry"]["world_residual_m"], lidar_b, count_b)
         corr = corr[:cfg["geometry"]["max_correspondences_per_pair"]]
+        pair_counts[f"{traj}:{a}->{b}:{regime}"] = len(corr)
         for c in corr:
             similarities = feats[0, c.source_patch] @ feats[1].T
             order = np.argsort(-similarities); rank = int(np.where(order == c.target_patch)[0][0])
@@ -129,7 +135,7 @@ def main():
     fig, ax = plt.subplots(figsize=(8, 4)); ax.plot(labels, [by_regime[x]["positive_similarity"] for x in labels], "o-", label="same physical surface"); ax.plot(labels, [by_regime[x]["negative_similarity"] for x in labels], "o-", label="hard negative"); ax.set_ylabel("cosine similarity"); ax.set_title("Frozen DINOv3 physical consistency vs viewpoint"); ax.legend(); fig.tight_layout(); fig.savefig(figures / "g1_dinov3_viewpoint_degradation.png", dpi=180); plt.close(fig)
     revisit = [x for x in exemplars if x[3] == "revisit"] or exemplars[:1]
     fig, axes = plt.subplots(1, 2, figsize=(9, 4)); ex = revisit[0]; axes[0].imshow(ex[4]); axes[0].scatter(*ex[6].source_uv, s=80, facecolors="none", edgecolors="red", linewidths=2); axes[0].set_title("visible: frame 8"); axes[1].imshow(ex[5]); axes[1].scatter(*ex[6].target_uv, s=80, facecolors="none", edgecolors="red", linewidths=2); axes[1].set_title(f"revisit: frame {ex[2]}"); [ax.axis("off") for ax in axes]; fig.tight_layout(); fig.savefig(figures / "g1_revisit_failure.png", dpi=180); plt.close(fig)
-    result = {"experiment": "G1 frozen DINOv3 physical correspondence audit", "model": MODEL, "audit_pairs": len(pairs()), "valid_correspondences": len(all_rows), "geometry": {"depth_residual_m_mean": float(np.mean([r["depth_residual_m"] for r in all_rows])), "world_residual_m_mean": float(np.mean([r["world_residual_m"] for r in all_rows])), "lidar_residual_m_mean": float(np.mean([r["lidar_residual_m"] for r in all_rows if r["lidar_residual_m"] >= 0]))}, "by_viewpoint": by_regime, "by_split": by_split, "elapsed_seconds": time.perf_counter() - started, "go_recommendation": "GO" if degradation else "NO-GO", "go_rationale": "preregistered large-vs-small degradation met" if degradation else "preregistered large-vs-small degradation not met", "assets": ["paper_assets/figures/g1_crossview_correspondence.png", "paper_assets/figures/g1_dinov3_viewpoint_degradation.png", "paper_assets/figures/g1_revisit_failure.png", "paper_assets/tables/g1_dinov3_baseline.csv"]}
+    result = {"experiment": "G1 frozen DINOv3 physical correspondence audit", "model": MODEL, "audit_pairs": len(pairs()), "valid_correspondences": len(all_rows), "geometry": {"depth_residual_m_mean": float(np.mean([r["depth_residual_m"] for r in all_rows])), "world_residual_m_mean": float(np.mean([r["world_residual_m"] for r in all_rows])), "lidar_residual_m_mean": float(np.mean([r["lidar_residual_m"] for r in all_rows if r["lidar_residual_m"] >= 0]))}, "pair_valid_correspondence_counts": pair_counts, "by_viewpoint": by_regime, "by_split": by_split, "elapsed_seconds": time.perf_counter() - started, "go_recommendation": "GO" if degradation else "NO-GO", "go_rationale": "preregistered large-vs-small degradation met" if degradation else "preregistered large-vs-small degradation not met", "assets": ["paper_assets/figures/g1_crossview_correspondence.png", "paper_assets/figures/g1_dinov3_viewpoint_degradation.png", "paper_assets/figures/g1_revisit_failure.png", "paper_assets/tables/g1_dinov3_baseline.csv"]}
     (out / "metrics.json").write_text(json.dumps(result, indent=2) + "\n"); print(json.dumps(result, indent=2))
 
 
