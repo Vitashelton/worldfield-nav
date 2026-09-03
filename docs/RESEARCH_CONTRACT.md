@@ -2,7 +2,7 @@
 
 ## Working title
 
-**WorldFlow: Persistent Multimodal World Models for Indoor Robot Perception and Navigation**
+**WorldFlow: Persistent Visual-Geometric World Fields for Indoor Robot Perception and Navigation**
 
 ## Scientific question
 

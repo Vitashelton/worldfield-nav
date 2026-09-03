@@ -43,6 +43,16 @@ invent the next research phase.
   dynamic avatars, GAMMA, unrelated datasets, or a new scene without an active
   plan explicitly authorizing it.
 
+## Immutable simulation environment
+
+The verified simulation environment is immutable. Do not install
+foundation-model or training dependencies into it. In particular, do not run
+`pip install transformers`, `pip install -U numpy`, `pip install -U pillow`, or
+`pip install timm` in `/root/miniconda3` unless an active plan explicitly
+authorizes an environment migration. Foundation-model extraction, training, and
+evaluation belong in the isolated model environment on the data disk. Do not
+change C1 data or its completed records during environment work.
+
 ## Representation and model boundary
 
 Physical field channels are `O` occupancy, `H` height, `V` visibility, and

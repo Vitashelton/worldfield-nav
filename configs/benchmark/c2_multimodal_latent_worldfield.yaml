@@ -1,0 +1,31 @@
+schema_version: 1
+benchmark_id: C2
+status: active
+source:
+  c1_root: outputs/formal/C1/pilot
+  frame_count: 4500
+  trajectory_count: 30
+field:
+  grid_shape: [128, 128]
+  extent_m: [10.0, 10.0]
+  cell_m: 0.078125
+visual:
+  backbone: facebook/dinov3-vits16-pretrain-lvd1689m
+  revision: main
+  input_resolution: 224
+  patch_size: 16
+  projected_channels: 32
+  projection: fixed_incremental_pca
+  raw_feature_storage: forbidden
+  frozen: true
+lifting:
+  depth_source: C1 depth
+  pose_source: C1 absolute sensor_pose_c2w
+  causal: true
+storage:
+  root: outputs/formal/C2/pilot
+  resumable: true
+outputs:
+  figures_root: paper_assets/figures
+  videos_root: paper_assets/videos
+known_case:

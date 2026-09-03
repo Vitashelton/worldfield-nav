@@ -21,7 +21,7 @@ class SequentialWorldFieldDataset(Dataset[dict[str, Any]]):
         self.root = Path(root)
         self.items: list[tuple[Path, int, dict[str, Any]]] = []
         for marker in sorted(self.root.glob("trajectories/*/complete.json")):
-            metadata = json.loads(marker.read_text())
+            metadata = json.loads((marker.parent / "metadata.json").read_text())
             sequence = marker.parent / "sequence.npz"
             if not sequence.is_file():
                 raise FileNotFoundError(f"Completion marker without trajectory data: {marker}")

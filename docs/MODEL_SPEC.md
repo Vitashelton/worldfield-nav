@@ -2,13 +2,13 @@
 
 ## Status
 
-This is the target model contract. C1 authorizes sequential RGB-D/pose/sim-LiDAR data generation only; it does not authorize DINOv3 extraction, learned-model training, real LiDAR acquisition, or navigation execution.
+This is the target model contract. C2 authorizes frozen DINOv3 extraction, fixed projection, deterministic visual lifting, and representation diagnostics on completed C1 data. It does not authorize learned-model training, real LiDAR acquisition, or navigation execution.
 
 ## Persistent multimodal field
 
 The field is world-aligned on Habitat world X-Z; Habitat world Y is height. The initial local crop is 128x128 over 10m x 10m (0.078125m/cell):
 
-`Phi_t = [G_t, Z_t, V_t, A_t]`
+`Phi_t = [G_lidar, G_rgbd, Z_visual, V, A]`
 
 - `G_t`: metric geometry. The LiDAR branch is primary; RGB-D provides complementary dense local geometry.
 - `Z_t`: frozen-DINOv3 visual features lifted with RGB-D and pose into world field cells. It is absent from C1 feature extraction.
@@ -16,6 +16,14 @@ The field is world-aligned on Habitat world X-Z; Habitat world Y is height. The 
 - `A_t`: deterministic age since last observation. It is updated by time and visibility events, not a principal neural prediction target.
 
 Every crop records its world origin. The crop may follow the robot, but cell coordinates retain world correspondence through that origin.
+
+## C2 field instantiation
+
+`G_lidar` and `G_rgbd` remain separate metric-geometry tensors. `Z_visual` is
+a frozen DINOv3 dense feature after one dataset-level fixed projection and
+causal depth-plus-pose world lifting. `V` and `A` retain their C1 definitions.
+C2 adds no learned fusion: its persistent visual state is deterministic
+transport-and-accumulation evidence for the later learned update stage.
 
 ## Observation branches and update graph
 

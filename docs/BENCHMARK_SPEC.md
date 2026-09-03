@@ -24,6 +24,12 @@ Every frame stores timestamp, absolute robot pose, RGB data or reproducible refe
 
 The causal field at `t` fuses observations up to and including `t`; it is the only field an online method may use. The oracle field is an offline fusion of the complete trajectory and serves only as a completeness/reference target. The schema, metadata, and evaluation code must make this separation explicit.
 
+## C2 representation stage
+
+C2 operates only on completed C1 trajectories. It adds a frozen DINOv3 visual
+latent field, evaluates cross-view physical-cell consistency and geometry
+complementarity, and does not train a neural fusion/update model.
+
 ## Future formal model evaluation
 
 Once a learned stage is authorized, compare M0 Frame-Only, M1 Geometric Memory, M2 ConvGRU Memory, and M3 WorldFlow. Evaluate geometry completeness, temporal stability/revisit consistency, visibility-aware state quality, cross-modal ablations, and navigation value by split. Action-conditioned rollout is optional evidence, not a required benchmark axis.
