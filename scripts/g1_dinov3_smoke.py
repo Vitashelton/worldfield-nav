@@ -40,10 +40,12 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     source = ROOT / "outputs/formal/C1/pilot/trajectories" / args.trajectory / "sequence.npz"
     with np.load(source, allow_pickle=False) as data:
-        images = [Image.fromarray(data["rgb"][frame]).resize((224, 224), Image.Resampling.BICUBIC) for frame in args.frames]
+        rgb_frames = [data["rgb"][frame].copy() for frame in args.frames]
     torch.cuda.reset_peak_memory_stats()
     model = timm.create_model(MODEL_NAME, pretrained=True).cuda().eval()
     cfg = resolve_model_data_config(model)
+    image_h, image_w = cfg["input_size"][-2:]
+    images = [Image.fromarray(rgb).resize((image_w, image_h), Image.Resampling.BICUBIC) for rgb in rgb_frames]
     mean = torch.tensor(cfg["mean"], device="cuda").view(1, 3, 1, 1)
     std = torch.tensor(cfg["std"], device="cuda").view(1, 3, 1, 1)
     batch = torch.from_numpy(np.stack([np.asarray(image) for image in images])).permute(0, 3, 1, 2).float().div(255).cuda()

@@ -27,7 +27,7 @@ preliminary_infrastructure:
 formal:
   G1:
     name: crossview_foundation_feature_audit
-    status: blocked_waiting_for_gpu
+    status: active
     active_plan: docs/exec-plans/active/G1_crossview_foundation_feature_audit.md
     config: configs/benchmark/g1_crossview_feature_audit.yaml
     source: outputs/formal/C1/pilot
