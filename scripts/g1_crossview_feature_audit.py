@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import ConnectionPatch
 import numpy as np
 from PIL import Image
 import torch, timm, yaml
@@ -130,6 +131,11 @@ def main():
     for row, (_, a, b, regime, ra, rb, c) in zip(axes, exemplars):
         for ax, image, uv, title in ((row[0], ra, c.source_uv, f"source ({regime})"), (row[1], rb, c.target_uv, "metric reprojection")):
             ax.imshow(image); ax.scatter(*uv, s=70, facecolors="none", edgecolors="red", linewidths=2); ax.set_title(title); ax.axis("off")
+        fig.add_artist(ConnectionPatch(
+            xyA=c.source_uv, coordsA=row[0].transData,
+            xyB=c.target_uv, coordsB=row[1].transData,
+            color="red", linewidth=1.4, alpha=.85,
+        ))
     fig.tight_layout(); fig.savefig(figures / "g1_crossview_correspondence.png", dpi=180); plt.close(fig)
     labels = [x for x in ("small", "medium", "large", "revisit") if x in by_regime]
     fig, ax = plt.subplots(figsize=(8, 4)); ax.plot(labels, [by_regime[x]["positive_similarity"] for x in labels], "o-", label="same physical surface"); ax.plot(labels, [by_regime[x]["negative_similarity"] for x in labels], "o-", label="hard negative"); ax.set_ylabel("cosine similarity"); ax.set_title("Frozen DINOv3 physical consistency vs viewpoint"); ax.legend(); fig.tight_layout(); fig.savefig(figures / "g1_dinov3_viewpoint_degradation.png", dpi=180); plt.close(fig)
