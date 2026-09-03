@@ -23,28 +23,24 @@ preliminary_infrastructure:
   WorldFlow_C2:
     status: archived_after_research_pivot
     archived_plan: docs/exec-plans/completed/preliminary/C2_multimodal_latent_worldfield.md
-  reason: persistent multimodal field modeling is retained as preliminary infrastructure but is no longer the paper identity.
+  reason: persistent multimodal field modeling is retained as preliminary infrastructure
+    but is no longer the paper identity.
 formal:
   G1:
     name: crossview_foundation_feature_audit
-    status: completed_go
-    completed_plan: docs/exec-plans/completed/G1_crossview_foundation_feature_audit.md
+    status: active
+    active_plan: docs/exec-plans/active/G1_crossview_foundation_feature_audit.md
     config: configs/benchmark/g1_crossview_feature_audit.yaml
     source: outputs/formal/C1/pilot
     execution_gate: cuda_gpu_required_no_cpu_fallback
     runs:
-      - experiments/runs/G1/20260903T111320Z/run.json
-      - experiments/runs/G1/20260903T112107Z/run.json
-      - experiments/runs/G1/20260903T112144Z/run.json
-      - experiments/runs/G1/20260903T112749Z/run.json
-      - experiments/runs/G1/20260903T113109Z/run.json
-    result: docs/results/G1_CROSSVIEW_FOUNDATION_FEATURE_AUDIT.md
-    decision: GO
-    decision_rationale: >
-      Across geometry-validated small and large view pairs, R@1 decreased
-      from 0.461 to 0.056 and positive cosine similarity from 0.957 to 0.797.
-      Large-view correspondences occurred in train, validation, and unseen scenes.
+    - experiments/runs/G1/20260903T111320Z/run.json
+    - experiments/runs/G1/20260903T112107Z/run.json
+    - experiments/runs/G1/20260903T112144Z/run.json
+    - experiments/runs/G1/20260903T112749Z/run.json
+    - experiments/runs/G1/20260903T113109Z/run.json
+    last_run: experiments/runs/G1/20260903T113109Z/run.json
+    last_run: experiments/runs/G1/20260903T113109Z/run.json
 future:
   geoanchor_adapter:
-    status: eligible_after_G1_go
-    authorization: requires_an_explicit_new_active_plan
+    status: blocked_by_G1_go_decision
