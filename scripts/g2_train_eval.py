@@ -11,14 +11,7 @@ def read(n):return [json.loads(x) for x in (ROOT/'outputs/formal/G2/corresponden
 def main():
  p=argparse.ArgumentParser();p.add_argument('--seed',type=int,default=0);p.add_argument('--smoke',action='store_true');p.add_argument('--output',default='outputs/formal/G2/train_eval');a=p.parse_args();cfg=yaml.safe_load((ROOT/'configs/benchmark/g2_g3_metricanchor.yaml').read_text());torch.manual_seed(a.seed);np.random.seed(a.seed);dev='cuda'
  files=sorted((ROOT/'outputs/formal/G2/feature_cache').glob('*_traj*.npz')); fmap={f.stem:i for i,f in enumerate(files)}; X=torch.from_numpy(np.concatenate([np.load(f)['features'].astype('float32') for f in files])).to(dev);X=F.normalize(X,dim=-1);FNUM=150
- candidate_world=np.zeros((len(files)*FNUM,256,3),np.float32);candidate_valid=np.zeros((len(files)*FNUM,256),bool)
- for fi,f in enumerate(files):
-  with np.load(ROOT/'outputs/formal/C1/pilot/trajectories'/f'{f.stem}'/'sequence.npz',allow_pickle=False) as d:
-   for ti in range(FNUM):
-    for patch in range(256):
-     u,v=patch_center(patch,16,16); z=depth_at(d['depth'][ti],u,v)
-     if z is not None: candidate_world[fi*FNUM+ti,patch]=backproject_pixel(z[0],z[1],z[2],d['sensor_pose_c2w'][ti],intrinsics());candidate_valid[fi*FNUM+ti,patch]=True
- candidate_world=torch.from_numpy(candidate_world).to(dev);candidate_valid=torch.from_numpy(candidate_valid).to(dev)
+ geometry_cache=ROOT/'outputs/formal/G2/geometry_cache'; candidate_world=torch.load(geometry_cache/'candidate_world_xyz.pt',map_location=dev); candidate_valid=torch.load(geometry_cache/'candidate_world_valid.pt',map_location=dev)
  def pack(rs):return torch.tensor([[fmap[r['trajectory_id']]*FNUM+r['source_frame'],fmap[r['trajectory_id']]*FNUM+r['target_frame'],r['source_patch'],r['target_patch'],r['hard_negative_patch']] for r in rs],device=dev,dtype=torch.long)
  train_rows,val_rows,unseen_rows=read('train.jsonl'),read('val.jsonl'),read('unseen_test.jsonl');tr,va,un=pack(train_rows),pack(val_rows),pack(unseen_rows);gt_va=torch.tensor([r['world_xyz'] for r in val_rows],device=dev);gt_un=torch.tensor([r['world_xyz'] for r in unseen_rows],device=dev);tracks=read('tracks.jsonl');track_t=torch.tensor([[fmap[r['trajectory_id']]*FNUM+r['frames'][k] for k in range(3)]+r['patches'] for r in tracks],device=dev,dtype=torch.long);bs=int(cfg['adapter']['batch_size']);epochs=1 if a.smoke else int(cfg['adapter']['epochs']);out=ROOT/a.output;out.mkdir(parents=True,exist_ok=True);result={'batch_size':bs,'track_loss_nonzero':False,'methods':{}}
  for method in ['M1','M2','M3']:
