@@ -1,0 +1,28 @@
+schema_version: 1
+seed: 20260904
+backbone: hf_hub:timm/vit_small_patch16_dinov3.lvd1689m
+input_resolution: 256
+token_grid: [16, 16]
+feature_dim: 384
+splits:
+  train: [scene01, scene02, scene03, scene09, interior_0405_840145]
+  validation: [scene04, scene05]
+  unseen: [scene56, scene57, scene58]
+geometry:
+  depth_agreement_m: 0.12
+  world_residual_m: 0.08
+  hard_negative_min_world_distance_m: 0.50
+  pair_offsets: [5, 15, 30, 60]
+  max_pairs_per_frame_pair: 64
+adapter:
+  bottleneck_dim: 128
+  epochs: 12
+  batch_size: 256
+  lr: 0.001
+  temperature: 0.07
+  preservation_weight: 0.10
+  track_weight: 0.20
+g3:
+  episodes_per_split: 50
+  reference_stride: 10
+  success_thresholds_m: [0.5, 1.0]

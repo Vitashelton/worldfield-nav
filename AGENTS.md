@@ -1,14 +1,14 @@
-# GeoAnchor Research Harness
+# MetricAnchor Research Harness
 
 ## Mission and authority
 
-This repository currently studies **GeoAnchor: LiDAR-Anchored Adaptation of
-Foundation Visual Features for Embodied Navigation**.
+This repository studies **MetricAnchor: Geometry-Anchored Foundation Visual
+Features for Viewpoint-Robust Indoor Robot Navigation**.
 
-The current question is whether frozen foundation visual features remain
-physically consistent for a moving robot under viewpoint change, occlusion,
-and revisit—and, only if they do not, whether metric geometry can supply
-reliable physical-correspondence supervision for lightweight adaptation.
+The central question is whether frozen foundation visual descriptors preserve
+physical identity under robot motion, occlusion, revisit, and repeated indoor
+structure, and whether metric geometry can supervise a small adapter that
+improves place localization and image-goal navigation.
 
 Authority order:
 
@@ -17,42 +17,43 @@ Authority order:
 3. `docs/BENCHMARK_SPEC.md`
 4. Exactly one plan in `docs/exec-plans/active/`
 
-Do not independently alter this direction. If documents conflict, stop and
-report the conflict.
+Never change the paper identity or create an adjacent research phase without
+an explicit active plan.
 
-## Archived infrastructure
+## Retained infrastructure
 
-WorldFlow S0--S2, B1, C1, E0, C2, their outputs, paper assets, Habitat-GS
-assets, simulation locks, and model environment are retained preliminary
-infrastructure. Do not delete, regenerate, or reinterpret them as GeoAnchor
-paper evidence. In particular, do not continue archived E0/C2, download
-DINOv3 beyond the authorized public smoke, or train a WorldFlow model.
+WorldFlow S0--S2, B1, C1, E0, C2, G1, their outputs, Habitat-GS assets, and
+the verified Python environments are retained. Never delete/regenerate C1 or
+reinterpret WorldFlow as MetricAnchor evidence. C1 is reusable simulation
+infrastructure only.
 
-## G1 boundary
+## MetricAnchor boundary
 
-G1 uses completed C1 RGB, depth, sim-LiDAR-like geometry, absolute pose, and
-known occlusion/revisit case only. It authorizes the DINOv3 two-image smoke and
-a small frozen-feature physical-correspondence audit. It does not authorize
-adapter training, full-dataset extraction, navigation, Nav2, real robot work,
-or LLM planning.
+The frozen backbone is `timm/vit_small_patch16_dinov3.lvd1689m`. Geometry,
+not appearance, creates positive pairs: depth back-projection, intrinsics,
+absolute pose, reprojection, depth/occlusion validation, and world residual.
+Sim-LiDAR-like points are an additional geometry validation signal; they are
+not a simulation claim for a physical Livox sensor.
 
-Positive pairs are created exclusively by metric correspondence: back-project
-RGB patches with depth and pose, reproject into another frame, then validate
-in-frame bounds, depth/occlusion agreement, and world-coordinate residual.
-Never use image appearance to define a positive pair.
+The only authorized learned component is the lightweight residual adapter
+specified in `docs/MODEL_SPEC.md`. Do not add a transformer, attention, LoRA,
+second backbone, backbone fine-tuning, ConvGRU, diffusion, ROS2, Nav2 real
+robot control, or an LLM/API.
 
-## Runtime policy
+## Runtime and assets
 
 - Primary root: `/root/autodl-tmp/worldfield_nav`.
-- Preserve the verified simulator and C1 output. Do not reinstall PyTorch/CUDA,
-  recreate environments, broadly audit, or rebuild Habitat-GS without a real
-  error.
-- DINOv3 is a frozen audit baseline in G1, not a claimed contribution.
-- Use `python scripts/run_experiment.py` for formal execution and register
-  outputs under `paper_assets/` and `experiments/registry.yaml`.
+- Do not reinstall CUDA/PyTorch or rebuild Habitat-GS without a real binary
+  failure. Use the existing `worldfield_model` environment.
+- Formal runs use `python scripts/run_experiment.py`, append-only outputs, and
+  `experiments/registry.yaml` run records.
+- Feature extraction is performed once and cached in FP16; no adapter script
+  may re-forward DINOv3.
+- The deployment package may not import `habitat_sim`.
 
 ## Done and reporting
 
-Complete only the active plan's acceptance criteria, save its results, update
-the registry, archive the plan, and stop. Reports state numerical evidence,
-paths, limitations, and the explicit GO/NO-GO decision.
+A task is complete only when code, numeric evidence, paper assets, a result
+note, registry entry, and any requested deployment interface are present.
+Archive the active plan and stop. Final reporting is concise: result, numbers,
+paths, limits, and GO/NO-GO.

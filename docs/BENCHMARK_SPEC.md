@@ -1,34 +1,36 @@
-# GeoAnchor Benchmark Specification
+# MetricAnchor Benchmark Specification
 
-## G1 audit set
+## Frozen split
 
-G1 uses only a small representative subset of completed C1 trajectories from
-train, validation, and unseen scenes. It includes small, medium, and large
-viewpoint change; translation; rotation; doorway/corner views; and the known
-`interior_0405_840145_traj00` frame 8 -> 15 -> 23 occlusion/revisit case.
+| Role | Scenes |
+| --- | --- |
+| Train | scene01, scene02, scene03, scene09, interior_0405_840145 |
+| Validation | scene04, scene05 |
+| Unseen test | scene56, scene57, scene58 |
 
-No semantic labels are required and no full-dataset feature extraction is
-authorized.
+Only completed C1 trajectories and their deterministic RGB-D/pose records are
+used. Metric positives require bounds, depth agreement ≤0.12m, occlusion
+validity, and reconstructed world residual ≤0.08m. Sim-LiDAR-like distance is
+recorded as supplementary validation only.
 
-## Geometry validation
+## Representation evaluation
 
-Every correspondence records source/target pixels, projected depth, observed
-target depth, depth residual, world-coordinate residual, and optional
-sim-LiDAR agreement. Report these errors so a visual-feature failure cannot be
-attributed to invalid geometry labels.
+Report positive/hard-negative cosine, margin, R@1, R@5, and retrieved
+world-position error for small, medium, large, revisit, validation, and unseen
+sets. Retrieval candidates are dense patches observing valid metric surfaces.
 
-## Metrics
+## G3 place and navigation evaluation
 
-Report positive cosine, hard-negative cosine, positive-negative margin, R@1,
-R@5, and retrieved world-position error for small/medium/large/revisit and
-train/validation/unseen categories.
+Reference records use the portable keyframe schema: RGB path, timestamp,
+world pose, descriptor path, and keyframe ID. Querying returns ranked IDs,
+similarity, world pose, and metric error. G3 contains at least 50 validation
+and 50 unseen image-goal episodes over small/large, doorway/corner, repeated
+structure, and revisit cases. M0 and M3 share the same reference index and
+Habitat shortest-path executor. Report R@1/R@5/error/success@0.5m/@1m and
+navigation SR/SPL/wrong-place arrival/path length.
 
-## Required assets
+## Required outputs
 
-- `paper_assets/figures/g1_crossview_correspondence.png`
-- `paper_assets/figures/g1_dinov3_viewpoint_degradation.png`
-- `paper_assets/figures/g1_revisit_failure.png`
-- `paper_assets/tables/g1_dinov3_baseline.csv`
-
-The G1 result must make an explicit GO or NO-GO recommendation against its
-preregistered threshold; it cannot introduce adapter training.
+`g2_main_results.csv`, `g2_ablation.csv`, four G2 figures, G3 results and a
+2–3 minute meeting video, the deployment package, real-robot handoff, ROS2
+interface contract, and a speaking-ready meeting note are mandatory.

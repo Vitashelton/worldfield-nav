@@ -1,43 +1,39 @@
-# Research Contract
+# Research Contract — MetricAnchor
 
 ## Working title
 
-**GeoAnchor: LiDAR-Anchored Adaptation of Foundation Visual Features for
-Embodied Navigation**
+**MetricAnchor: Geometry-Anchored Foundation Visual Features for
+Viewpoint-Robust Indoor Robot Navigation**
 
 ## Scientific question
 
-Are frozen foundation visual features physically consistent enough for a moving
-robot under viewpoint change, occlusion, and revisit? If not, can metric
-geometry provide reliable physical-correspondence supervision for lightweight
-adaptation?
+The physical world remains stable while robot observations change under
+viewpoint change, occlusion, revisit, and repeated indoor structure. Can metric
+geometry provide physical-correspondence supervision for a lightweight adapter
+over frozen foundation visual features, improving metric place retrieval and
+image-goal navigation?
 
-## Modalities
+## Evidence already accepted
 
-Simulation uses Habitat-GS RGB, depth, sim-LiDAR-like geometry, and absolute
-pose. The later robot platform is Ranger Mini 2.0 with D435i RGB-D, Mid-360S
-geometry, LIO pose, and Nav2. LLM/API task planning is a future system
-demonstration only, not a G1 component or core contribution.
+G1 established frozen DINOv3 physical-identity degradation using
+geometry-validated correspondence: small R@1 0.461, medium 0.194, large 0.056,
+revisit 0.034, and unseen 0.344. G1 is motivation, not the MetricAnchor result.
 
-## Current evidence rule
+## G2 and G3 claim boundary
 
-G1 is problem validation, not an adapter claim. A cross-view positive pair
-means two image patches observe the same physical world surface, proven by
-depth, intrinsics, absolute pose, reprojection, visibility/occlusion tests,
-and bounded world-coordinate residual. Image appearance never creates a
-positive pair.
+G2 evaluates a frozen-DINOv3 residual adapter learned from metric positives,
+physically distinct hard negatives, multi-view tracks, and feature
+preservation. G3 evaluates whether the representation improvement transfers to
+a generic reference-place retrieval interface and the same Habitat shortest
+path executor.
 
-## Go/no-go rule
+This is not a new SLAM, planner, end-to-end controller, VLM, or Livox
+simulation paper. Navigation is a downstream validation using an unchanged
+executor.
 
-Adapter development is justified only when frozen DINOv3 has reproducible,
-multi-scene degradation on large-viewpoint or revisit pairs while geometric
-correspondence remains valid. Evidence includes at least one of: a >=10 point
-R@1 drop versus small-view pairs, >=0.10 positive-cosine drop, or substantial
-positive-negative margin collapse. Otherwise stop and report NO-GO.
+## Sim-to-robot contract
 
-## Not the paper
-
-- Persistent-world-field modeling, traditional mapping, or a DINOv3 paper.
-- End-to-end visual control, a new planner, Nav2 redesign, or LLM task
-  planning.
-- An adapter claimed before the frozen-feature audit demonstrates need.
+Simulation uses RGB-D, absolute pose, and sim-LiDAR-like geometry. The future
+robot uses Ranger Mini 2.0, D435i RGB-D, and Mid-360S/LIO metric pose. The
+adapter consumes RGB only; geometry is supervision, database metric pose, and
+evaluation—not an RGB inference input.

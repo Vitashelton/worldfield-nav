@@ -46,6 +46,20 @@ formal:
       Across geometry-validated small and large view pairs, R@1 decreased
       from 0.461 to 0.056 and positive cosine similarity from 0.957 to 0.797.
       Large-view correspondences occurred in train, validation, and unseen scenes.
+  G2:
+    name: metricanchor_adapter
+    status: active
+    active_plan: docs/exec-plans/active/G2_G3_metricanchor_sim2robot_sprint.md
+    config: configs/benchmark/g2_g3_metricanchor.yaml
+    source: outputs/formal/C1/pilot
+    runs: []
+  G3:
+    name: metricanchor_habitat_localization_navigation
+    status: authorized_by_G2_G3_sprint
+    active_plan: docs/exec-plans/active/G2_G3_metricanchor_sim2robot_sprint.md
+    config: configs/benchmark/g2_g3_metricanchor.yaml
+    source: outputs/formal/C1/pilot
+    runs: []
 future:
   geoanchor_adapter:
     status: eligible_after_G1_go
