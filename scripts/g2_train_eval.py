@@ -21,7 +21,7 @@ def main():
    np.random.shuffle(train)
    for j in range(0,len(train),32):
     r=train[j:j+32]; x=torch.tensor(np.stack([feat(z['trajectory_id'],z['source_frame']) for z in r]),device=dev);y=torch.tensor(np.stack([feat(z['trajectory_id'],z['target_frame']) for z in r]),device=dev)
-    ax=m(x);ay=m(y); ix=torch.arange(len(r),device=dev); pos=(ax[ix, [z['source_patch'] for z in r]]*ay[ix,[z['target_patch'] for z in r]]).sum(-1)
+    ax=m(x).reshape(len(r),256,384);ay=m(y).reshape(len(r),256,384); ix=torch.arange(len(r),device=dev); pos=(ax[ix, [z['source_patch'] for z in r]]*ay[ix,[z['target_patch'] for z in r]]).sum(-1)
     negidx=[np.random.randint(256) if method=='M1' else z['hard_negative_patch'] for z in r];neg=(ax[ix,[z['source_patch'] for z in r]]*ay[ix,negidx]).sum(-1)
     loss=F.softplus((neg-pos)/.07).mean()
     if method=='M3':loss=loss+.1*((ax-x)**2).mean()
@@ -32,7 +32,7 @@ def main():
   if m:m.load_state_dict(states[method]);g=defaultdict(list)
   for r in rows:
    x=torch.tensor(feat(r['trajectory_id'],r['source_frame'])[None],device=dev);y=torch.tensor(feat(r['trajectory_id'],r['target_frame'])[None],device=dev)
-   with torch.no_grad(): ax=F.normalize(x,dim=-1) if m is None else m(x);ay=F.normalize(y,dim=-1) if m is None else m(y)
+   with torch.no_grad(): ax=(F.normalize(x,dim=-1) if m is None else m(x)).reshape(1,256,384);ay=(F.normalize(y,dim=-1) if m is None else m(y)).reshape(1,256,384)
    q=ax[0,r['source_patch']];s=(q@ay[0].T);order=torch.argsort(s,descending=True);rank=int((order==r['target_patch']).nonzero()[0]);pos=float(s[r['target_patch']]);neg=float(s[r['hard_negative_patch']]);g[r['regime']].append((rank,pos,neg))
   return {k:{'r1':np.mean([z[0]==0 for z in v]),'r5':np.mean([z[0]<5 for z in v]),'margin':np.mean([z[1]-z[2] for z in v]),'world_localization_error_m':float('nan'),'n':len(v)} for k,v in g.items()}
  result={};allrows=[]
