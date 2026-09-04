@@ -24,7 +24,7 @@ def main():
     ax=m(x).reshape(len(r),256,384);ay=m(y).reshape(len(r),256,384); ix=torch.arange(len(r),device=dev); pos=(ax[ix, [z['source_patch'] for z in r]]*ay[ix,[z['target_patch'] for z in r]]).sum(-1)
     negidx=[np.random.randint(256) if method=='M1' else z['hard_negative_patch'] for z in r];neg=(ax[ix,[z['source_patch'] for z in r]]*ay[ix,negidx]).sum(-1)
     loss=F.softplus((neg-pos)/.07).mean()
-    if method=='M3':loss=loss+.1*((ax-x)**2).mean()
+    if method=='M3':loss=loss+.1*(ax-x.reshape(len(r),256,384)).pow(2).mean()
     opt.zero_grad();loss.backward();opt.step()
   states[method]={k:v.cpu() for k,v in m.state_dict().items()};timing[method]=time.time()-start
  def ev(method,rows):
