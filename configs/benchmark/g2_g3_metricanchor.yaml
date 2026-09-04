@@ -17,7 +17,7 @@ geometry:
 adapter:
   bottleneck_dim: 128
   epochs: 12
-  batch_size: 256
+  batch_size: 1024
   lr: 0.001
   temperature: 0.07
   preservation_weight: 0.10
