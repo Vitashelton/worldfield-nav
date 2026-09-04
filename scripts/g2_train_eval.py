@@ -16,7 +16,7 @@ def main():
  tr=pack(rows('train.jsonl')); va=pack(rows('val.jsonl')); un=pack(rows('unseen_test.jsonl')); bs=int(c['adapter']['batch_size']); steps=1000 if a.smoke else (len(tr)+bs-1)//bs*int(c['adapter']['epochs'])
  m=ResidualMetricAdapter().to(dev);opt=torch.optim.AdamW(m.parameters(),lr=c['adapter']['lr']);torch.cuda.reset_peak_memory_stats();start=time.time()
  for step in range(steps):
-  ii=torch.randint(len(tr),(bs,),device=dev);b=tr[ii];fr=torch.unique(b[:,:2]);Y=m(X[fr]).reshape(len(fr),256,384);loc=torch.searchsorted(fr,b[:,:2]);q=Y[loc[:,0],b[:,2]];pos=(q*Y[loc[:,1],b[:,3]]).sum(-1);neg=(q*Y[loc[:,1],b[:,4]]).sum(-1);loss=F.softplus((neg-pos)/c['adapter']['temperature']).mean();opt.zero_grad();loss.backward();opt.step()
+  ii=torch.randint(len(tr),(bs,),device=dev);b=tr[ii];fr=torch.unique(b[:,:2]);Y=m(X[fr]).reshape(len(fr),256,384);loc=torch.searchsorted(fr,b[:,:2].contiguous());q=Y[loc[:,0],b[:,2]];pos=(q*Y[loc[:,1],b[:,3]]).sum(-1);neg=(q*Y[loc[:,1],b[:,4]]).sum(-1);loss=F.softplus((neg-pos)/c['adapter']['temperature']).mean();opt.zero_grad();loss.backward();opt.step()
  torch.cuda.synchronize();sec=time.time()-start;result={'batch_size':bs,'steps':steps,'samples_per_second':steps*bs/sec,'peak_vram_mib':torch.cuda.max_memory_allocated()/2**20,'projected_m1_m2_m3_seconds':sec/steps*((len(tr)+bs-1)//bs*c['adapter']['epochs']*3)}
  out=ROOT/a.output;out.mkdir(parents=True,exist_ok=True);(out/'throughput.json').write_text(json.dumps(result,indent=2));print(json.dumps(result))
 if __name__=='__main__':main()
