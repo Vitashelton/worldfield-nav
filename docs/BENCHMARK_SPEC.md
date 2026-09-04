@@ -31,6 +31,7 @@ navigation SR/SPL/wrong-place arrival/path length.
 
 ## Required outputs
 
-`g2_main_results.csv`, `g2_ablation.csv`, four G2 figures, G3 results and a
-2–3 minute meeting video, the deployment package, real-robot handoff, ROS2
-interface contract, and a speaking-ready meeting note are mandatory.
+`metricanchor_main_results.csv`, `metricanchor_ablation.csv`,
+`habitat_navigation_results.csv`, the specified seven figures, a 1–2 minute
+Habitat demo, and `docs/results/METRICANCHOR_SIMULATION_RESULTS.md` are
+mandatory.

@@ -49,11 +49,10 @@ robot control, or an LLM/API.
   `experiments/registry.yaml` run records.
 - Feature extraction is performed once and cached in FP16; no adapter script
   may re-forward DINOv3.
-- The deployment package may not import `habitat_sim`.
 
 ## Done and reporting
 
 A task is complete only when code, numeric evidence, paper assets, a result
-note, registry entry, and any requested deployment interface are present.
+note, and registry entry are present.
 Archive the active plan and stop. Final reporting is concise: result, numbers,
 paths, limits, and GO/NO-GO.

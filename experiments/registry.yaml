@@ -49,14 +49,14 @@ formal:
   G2:
     name: metricanchor_adapter
     status: active
-    active_plan: docs/exec-plans/active/G2_G3_metricanchor_sim2robot_sprint.md
+    active_plan: docs/exec-plans/active/G2_G3_METRICANCHOR_SIMULATION.md
     config: configs/benchmark/g2_g3_metricanchor.yaml
     source: outputs/formal/C1/pilot
     runs: []
   G3:
     name: metricanchor_habitat_localization_navigation
     status: authorized_by_G2_G3_sprint
-    active_plan: docs/exec-plans/active/G2_G3_metricanchor_sim2robot_sprint.md
+    active_plan: docs/exec-plans/active/G2_G3_METRICANCHOR_SIMULATION.md
     config: configs/benchmark/g2_g3_metricanchor.yaml
     source: outputs/formal/C1/pilot
     runs: []
