@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
+from scipy.spatial import cKDTree
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -59,6 +60,7 @@ def map_for_scene(scene, fs, off, xyz, valid, adapter=None, voxel=0.15):
 
 def query_scene(scene, fs, off, xyz, valid, lm_pos, lm_desc, adapter=None):
     rows = []
+    map_tree = cKDTree(lm_pos)
     for key, p in fs.items():
         if not key.startswith(scene + "_") or not key.endswith("traj02"): continue
         z = np.load(ROOT / "outputs/formal/C1/pilot/trajectories" / key / "sequence.npz")
@@ -69,7 +71,7 @@ def query_scene(scene, fs, off, xyz, valid, lm_pos, lm_desc, adapter=None):
         for fi, (dframe, qframe, mframe) in enumerate(zip(f, q, m)):
             # A query is scored only when its physical place is represented by
             # the offline reference map; uncovered space is reported separately.
-            coverage = np.min(np.linalg.norm(qframe[:, None, :] - lm_pos[None, :, :], axis=-1), axis=1) <= 2.0
+            coverage = map_tree.query(qframe, k=1)[0] <= 2.0
             sims = dframe @ lm_desc.T; nn = sims.argmax(1)
             for patch, j in enumerate(nn):
                 if not mframe[patch] or not coverage[patch] or not np.isfinite(qframe[patch]).all(): continue
