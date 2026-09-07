@@ -44,9 +44,8 @@ def path(sim, a, b):
     ok = sim.pathfinder.find_path(p)
     return bool(ok and np.isfinite(p.geodesic_distance)), float(p.geodesic_distance)
 
-def look_at(pos, target):
-    d = np.asarray(target) - np.asarray(pos); yaw = math.atan2(float(d[0]), float(-d[2]))
-    return habitat_sim.utils.common.quat_from_angle_axis(yaw, np.array([0.,1.,0.]))
+def yaw_rotation(yaw):
+    return habitat_sim.utils.common.quat_from_angle_axis(float(yaw), np.array([0.,1.,0.]))
 
 def render(sim, agent, pos, rot, image_path):
     st = agent.get_state(); st.position = np.asarray(pos, np.float32); st.rotation = rot; agent.set_state(st, reset_sensors=True)
@@ -68,11 +67,14 @@ def main():
             ok, d0 = path(sim, start, goal)
             if not ok or not 3.0 <= d0 <= 15.0: continue
             eid = f"{scene}_p0_{accepted:02d}"; epdir = OUT / "images" / eid; epdir.mkdir()
-            start_rot = look_at(start, goal); render(sim, agent, start, start_rot, epdir / "current_rgb.png")
-            render(sim, agent, goal, look_at(goal, start), epdir / "goal_image.png")
+            # Both camera headings are deterministic but independent of the
+            # hidden goal direction; the goal pose is never used as a query cue.
+            start_yaw, goal_yaw = float(rng.uniform(-math.pi, math.pi)), float(rng.uniform(-math.pi, math.pi))
+            start_rot = yaw_rotation(start_yaw); render(sim, agent, start, start_rot, epdir / "current_rgb.png")
+            render(sim, agent, goal, yaw_rotation(goal_yaw), epdir / "goal_image.png")
             cs = []
             # No NavMesh in this generator: only polar coordinates around start.
-            base = math.atan2(float(goal[0]-start[0]), float(goal[2]-start[2]))
+            base = start_yaw
             for ci in range(K):
                 angle = base + 2*math.pi*ci/K; radius = float(rng.uniform(.8, 2.0))
                 raw = start + np.array([radius*math.sin(angle),0.,radius*math.cos(angle)],np.float32)
@@ -88,7 +90,7 @@ def main():
                 elif clear < .18: reason = "low_clearance"
                 elif progress <= 0: reason = "no_progress"
                 else: reason = "executable"
-                cpath = epdir / f"candidate_{ci:02d}.png"; render(sim, agent, snap if snap_ok else start, look_at(snap if snap_ok else start, goal), cpath)
+                cpath = epdir / f"candidate_{ci:02d}.png"; render(sim, agent, snap if snap_ok else start, yaw_rotation(angle), cpath)
                 cs.append({"candidate_id":ci,"raw_xyz":raw.tolist(),"metric_xyz":snap.tolist(),"view_path":str(cpath.relative_to(OUT)),"reachable":reachable,"collision_free":collision_free,"clearance_m":clear,"geodesic_progress_m":progress,"eventual_outcome":eventual,"failure_reason":reason})
             ep = {"episode_id":eid,"scene_id":scene,"seed":SEED+si,"start_xyz":start.tolist(),"goal_xyz_hidden_for_eval":goal.tolist(),"initial_geodesic_m":d0,"current_rgb":str((epdir/"current_rgb.png").relative_to(OUT)),"goal_image":str((epdir/"goal_image.png").relative_to(OUT)),"candidate_count":K,"candidates":cs}
             rows.append(ep)
