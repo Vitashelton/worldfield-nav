@@ -49,6 +49,9 @@ def main():
         try: result=parse_json(text)
         except json.JSONDecodeError: raise RuntimeError(f"non-JSON response for {item['request_id']}: {text[:300]}")
         rank=result.get("ranked_candidate_ids",[]); scores=result.get("semantic_scores",[])
+        # Vision models often return C0...C7 despite the requested integer schema.
+        try: rank=[int(str(x).lstrip("Cc")) for x in rank]
+        except ValueError: pass
         if sorted(rank)!=list(range(8)) or len(scores)!=8: raise RuntimeError(f"invalid cache schema for {item['request_id']}: {result}")
         f.write(json.dumps({"request_id":item["request_id"],"model":"deepseek-v4-flash-vision-exp","ranking":rank,"semantic_scores":scores,"rationale":result.get("rationale","")},ensure_ascii=False)+"\n"); f.flush(); time.sleep(args.sleep_s)
 
