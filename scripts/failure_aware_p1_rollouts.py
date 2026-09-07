@@ -19,23 +19,37 @@ def reset(agent, record):
     state=agent.get_state(); state.position=np.asarray(record["start_xyz"],np.float32); state.rotation=yaw_rotation(yaw)
     agent.set_state(state,reset_sensors=True)
 
+def wrap(angle): return (angle+math.pi)%(2*math.pi)-math.pi
+
 def rollout(sim,agent,record,candidate,max_actions=32):
-    reset(agent,record); start=np.asarray(agent.get_state().position,np.float32); endpoint=np.asarray(candidate["executor_endpoint_xyz"],np.float32)
-    follower=habitat_sim.GreedyGeodesicFollower(sim.pathfinder,agent,goal_radius=.25)
-    try: actions=[action for action in (follower.find_path(endpoint) or []) if action is not None]
-    except Exception: actions=[]
+    # The supervision target is the *proposed raw endpoint*.  The separate
+    # NavMesh-snapped endpoint is retained only for diagnostics; treating it
+    # as the target would again conceal an off-mesh or blocked proposal.
+    reset(agent,record); start=np.asarray(agent.get_state().position,np.float32); endpoint=np.asarray(candidate["raw_endpoint_xyz"],np.float32)
+    # Execute the proposed raw local trajectory itself.  NavMesh is deliberately
+    # not a controller here: otherwise the follower would silently route around
+    # obstacles and erase collision/stuck supervision.
+    waypoints=[np.asarray(p,np.float32) for p in candidate["world_path_xyz"]]
     collision=False; length=0.; steps=0
-    for action in actions[:max_actions]:
-        before=np.asarray(agent.get_state().position,np.float32); hit=bool(agent.act(action)); after=np.asarray(agent.get_state().position,np.float32)
-        length+=float(np.linalg.norm(after-before)); collision|=hit; steps+=1
-        if collision: break
+    actions=[]
+    for waypoint in waypoints:
+        while steps<max_actions:
+            state=agent.get_state(); pos=np.asarray(state.position,np.float32); delta=waypoint-pos; delta[1]=0
+            if np.linalg.norm(delta)<.16: break
+            forward=habitat_sim.utils.common.quat_rotate_vector(state.rotation,np.array([0.,0.,-1.],np.float32)); forward[1]=0; forward/=np.linalg.norm(forward)
+            desired=math.atan2(float(delta[0]),float(delta[2])); current=math.atan2(float(forward[0]),float(forward[2])); error=wrap(desired-current)
+            action="turn_left" if error>.12 else "turn_right" if error<-.12 else "move_forward"
+            before=pos; hit=bool(agent.act(action)); after=np.asarray(agent.get_state().position,np.float32)
+            length+=float(np.linalg.norm(after-before)); collision|=hit; steps+=1; actions.append(action)
+            if collision: break
+        if collision or steps>=max_actions: break
     final=np.asarray(agent.get_state().position,np.float32); reached=bool(np.linalg.norm(final-endpoint)<=.30)
     goal=np.asarray(record["goal_xyz_hidden_for_evaluation"],np.float32)
     _,final_geo=shortest(sim,final,goal); initial=float(record["initial_geodesic_m"])
     progress=float(initial-final_geo) if np.isfinite(final_geo) else -initial
-    time_limited=bool(not reached and not collision and len(actions)>max_actions)
+    time_limited=bool(not reached and not collision and steps>=max_actions)
     stuck=bool(not reached and (collision or length<.10))
-    return {"reached":reached,"collision":collision,"stuck":stuck,"time_limited":time_limited,"progress_m":progress,"executed_path_length_m":length,"action_count":steps,"final_goal_geodesic_m":float(final_geo),"actions":list(actions[:max_actions])}
+    return {"reached":reached,"collision":collision,"stuck":stuck,"time_limited":time_limited,"progress_m":progress,"executed_path_length_m":length,"action_count":steps,"final_goal_geodesic_m":float(final_geo),"actions":actions}
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--limit",type=int);args=ap.parse_args()
