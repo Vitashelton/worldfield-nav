@@ -1,23 +1,40 @@
-# Research Contract — ExecNav
+# Research Contract — ExecField
 
 ## Working title
 
-**ExecNav: Learning Executable Semantic Subgoals for Vision-Language Image Navigation**
+**ExecField: Privileged-Simulation-Trained Executability Field for VLM-Guided
+Image-Goal Navigation**
 
 ## Scientific question
 
-Can a robot calibrate semantic navigation intent proposed by a frozen VLM into physically executable subgoals, using privileged simulator outcomes for training and a geometry-aware critic for failure detection and recovery?
+VLMs can express semantic navigation intent but cannot reliably determine
+whether a proposed local target is currently reachable, safe, useful for goal
+progress, or likely to fail. Can privileged outcomes from Habitat-GS train a
+robot-centric spatial executability field that calibrates frozen-VLM semantic
+priors and enables recovery when navigability changes?
 
-## Task and claim boundary
+## Method identity
 
-The primary task is image-goal navigation. A user-provided goal image and optional instruction are parsed by a VLM into structured semantic/spatial intent. The system selects an executable 2-D subgoal, then delegates motion to the existing Habitat/Nav2 executor. The VLM does not output low-level actions or world coordinates. The learned component is a lightweight robot-centric executability critic trained from privileged Habitat outcomes; it scores reachability, clearance, visibility and likely success, and triggers recovery after failure.
+VLM provides a semantic prior only. Habitat-GS provides training-only privileged
+labels: reachability, geodesic progress, collision/blockage, clearance,
+visibility and recovery outcomes. A lightweight ExecField maps local BEV
+geometry, semantic prior and execution history to spatial reachability,
+progress and failure fields. A conventional navigator executes the selected
+candidate; it is not the contribution.
 
-This is not a new SLAM system, planner, VLM, low-level controller, or claim of being the first VLM navigation method. GeoAnchor/G1/G2 and WorldFlow S0–S2/C1 remain preliminary reusable assets.
+## Deployment boundary
 
-## Required evidence
+At test time: goal image -> frozen/cached VLM semantic prior; current RGB-D ->
+local geometry/candidates; ExecField -> selected subgoal; navigation stack ->
+execution. No simulator oracle is available at test time. API calls are cached
+offline for simulation training; real-time API use is a later system demo.
 
-1. VLM semantic intent improves over a semantic-free baseline.
-2. A learned executability critic improves over handcrafted feasibility rules.
-3. Recovery improves over no-recovery under occlusion, dynamic obstacles, and blocked/invalid subgoals.
+## Evidence required
 
-All comparisons share scenes, episodes, candidate budgets, and executor. Simulator teacher labels are never online oracle inputs.
+1. VLM semantic prior beats a semantic-free candidate baseline.
+2. Learned ExecField beats handcrafted feasibility scoring.
+3. ExecField recovery beats no recovery under changing navigability.
+
+Static ImageNav is the core benchmark. Dynamic Gaussian-avatar blockage is a
+separately reported recovery benchmark. GeoAnchor is archived preliminary work,
+not evidence for this paper.

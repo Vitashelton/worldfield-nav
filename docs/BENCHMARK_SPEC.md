@@ -1,20 +1,32 @@
-# ExecNav Benchmark Specification
+# ExecField Benchmark Specification
 
-Reuse the existing 10-scene split and C1 RGB-D/pose assets: train
-scene01/02/03/09/interior_0405_840145, validation scene04/05, unseen
-scene56/57/58. Do not expand the dataset before the pilot passes.
+## Phased scale
 
-Curated image-goal episodes cover ordinary goals, large viewpoint changes,
-occlusion/revisit, repeated structures, and blocked/invalid semantic targets.
-Habitat ImageNav/NavMesh supplies the common executor. Dynamic-avatar cases are
-an explicitly labelled stress subset.
+P0 is a 15–30 episode oracle kill test: VLM-only candidates versus identical
+candidates selected with privileged executability. No model training or large
+generation occurs until P0 passes.
 
-Report semantic target validity, executable/reachable/collision-free goal rate,
-image-goal success, path length, SPL, wrong-goal arrival, critic calibration,
-recovery success and recovery count, broken out by static/occlusion/repeated/
-dynamic and unseen subsets.
+After P0, the formal scale target is 50–100 Habitat-GS scenes and 10^4–10^5
+ImageNav episodes/candidate states. Each sample stores goal image, current
+RGB-D, local BEV/candidates, cached VLM semantic scores, and privileged labels.
 
-The goal image's hidden pose and privileged simulator outcomes are
-evaluation/training supervision only. VLM inputs, candidate budgets, starts,
-NavMesh and executor are shared across methods. Final tables/figures/videos go
-to `paper_assets/`; raw data goes to `outputs/formal/ExecNav/`.
+## Evaluation
+
+Use held-out scenes and fixed starts/goals/candidate budgets. Report semantic
+target validity, executable/reachable/collision-free rate, ImageNav SR, SPL,
+path length, wrong-goal arrival, calibration/AUROC, and recovery success.
+Report static, occlusion/revisit, repeated structure, dynamic-avatar and unseen
+subsets separately.
+
+## Fairness
+
+VLM receives identical goal/current imagery for all VLM methods and cannot
+provide world coordinates. VLM cache is produced offline and is not privileged
+geometry. Teacher labels are simulation training/evaluation only. Every method
+shares the same Habitat executor and candidate set.
+
+## Artifacts
+
+Raw data/checkpoints: `outputs/formal/ExecField/`.
+Publication assets: `paper_assets/tables/`, `paper_assets/figures/`, and
+`paper_assets/videos/`.

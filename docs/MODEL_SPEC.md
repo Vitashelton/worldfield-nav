@@ -1,27 +1,35 @@
-# ExecNav Model Specification
+# ExecField Model Specification
 
-## VLM task parser
+## Inputs
 
-Input: goal RGB image plus optional natural-language instruction. Output:
-semantic target, relation, confidence, and 2-D visual prior. The backend is
-replaceable and may be cached or remote. It cannot output world coordinates or
-low-level actions.
+`M_t [H,W,C]` is local BEV state from depth-projected occupancy, free/unknown
+state, obstacle clearance, candidate mask and failed-region history.
+`S_sem [H,W]` rasterizes frozen-VLM semantic relevance over candidate subgoals.
 
-## Metric grounding and critic
+## Outputs
 
-Depth/geometry and robot pose map the semantic prior to candidate 2-D subgoals.
-Candidates carry free-space, clearance, visibility, reachability, and relation
-features. `C_theta(candidate, context)` predicts physical executability and
-likely image-goal success from privileged Habitat outcomes. Inference uses only
-robot-available observations. Recovery re-scores alternatives after rejection
-or failure.
+A lightweight BEV CNN/U-Net produces three spatial maps:
 
-## Fixed comparisons
+- `F_reach(x,y)`: predicted reachability;
+- `F_prog(x,y)`: predicted geodesic goal progress;
+- `F_fail(x,y)`: predicted collision, blockage, dead-end or no-progress risk.
 
-- M0 semantic-free nearest-free-cell/geometric baseline;
-- M1 VLM semantic subgoal without critic;
-- M2 VLM plus handcrafted feasibility checks;
-- Ours: VLM plus learned executability critic and recovery.
+`F_exec = F_reach + lambda_p F_prog - lambda_f F_fail` is queried only at
+candidate positions. The selected subgoal maximizes VLM relevance plus the
+ExecField score. After execution failure, the BEV/history is refreshed and the
+remaining candidates are re-scored.
 
-NavMesh/Nav2 remains the unchanged executor; no end-to-end action policy is
-trained in this plan.
+## Supervision
+
+For each candidate, Habitat-GS/NavMesh supplies privileged labels:
+reachable, collision-free, clearance, geodesic progress, target visibility,
+eventual success and recovery result. Labels train the field only; they are
+never inference inputs.
+
+## Comparisons
+
+- M0: semantic-free geometric candidate;
+- M1: VLM semantic prior only;
+- M2: VLM plus handcrafted feasibility;
+- M3: VLM plus learned ExecField without recovery;
+- Ours: VLM plus ExecField and recovery.
