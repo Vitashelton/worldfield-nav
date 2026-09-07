@@ -3,15 +3,15 @@
 ## Working title
 
 **MetricAnchor: Geometry-Anchored Foundation Visual Features for
-Viewpoint-Robust Indoor Robot Navigation**
+Image-Goal Localization and Navigation**
 
 ## Scientific question
 
 The physical world remains stable while robot observations change under
 viewpoint change, occlusion, revisit, and repeated indoor structure. Can metric
 geometry provide physical-correspondence supervision for a lightweight adapter
-over frozen foundation visual features, improving metric place retrieval and
-image-goal navigation?
+over frozen foundation visual features, improving localization of a user-
+provided goal image and navigation to its reference place?
 
 ## Evidence already accepted
 
@@ -27,9 +27,14 @@ preservation. G3 evaluates whether the representation improvement transfers to
 a generic reference-place retrieval interface and the same Habitat shortest
 path executor.
 
-This is not a new SLAM, planner, end-to-end controller, VLM, or Livox
-simulation paper. Navigation is a downstream validation using an unchanged
-executor.
+The primary task is **image-goal localization and navigation**: a user-provided
+goal image is retrieved against a reference database and its reference pose is
+sent to an unchanged executor. This is not a new SLAM, planner, end-to-end
+controller, VLM, or Livox simulation paper. The goal image's hidden global pose
+and global LIO pose are never available to retrieval. LIO is allowed for
+offline reference construction and evaluation ground truth, and for the
+robot's current pose during Nav2 execution. VLM is optional demonstration-layer
+semantics; primary metrics are RGB-only.
 
 ## Sim-to-robot contract
 
