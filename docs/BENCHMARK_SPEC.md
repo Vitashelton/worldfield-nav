@@ -35,3 +35,15 @@ navigation SR/SPL/wrong-place arrival/path length.
 `habitat_navigation_results.csv`, the specified seven figures, a 1–2 minute
 Habitat demo, and `docs/results/METRICANCHOR_SIMULATION_RESULTS.md` are
 mandatory.
+
+## Query leakage boundary
+
+The primary G3 task is **image-goal localization and navigation**. A query is
+a user-provided goal RGB image, not the robot's-current-RGB self-localization
+task. Query retrieval uses RGB descriptors only and cannot access the goal
+image's hidden global pose or global LIO pose. The hidden goal pose is used only
+after the episode for evaluation. During navigation, Nav2 may use the robot's
+current LIO pose together with the retrieved goal pose; implementations must
+log these as separate fields. VLM semantic filtering is optional, receives the
+same output for every method, cannot provide coordinates, and is excluded from
+primary metrics.
