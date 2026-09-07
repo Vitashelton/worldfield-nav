@@ -15,8 +15,9 @@ from PIL import Image, ImageDraw
 from execfield_p0_generate import ROOT, make_sim, render, yaw_rotation
 
 SCENES = [
-    "interior_0405_840145", "scene01", "scene02", "scene03", "scene04",
-    "scene05", "scene09", "scene56", "scene57", "scene58",
+    "interior_0405_840145", "interior_0047_839892", "interior_0108_839984",
+    "interior_0184_840116", "interior_0093_839966", "interior_0121_840013",
+    "interior_0135_840032",
 ]
 
 
@@ -35,10 +36,10 @@ def main() -> None:
             thumbs.append((scene, rgb))
         finally:
             sim.close()
-    canvas = Image.new("RGB", (3 * 256, 4 * 286), "white")
+    canvas = Image.new("RGB", (4 * 256, 2 * 286), "white")
     draw = ImageDraw.Draw(canvas)
     for i, (scene, rgb) in enumerate(thumbs):
-        x, y = (i % 3) * 256, (i // 3) * 286
+        x, y = (i % 4) * 256, (i // 4) * 286
         canvas.paste(Image.fromarray(rgb), (x, y))
         draw.rectangle((x, y + 256, x + 256, y + 286), fill="black")
         draw.text((x + 8, y + 264), scene, fill="white")

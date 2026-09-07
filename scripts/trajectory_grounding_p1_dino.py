@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import time
 
 import numpy as np
 from PIL import Image
 import torch
+os.environ.setdefault("HF_HUB_OFFLINE", "1")
 import timm
 from timm.data import resolve_model_data_config
 
