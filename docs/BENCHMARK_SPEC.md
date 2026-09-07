@@ -1,49 +1,20 @@
-# MetricAnchor Benchmark Specification
+# ExecNav Benchmark Specification
 
-## Frozen split
+Reuse the existing 10-scene split and C1 RGB-D/pose assets: train
+scene01/02/03/09/interior_0405_840145, validation scene04/05, unseen
+scene56/57/58. Do not expand the dataset before the pilot passes.
 
-| Role | Scenes |
-| --- | --- |
-| Train | scene01, scene02, scene03, scene09, interior_0405_840145 |
-| Validation | scene04, scene05 |
-| Unseen test | scene56, scene57, scene58 |
+Curated image-goal episodes cover ordinary goals, large viewpoint changes,
+occlusion/revisit, repeated structures, and blocked/invalid semantic targets.
+Habitat ImageNav/NavMesh supplies the common executor. Dynamic-avatar cases are
+an explicitly labelled stress subset.
 
-Only completed C1 trajectories and their deterministic RGB-D/pose records are
-used. Metric positives require bounds, depth agreement ≤0.12m, occlusion
-validity, and reconstructed world residual ≤0.08m. Sim-LiDAR-like distance is
-recorded as supplementary validation only.
+Report semantic target validity, executable/reachable/collision-free goal rate,
+image-goal success, path length, SPL, wrong-goal arrival, critic calibration,
+recovery success and recovery count, broken out by static/occlusion/repeated/
+dynamic and unseen subsets.
 
-## Representation evaluation
-
-Report positive/hard-negative cosine, margin, R@1, R@5, and retrieved
-world-position error for small, medium, large, revisit, validation, and unseen
-sets. Retrieval candidates are dense patches observing valid metric surfaces.
-
-## G3 place and navigation evaluation
-
-Reference records use the portable keyframe schema: RGB path, timestamp,
-world pose, descriptor path, and keyframe ID. Querying returns ranked IDs,
-similarity, world pose, and metric error. G3 contains at least 50 validation
-and 50 unseen image-goal episodes over small/large, doorway/corner, repeated
-structure, and revisit cases. M0 and M3 share the same reference index and
-Habitat shortest-path executor. Report R@1/R@5/error/success@0.5m/@1m and
-navigation SR/SPL/wrong-place arrival/path length.
-
-## Required outputs
-
-`metricanchor_main_results.csv`, `metricanchor_ablation.csv`,
-`habitat_navigation_results.csv`, the specified seven figures, a 1–2 minute
-Habitat demo, and `docs/results/METRICANCHOR_SIMULATION_RESULTS.md` are
-mandatory.
-
-## Query leakage boundary
-
-The primary G3 task is **image-goal localization and navigation**. A query is
-a user-provided goal RGB image, not the robot's-current-RGB self-localization
-task. Query retrieval uses RGB descriptors only and cannot access the goal
-image's hidden global pose or global LIO pose. The hidden goal pose is used only
-after the episode for evaluation. During navigation, Nav2 may use the robot's
-current LIO pose together with the retrieved goal pose; implementations must
-log these as separate fields. VLM semantic filtering is optional, receives the
-same output for every method, cannot provide coordinates, and is excluded from
-primary metrics.
+The goal image's hidden pose and privileged simulator outcomes are
+evaluation/training supervision only. VLM inputs, candidate budgets, starts,
+NavMesh and executor are shared across methods. Final tables/figures/videos go
+to `paper_assets/`; raw data goes to `outputs/formal/ExecNav/`.

@@ -1,35 +1,27 @@
-# MetricAnchor Model Specification
+# ExecNav Model Specification
 
-## Frozen visual input
+## VLM task parser
 
-`timm/vit_small_patch16_dinov3.lvd1689m` receives RGB resized and normalized by
-its timm data config. It emits a 16 × 16 grid of 384-dimensional patch tokens
-after removal of 5 prefix tokens. Backbone parameters remain frozen.
+Input: goal RGB image plus optional natural-language instruction. Output:
+semantic target, relation, confidence, and 2-D visual prior. The backend is
+replaceable and may be cached or remote. It cannot output world coordinates or
+low-level actions.
 
-## Residual adapter
+## Metric grounding and critic
 
-For dense input `F ∈ R^(16×16×384)`:
+Depth/geometry and robot pose map the semantic prior to candidate 2-D subgoals.
+Candidates carry free-space, clearance, visibility, reachability, and relation
+features. `C_theta(candidate, context)` predicts physical executability and
+likely image-goal success from privileged Habitat outcomes. Inference uses only
+robot-available observations. Recovery re-scores alternatives after rejection
+or failure.
 
-`A(F) = normalize(F + W2(GELU(DWConv3×3(GELU(W1(F))))))`
+## Fixed comparisons
 
-where `W1: 384→128`, depthwise spatial mixing uses 128 channels, and
-`W2: 128→384`. The adapter is below 2M trainable parameters.
+- M0 semantic-free nearest-free-cell/geometric baseline;
+- M1 VLM semantic subgoal without critic;
+- M2 VLM plus handcrafted feasibility checks;
+- Ours: VLM plus learned executability critic and recovery.
 
-## Methods
-
-- **M0 Frozen DINOv3:** L2-normalized cached tokens.
-- **M1 Vanilla Cross-View Adapter:** identical adapter, metric positive pairs
-  with random negatives only.
-- **M2 MetricAnchor:** M1 plus physical hard negatives from distinct metric
-  surfaces.
-- **M3 MetricAnchor-Full:** M2 plus three-view consistency and feature
-  preservation.
-
-All use the identical cache, correspondence manifests, descriptor pooling, and
-evaluation protocol. A learned method never re-runs the backbone.
-
-## Losses
-
-Contrastive positive-vs-candidate InfoNCE is used for M1/M2. M2 candidates
-include physically distinct hard surfaces; M1 samples random negatives. M3 adds
-a three-view cosine-consistency term and an L2 feature-preservation term.
+NavMesh/Nav2 remains the unchanged executor; no end-to-end action policy is
+trained in this plan.

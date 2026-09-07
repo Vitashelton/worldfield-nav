@@ -1,44 +1,23 @@
-# Research Contract — MetricAnchor
+# Research Contract — ExecNav
 
 ## Working title
 
-**MetricAnchor: Geometry-Anchored Foundation Visual Features for
-Image-Goal Localization and Navigation**
+**ExecNav: Learning Executable Semantic Subgoals for Vision-Language Image Navigation**
 
 ## Scientific question
 
-The physical world remains stable while robot observations change under
-viewpoint change, occlusion, revisit, and repeated indoor structure. Can metric
-geometry provide physical-correspondence supervision for a lightweight adapter
-over frozen foundation visual features, improving localization of a user-
-provided goal image and navigation to its reference place?
+Can a robot calibrate semantic navigation intent proposed by a frozen VLM into physically executable subgoals, using privileged simulator outcomes for training and a geometry-aware critic for failure detection and recovery?
 
-## Evidence already accepted
+## Task and claim boundary
 
-G1 established frozen DINOv3 physical-identity degradation using
-geometry-validated correspondence: small R@1 0.461, medium 0.194, large 0.056,
-revisit 0.034, and unseen 0.344. G1 is motivation, not the MetricAnchor result.
+The primary task is image-goal navigation. A user-provided goal image and optional instruction are parsed by a VLM into structured semantic/spatial intent. The system selects an executable 2-D subgoal, then delegates motion to the existing Habitat/Nav2 executor. The VLM does not output low-level actions or world coordinates. The learned component is a lightweight robot-centric executability critic trained from privileged Habitat outcomes; it scores reachability, clearance, visibility and likely success, and triggers recovery after failure.
 
-## G2 and G3 claim boundary
+This is not a new SLAM system, planner, VLM, low-level controller, or claim of being the first VLM navigation method. GeoAnchor/G1/G2 and WorldFlow S0–S2/C1 remain preliminary reusable assets.
 
-G2 evaluates a frozen-DINOv3 residual adapter learned from metric positives,
-physically distinct hard negatives, multi-view tracks, and feature
-preservation. G3 evaluates whether the representation improvement transfers to
-a generic reference-place retrieval interface and the same Habitat shortest
-path executor.
+## Required evidence
 
-The primary task is **image-goal localization and navigation**: a user-provided
-goal image is retrieved against a reference database and its reference pose is
-sent to an unchanged executor. This is not a new SLAM, planner, end-to-end
-controller, VLM, or Livox simulation paper. The goal image's hidden global pose
-and global LIO pose are never available to retrieval. LIO is allowed for
-offline reference construction and evaluation ground truth, and for the
-robot's current pose during Nav2 execution. VLM is optional demonstration-layer
-semantics; primary metrics are RGB-only.
+1. VLM semantic intent improves over a semantic-free baseline.
+2. A learned executability critic improves over handcrafted feasibility rules.
+3. Recovery improves over no-recovery under occlusion, dynamic obstacles, and blocked/invalid subgoals.
 
-## Sim-to-robot contract
-
-Simulation uses RGB-D, absolute pose, and sim-LiDAR-like geometry. The future
-robot uses Ranger Mini 2.0, D435i RGB-D, and Mid-360S/LIO metric pose. The
-adapter consumes RGB only; geometry is supervision, database metric pose, and
-evaluation—not an RGB inference input.
+All comparisons share scenes, episodes, candidate budgets, and executor. Simulator teacher labels are never online oracle inputs.
