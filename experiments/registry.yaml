@@ -70,7 +70,9 @@ future:
     archived_plan: docs/exec-plans/archive/execnav_pre_p0/EXECNAV_IMAGEGOAL.md
   ExecField_P0:
     name: oracle_executability_kill_test
-    status: active
-    active_plan: docs/exec-plans/active/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
+    status: completed_go
+    completed_plan: docs/exec-plans/completed/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
     source: existing_Habitat_GS_assets_only
     decision_gate: oracle_must_improve_over_identical_VLM_candidates
+    result: docs/results/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
+    decision: GO
