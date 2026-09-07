@@ -67,9 +67,12 @@ def query_scene(scene, fs, off, xyz, valid, lm_pos, lm_desc, adapter=None):
             with torch.no_grad(): f = adapter(torch.from_numpy(f).cuda()).cpu().numpy()
         g = off[key]; q = xyz[g:g+len(f)]; m = valid[g:g+len(f)]
         for fi, (dframe, qframe, mframe) in enumerate(zip(f, q, m)):
+            # A query is scored only when its physical place is represented by
+            # the offline reference map; uncovered space is reported separately.
+            coverage = np.min(np.linalg.norm(qframe[:, None, :] - lm_pos[None, :, :], axis=-1), axis=1) <= 2.0
             sims = dframe @ lm_desc.T; nn = sims.argmax(1)
             for patch, j in enumerate(nn):
-                if not mframe[patch] or not np.isfinite(qframe[patch]).all(): continue
+                if not mframe[patch] or not coverage[patch] or not np.isfinite(qframe[patch]).all(): continue
                 err = float(np.linalg.norm(lm_pos[j] - qframe[patch]))
                 rows.append({"scene": scene, "trajectory": key, "frame": fi,
                              "patch": patch, "similarity": float(sims[patch,j]),
