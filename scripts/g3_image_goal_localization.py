@@ -25,7 +25,11 @@ def files():
 
 def load_feature(p):
     x = np.load(p)["features"].astype(np.float32)
-    x = x.reshape(x.shape[0], -1, x.shape[-1])
+    return x.reshape(x.shape[0], -1, x.shape[-1])
+
+def encode_feature(x, adapter=None):
+    if adapter is not None:
+        with torch.no_grad(): x = adapter(torch.from_numpy(x).cuda()).cpu().numpy()
     return x / np.maximum(np.linalg.norm(x, axis=-1, keepdims=True), 1e-8)
 
 def global_offsets(fs):
@@ -42,9 +46,7 @@ def map_for_scene(scene, fs, off, xyz, valid, adapter=None, voxel=0.15):
     for key, p in fs.items():
         if not key.startswith(scene + "_") or not key.endswith(("traj00", "traj01")):
             continue
-        f = load_feature(p)
-        if adapter is not None:
-            with torch.no_grad(): f = adapter(torch.from_numpy(f).cuda()).cpu().numpy()
+        f = encode_feature(load_feature(p), adapter)
         g = off[key]; q = xyz[g:g+len(f)]; m = valid[g:g+len(f)]
         for dframe, pframe, mframe in zip(f, q, m):
           for d, pt, ok in zip(dframe, pframe, mframe):
@@ -64,9 +66,7 @@ def query_scene(scene, fs, off, xyz, valid, lm_pos, lm_desc, adapter=None):
     for key, p in fs.items():
         if not key.startswith(scene + "_") or not key.endswith("traj02"): continue
         z = np.load(ROOT / "outputs/formal/C1/pilot/trajectories" / key / "sequence.npz")
-        f = load_feature(p)
-        if adapter is not None:
-            with torch.no_grad(): f = adapter(torch.from_numpy(f).cuda()).cpu().numpy()
+        f = encode_feature(load_feature(p), adapter)
         g = off[key]; q = xyz[g:g+len(f)]; m = valid[g:g+len(f)]
         for fi, (dframe, qframe, mframe) in enumerate(zip(f, q, m)):
             # A query is scored only when its physical place is represented by
