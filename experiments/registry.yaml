@@ -81,9 +81,14 @@ future:
     status: archived_after_trajectory_grounding_refinement
     archived_plan: docs/exec-plans/archive/execfield_pre_trajectory_grounding/EXECFIELD_P1_DINOV3_STATIC.md
   TrajectoryGrounding_P1:
-    name: static_indoor_imagegoal_trajectory_grounding
+    name: archived_candidate_generation_infrastructure
+    status: archived_after_failure_aware_refinement
+    archived_plan: docs/exec-plans/archive/trajectory_grounding_pre_failure_aware/TRAJECTORY_GROUNDING_P1_STATIC_INDOOR.md
+    retained_assets: outputs/formal/TrajectoryGrounding/P1
+  FailureAware_P1:
+    name: rolling_failure_aware_subgoal_selection
     status: active
-    active_plan: docs/exec-plans/active/TRAJECTORY_GROUNDING_P1_STATIC_INDOOR.md
+    active_plan: docs/exec-plans/active/FAILURE_AWARE_ROLLING_SUBGOAL_P1.md
     source: existing_verified_Habitat_GS_assets_only
     scope: static_indoor_only
     prerequisites:
@@ -93,4 +98,4 @@ future:
       vlm: cached_offline_only
       candidates: K8_planner_trajectories_no_goal_or_navmesh_access
       labels: Habitat_GS_privileged_training_and_evaluation_only
-      methods: [planner_only, vlm_only, dino_only, planner_vlm, planner_dino, fixed_fusion, learned_ranker, oracle]
+      methods: [geometry_nav2, vlm_only, vlm_rules, vlm_learned_scorer, oracle]

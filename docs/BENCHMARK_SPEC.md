@@ -1,39 +1,14 @@
-# Trajectory Grounding P1 Benchmark Specification
+# Failure-Aware Rolling Subgoal Selection Benchmark
 
-## Data protocol
+Reuse the fixed 2,520 indoor episodes and K=8 candidates. Add a short-horizon
+rollout record for every candidate without changing proposal generation. Train,
+validation and unseen remain scene-disjoint.
 
-Use existing verified indoor Habitat-GS scenes only, split by scene into train,
-validation and unseen. Each deterministic ImageNav episode has a goal image,
-current RGB-D, current pose and K=8 local candidate trajectories. Candidate
-generation cannot use final-goal direction/pose or NavMesh; Habitat/NavMesh is
-used only after proposals for labels: reachability, collision-free, clearance,
-geodesic progress, outcome and failure reason.
+Static and unseen comparisons use the same episodes, candidates, executor,
+action budget and termination: Geometry/Nav2, VLM-only, VLM+rules,
+VLM+learned scorer and privileged Oracle. Report SR, SPL, Final DTG, path
+length, collision/invalid rate, stuck rate, candidate ranking accuracy and
+regret. Dynamic ImageNav follows only after those tables are saved.
 
-Build 20k--50k candidate trajectories if existing scenes support it. Require
-at least 100 fixed episodes for validation and 100 for unseen evaluation;
-expand economically without protocol changes. All VLM outputs are offline
-cached. Train/val/unseen scenes never overlap.
-
-## Comparisons
-
-All methods use identical episodes, trajectories, executor and termination:
-
-- Planner-only;
-- VLM-only;
-- DINO-only;
-- Planner + VLM;
-- Planner + DINO;
-- fixed score fusion;
-- learned trajectory ranker;
-- privileged oracle upper bound.
-
-Report candidate ranking accuracy/regret plus SR, SPL, Final DTG, path length,
-collision-invalid rate and bootstrap episode confidence intervals. Report seen
-validation and unseen results separately.
-
-## Required qualitative evidence
-
-Use indoor corridor branch, doorway/room entrance and repeated hallway cases.
-Each case shows goal image; current RGB with eight numbered projected
-trajectories; VLM, DINO and ranker scores; final choice; top-down rollout; and
-success/failure outcome.
+VLM cache is capped to representative training states plus all formal
+evaluation states; it is low-frequency and no API key is placed on the cloud.

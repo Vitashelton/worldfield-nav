@@ -1,29 +1,30 @@
-# Research Contract — Trajectory Grounding
+# Research Contract — Failure-Aware Rolling Subgoal Selection
 
 ## Working title
 
-**Trajectory Grounding: Hierarchical VLM and Foundation-Feature Fusion for
-Image-Goal Navigation**
+**Failure-Aware Rolling Subgoal Selection for VLM-Guided Indoor Image-Goal Navigation**
 
-## Scientific question
+## Problem
 
-How can an indoor robot ground an image-goal's high-level semantic relevance
-into a choice among locally executable planner trajectories without asking a
-VLM to control the robot directly?
+A VLM may judge a local direction semantically compatible with a goal image,
+but that candidate can collide, stall, fail to progress or become blocked.
+The problem is selecting and revising short-horizon executable subgoals while
+the fixed navigator retains responsibility for motion execution.
 
-## Fixed system boundary
+## Method boundary
 
-`Goal image + current RGB -> frozen DINOv3 and frozen VLM; local planner -> K
-candidate trajectories; DINOv3 corridor matching + VLM semantic scores +
-planner geometry -> lightweight trajectory ranker -> fixed executor.`
+At each observation, a goal-independent K=8 candidate generator proposes local
+subgoals. Frozen DINOv3 encodes current and goal imagery; cached VLM supplies a
+low-frequency semantic prior; geometry and failure/visit history supply local
+state. A lightweight scorer predicts candidate execution value from reached,
+collision, stuck, progress and path-length supervision collected in Habitat-GS.
+On abort/stuck, the selected failure is written to history and candidates are
+re-scored. No BEV field, new planner, trajectory-image grounding or foundation
+model training is part of the paper.
 
-The contribution is a reproducible hierarchical integration and its measured
-benefit, not a new VLM, foundation backbone, local planner, SLAM algorithm, or
-end-to-end controller. Habitat-GS supplies controlled indoor data and
-privileged outcome labels during training/evaluation only.
+## Evidence
 
-## Scope
-
-P1 evaluates static indoor Habitat-GS scene-disjoint train/validation/unseen
-splits. Dynamic interference, recovery, outdoor stress tests and Ranger Mini
-are subsequent, explicitly separate work.
+P0 remains motivation. P1 reports static indoor and scene-disjoint unseen
+ImageNav; dynamic Habitat-GS recovery then evaluates whether history-aware
+reselection improves a shared executor. Ranger Mini evidence is restricted to
+logged recoverable Nav2 abort/costmap cases until a later authorized plan.
