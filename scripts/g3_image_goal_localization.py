@@ -24,7 +24,8 @@ def files():
 
 def load_feature(p):
     x = np.load(p)["features"].astype(np.float32)
-    return x.reshape(x.shape[0], -1, x.shape[-1])
+    x = x.reshape(x.shape[0], -1, x.shape[-1])
+    return x / np.maximum(np.linalg.norm(x, axis=-1, keepdims=True), 1e-8)
 
 def global_offsets(fs):
     out, n = {}, 0
