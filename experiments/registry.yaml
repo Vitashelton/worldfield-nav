@@ -66,5 +66,11 @@ formal:
       retained for debugging only and is not paper evidence.
 future:
   execnav_imagegoal:
+    status: superseded_by_P0_kill_test
+    archived_plan: docs/exec-plans/archive/execnav_pre_p0/EXECNAV_IMAGEGOAL.md
+  ExecNav_P0:
+    name: oracle_executability_kill_test
     status: active
-    active_plan: docs/exec-plans/active/EXECNAV_IMAGEGOAL.md
+    active_plan: docs/exec-plans/active/EXECNAV_P0_ORACLE_EXECUTABILITY.md
+    source: existing_Habitat_GS_assets_only
+    decision_gate: oracle_must_improve_over_identical_VLM_candidates
