@@ -1,35 +1,23 @@
-# ExecField Model Specification
+# ExecField P1 Model Specification — Frozen DINOv3 Spatial Fusion
 
-## Inputs
+Frozen `timm/vit_small_patch16_dinov3.lvd1689m` receives 256x256 current RGB
+and emits `16x16x384` dense tokens. Aligned depth, intrinsics and robot/camera
+pose project valid token centers into robot-centric metric cells. Multiple
+tokens per cell use normalized mean pooling; empty cells have an explicit mask.
 
-`M_t [H,W,C]` is local BEV state from depth-projected occupancy, free/unknown
-state, obstacle clearance, candidate mask and failed-region history.
-`S_sem [H,W]` rasterizes frozen-VLM semantic relevance over candidate subgoals.
+The local map contains DINO spatial features, occupancy/obstacle evidence,
+free-space evidence, clearance distance, explored-valid mask, rasterized cached
+VLM semantic scores, selected/failed subgoal history and visitation history.
+A 1–5M parameter lightweight multi-scale spatial fusion encoder-decoder
+outputs `F_reach`, `F_prog` and `F_fail`; it is not claimed as an architecture
+contribution. `F_exec=alpha*F_reach+beta*F_prog-gamma*F_fail` is queried only
+at fixed candidate positions and combined with frozen VLM scores.
 
-## Outputs
+Candidate-position masked losses are BCE reachability, SmoothL1 normalized
+geodesic progress and BCE failure. DINOv3, VLM and executor stay frozen.
 
-A lightweight BEV CNN/U-Net produces three spatial maps:
-
-- `F_reach(x,y)`: predicted reachability;
-- `F_prog(x,y)`: predicted geodesic goal progress;
-- `F_fail(x,y)`: predicted collision, blockage, dead-end or no-progress risk.
-
-`F_exec = F_reach + lambda_p F_prog - lambda_f F_fail` is queried only at
-candidate positions. The selected subgoal maximizes VLM relevance plus the
-ExecField score. After execution failure, the BEV/history is refreshed and the
-remaining candidates are re-scored.
-
-## Supervision
-
-For each candidate, Habitat-GS/NavMesh supplies privileged labels:
-reachable, collision-free, clearance, geodesic progress, target visibility,
-eventual success and recovery result. Labels train the field only; they are
-never inference inputs.
-
-## Comparisons
-
-- M0: semantic-free geometric candidate;
-- M1: VLM semantic prior only;
-- M2: VLM plus handcrafted feasibility;
-- M3: VLM plus learned ExecField without recovery;
-- Ours: VLM plus ExecField and recovery.
+The geometry channels are obstacle occupancy/evidence, free-space evidence,
+clearance distance and explored-validity. The semantic prior is formed by
+Gaussian splatting cached candidate scores. History contains prior selected,
+failed/no-progress and recent-visit evidence; P1 uses it only as a basic
+static-history ablation, not as a dynamic recovery policy.

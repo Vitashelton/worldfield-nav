@@ -76,3 +76,17 @@ future:
     decision_gate: oracle_must_improve_over_identical_VLM_candidates
     result: docs/results/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
     decision: GO
+  ExecField_P1:
+    name: dinov3_static_indoor_executability_benchmark
+    status: active
+    active_plan: docs/exec-plans/active/EXECFIELD_P1_DINOV3_STATIC.md
+    source: existing_verified_Habitat_GS_assets_only
+    scope: static_indoor_only
+    prerequisites:
+      ExecField_P0: completed_go
+    protocol:
+      frozen_backbone: timm/vit_small_patch16_dinov3.lvd1689m
+      vlm: cached_offline_only
+      candidate_generator: fixed_polar_no_goal_or_navmesh_access
+      labels: Habitat_GS_privileged_training_and_evaluation_only
+      methods: [M0_geometry_only, M1_vlm_only, M2_vlm_handcrafted, M3_dinov3_execfield, M4_oracle]
