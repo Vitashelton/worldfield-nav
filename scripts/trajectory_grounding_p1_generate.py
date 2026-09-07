@@ -140,34 +140,31 @@ def geometric_features(depth: np.ndarray, uv: np.ndarray, valid: np.ndarray, pat
             "observed_depth_mean_m": float(np.mean(samples)) if samples else 0.0}
 
 
-def save_case(out: Path, split: str, scene: str, episode: int, rng: np.random.Generator) -> dict | None:
-    sim = make_sim(scene); agent = sim.initialize_agent(0)
-    try:
-        for _ in range(2000):
+def save_case(out: Path, split: str, scene: str, episode: int, rng: np.random.Generator, sim, agent) -> dict | None:
+    for _ in range(2000):
             start = np.asarray(sim.pathfinder.get_random_navigable_point(), np.float32)
             goal = np.asarray(sim.pathfinder.get_random_navigable_point(), np.float32)
             ok, d0 = shortest(sim, start, goal)
             if ok and 4.0 <= d0 <= 18.0: break
-        else: return None
-        current_rgb, depth, camera_t, c2w = render(sim, agent, start, yaw_rotation(float(rng.uniform(-math.pi, math.pi))))
-        paths = propose(camera_t, c2w)
-        goal_rgb, _, _, _ = render(sim, agent, goal, yaw_rotation(float(rng.uniform(-math.pi, math.pi))))
-        eid = f"{scene}_{episode:04d}"; case = out / "samples" / eid; case.mkdir(parents=True, exist_ok=True)
-        Image.fromarray(current_rgb).save(case / "current_rgb.png"); Image.fromarray(goal_rgb).save(case / "goal_image.png")
-        Image.fromarray(overlay(current_rgb, paths, camera_t, c2w)).save(case / "trajectory_overlay.png")
-        np.save(case / "depth.npy", depth.astype(np.float16))
-        rows = []
-        for i, path in enumerate(paths):
-            uv, visible = project(path, camera_t, c2w)
-            row = {"trajectory_id": i, "relative_yaw_rad": float(RELATIVE_YAWS[i]), "world_path_xyz": path.tolist(),
-                   "image_uv": uv.tolist(), "image_projection_valid": visible.tolist(),
-                   "geometry": geometric_features(depth, uv, visible, path)}
-            row.update(label_candidate(sim, path, goal, d0)); rows.append(row)
-        return {"episode_id": eid, "scene_id": scene, "split": split, "current_rgb": str((case / "current_rgb.png").relative_to(out)),
-                "goal_image": str((case / "goal_image.png").relative_to(out)), "trajectory_overlay": str((case / "trajectory_overlay.png").relative_to(out)),
-                "depth": str((case / "depth.npy").relative_to(out)), "camera_world_xyz": camera_t.tolist(), "camera_c2w": c2w.tolist(),
-                "start_xyz": start.tolist(), "goal_xyz_hidden_for_evaluation": goal.tolist(), "initial_geodesic_m": d0, "trajectories": rows}
-    finally: sim.close()
+    else: return None
+    current_rgb, depth, camera_t, c2w = render(sim, agent, start, yaw_rotation(float(rng.uniform(-math.pi, math.pi))))
+    paths = propose(camera_t, c2w)
+    goal_rgb, _, _, _ = render(sim, agent, goal, yaw_rotation(float(rng.uniform(-math.pi, math.pi))))
+    eid = f"{scene}_{episode:04d}"; case = out / "samples" / eid; case.mkdir(parents=True, exist_ok=True)
+    Image.fromarray(current_rgb).save(case / "current_rgb.png"); Image.fromarray(goal_rgb).save(case / "goal_image.png")
+    Image.fromarray(overlay(current_rgb, paths, camera_t, c2w)).save(case / "trajectory_overlay.png")
+    np.save(case / "depth.npy", depth.astype(np.float16))
+    rows = []
+    for i, path in enumerate(paths):
+        uv, visible = project(path, camera_t, c2w)
+        row = {"trajectory_id": i, "relative_yaw_rad": float(RELATIVE_YAWS[i]), "world_path_xyz": path.tolist(),
+               "image_uv": uv.tolist(), "image_projection_valid": visible.tolist(),
+               "geometry": geometric_features(depth, uv, visible, path)}
+        row.update(label_candidate(sim, path, goal, d0)); rows.append(row)
+    return {"episode_id": eid, "scene_id": scene, "split": split, "current_rgb": str((case / "current_rgb.png").relative_to(out)),
+            "goal_image": str((case / "goal_image.png").relative_to(out)), "trajectory_overlay": str((case / "trajectory_overlay.png").relative_to(out)),
+            "depth": str((case / "depth.npy").relative_to(out)), "camera_world_xyz": camera_t.tolist(), "camera_c2w": c2w.tolist(),
+            "start_xyz": start.tolist(), "goal_xyz_hidden_for_evaluation": goal.tolist(), "initial_geodesic_m": d0, "trajectories": rows}
 
 
 def main() -> None:
@@ -178,9 +175,12 @@ def main() -> None:
         for scene in scenes:
             if args.only_scene and scene != args.only_scene: continue
             rng = np.random.default_rng(args.seed + sum(map(ord, scene)))
-            for episode in range(args.episodes_per_scene):
-                record = save_case(OUT, split, scene, episode, rng)
-                if record is not None: rows.append(record)
+            sim = make_sim(scene); agent = sim.initialize_agent(0)
+            try:
+                for episode in range(args.episodes_per_scene):
+                    record = save_case(OUT, split, scene, episode, rng, sim, agent)
+                    if record is not None: rows.append(record)
+            finally: sim.close()
     (OUT / "dataset_manifest.json").write_text(json.dumps(rows, indent=2) + "\n")
     requests = [{"request_id": r["episode_id"], "goal_image": r["goal_image"], "current_rgb": r["current_rgb"], "trajectory_overlay": r["trajectory_overlay"],
                  "trajectories": [{"trajectory_id": x["trajectory_id"]} for x in r["trajectories"]]} for r in rows]

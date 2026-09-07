@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -43,12 +44,16 @@ def fetch(scene: str, suffix: str) -> dict[str, object]:
     url = f"{MIRROR}/datasets/{REPOSITORY}/resolve/main/train/{scene}/{scene}{suffix}?download=true"
     expected = remote_size(url)
     preexisting = destination.is_file() and destination.stat().st_size == expected
-    if not preexisting:
+    for attempt in range(5):
+        if destination.is_file() and destination.stat().st_size == expected:
+            break
         subprocess.run([
-            "curl", "--location", "--fail", "--retry", "3", "--continue-at", "-",
+            "curl", "--location", "--fail", "--retry", "3", "--retry-all-errors", "--continue-at", "-",
             "--output", str(destination), url,
         ], check=True)
-    if destination.stat().st_size != expected:
+        if destination.stat().st_size != expected:
+            time.sleep(2 + attempt)
+    if not destination.is_file() or destination.stat().st_size != expected:
         raise RuntimeError(f"Incomplete asset: {destination}")
     return {
         "scene_id": scene, "suffix": suffix, "source": f"{MIRROR}/datasets/{REPOSITORY}",
