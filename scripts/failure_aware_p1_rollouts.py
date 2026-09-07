@@ -22,7 +22,7 @@ def reset(agent, record):
 def rollout(sim,agent,record,candidate,max_actions=32):
     reset(agent,record); start=np.asarray(agent.get_state().position,np.float32); endpoint=np.asarray(candidate["executor_endpoint_xyz"],np.float32)
     follower=habitat_sim.GreedyGeodesicFollower(sim.pathfinder,agent,goal_radius=.25)
-    try: actions=follower.find_path(endpoint)
+    try: actions=[action for action in (follower.find_path(endpoint) or []) if action is not None]
     except Exception: actions=[]
     collision=False; length=0.; steps=0
     for action in actions[:max_actions]:
