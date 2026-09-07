@@ -23,7 +23,8 @@ def files():
     return {p.stem: p for p in fs}
 
 def load_feature(p):
-    return np.load(p)["features"].astype(np.float32)
+    x = np.load(p)["features"].astype(np.float32)
+    return x.reshape(x.shape[0], -1, x.shape[-1])
 
 def global_offsets(fs):
     out, n = {}, 0
