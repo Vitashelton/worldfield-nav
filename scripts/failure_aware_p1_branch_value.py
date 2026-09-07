@@ -65,7 +65,7 @@ def load(root: Path):
             np.asarray(progress, np.float32), np.asarray(failure, np.float32), groups, meta)
 
 
-def choose_metrics(groups, meta, values):
+def choose_metrics(groups, meta, values, method):
     per_split = defaultdict(list)
     for record, a, b in groups:
         choice = a + int(np.argmax(values[a:b]))
@@ -81,7 +81,7 @@ def choose_metrics(groups, meta, values):
         })
     rows = []
     for split, values_ in per_split.items():
-        rows.append({"method": "BranchValue", "split": split, "episodes": len(values_),
+        rows.append({"method": method, "split": split, "episodes": len(values_),
                      "ranking_accuracy": np.mean([x["rank_exact"] for x in values_]), "regret_m": np.mean([x["regret"] for x in values_]),
                      "branch_reached_rate": np.mean([x["success"] for x in values_]), "collision_rate": np.mean([x["collision"] for x in values_]),
                      "stuck_rate": np.mean([x["stuck"] for x in values_]), "mean_progress_m": np.mean([x["progress"] for x in values_]),
@@ -109,7 +109,14 @@ def main() -> None:
     with torch.inference_mode():
         lr, lp, lf = model(v, b)
         value = (torch.sigmoid(lr) + 0.35 * lp - 0.75 * torch.sigmoid(lf)).cpu().numpy()
-    rows = choose_metrics(groups, meta, value)
+    # Both non-learned comparators see exactly the same K raw planner branches.
+    # PlannerGeometry only uses observation/proposal-derived geometric features;
+    # Oracle is evaluation-only and ranks by the collected physical outcome.
+    planner = 0.65 * branch[:, 1] + 0.25 * branch[:, 3] - 0.15 * branch[:, 0]
+    oracle = y_reach + 0.35 * y_progress - 0.75 * y_fail
+    rows = (choose_metrics(groups, meta, planner, "Planner Geometry") +
+            choose_metrics(groups, meta, value, "Learned BranchValue") +
+            choose_metrics(groups, meta, oracle, "Outcome Oracle"))
     out = {"parameters": sum(x.numel() for x in model.parameters()), "seconds": time.perf_counter() - started, "metrics": rows,
            "inputs": ["frozen_dinov3_current_goal", "proposal_local_geometry", "candidate_relative_pose", "failure_history_at_rollout"],
            "labels": ["reached", "collision_or_stuck", "normalized_geodesic_progress"]}
