@@ -1,21 +1,27 @@
-# AGENTS.md — ExecField Research Harness
+# AGENTS.md — Trajectory Grounding Research Harness
 
-The active paper is **ExecField: Privileged-Simulation-Trained Executability
-Field for VLM-Guided Image-Goal Navigation**. Read the research contract, model
-specification, benchmark specification and the single active plan before work.
+The active paper is **Trajectory Grounding for VLM-Guided Image-Goal
+Navigation**. The project assembles a testable hierarchical navigation system:
+a conventional local planner proposes physically executable trajectories; a
+frozen VLM supplies low-frequency semantic preference; frozen DINOv3 supplies
+trajectory-to-goal visual matching; and a lightweight learned ranker selects a
+trajectory for a fixed executor.
 
-P0 is completed and passed its oracle-gap gate. The only authorized work is
-P1: static indoor DINOv3-based ExecField. Do not rerun or alter P0, start
-dynamic recovery, real-robot work, API serving, planner changes, or a new
-research phase.
+The source of truth is `docs/RESEARCH_CONTRACT.md`, `docs/MODEL_SPEC.md`,
+`docs/BENCHMARK_SPEC.md`, followed by exactly one plan in
+`docs/exec-plans/active/`. Do not change the task identity, retrain DINOv3/VLM,
+alter the executor, add a new planner, or start real-robot work without a new
+active plan.
 
-VLM provides cached semantic priors only; DINOv3-S/16 is frozen; Habitat-GS
-privileged outcomes supervise ExecField only during training. Candidate
-generation may not use hidden goal direction or NavMesh. NavMesh may create
-labels and evaluate fixed execution only. Never feed oracle labels or hidden
-goal coordinates into online candidate selection.
+P0 ExecField and all WorldFlow/GeoAnchor assets are archived preliminary
+evidence. Do not rerun P0 or include its outdoor-style scenes in the formal
+indoor benchmark. Use only existing verified Habitat-GS assets; do not download
+new scenes or rebuild the environment. Store raw P1 artifacts under
+`outputs/formal/TrajectoryGrounding/P1/` and report-ready assets under
+`paper_assets/`.
 
-Preserve WorldFlow and GeoAnchor assets as archived preliminary work. Place P1
-raw data in `outputs/formal/ExecField/P1/` and publication-ready assets only in
-`paper_assets/`. A task is complete only with reproducible configs, metrics,
-paper assets, a results note and registry update.
+Candidate trajectories must not use hidden final-goal pose/direction or NavMesh
+to select proposals. Privileged Habitat/NavMesh outcomes may form offline
+training/evaluation labels and the fixed executor is shared by every method.
+VLM calls are cache-only; it receives goal/current imagery and a numbered
+trajectory overlay, never geometry oracle values or coordinates.

@@ -77,9 +77,13 @@ future:
     result: docs/results/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
     decision: GO
   ExecField_P1:
-    name: dinov3_static_indoor_executability_benchmark
+    name: archived_dinov3_executability_field_static_plan
+    status: archived_after_trajectory_grounding_refinement
+    archived_plan: docs/exec-plans/archive/execfield_pre_trajectory_grounding/EXECFIELD_P1_DINOV3_STATIC.md
+  TrajectoryGrounding_P1:
+    name: static_indoor_imagegoal_trajectory_grounding
     status: active
-    active_plan: docs/exec-plans/active/EXECFIELD_P1_DINOV3_STATIC.md
+    active_plan: docs/exec-plans/active/TRAJECTORY_GROUNDING_P1_STATIC_INDOOR.md
     source: existing_verified_Habitat_GS_assets_only
     scope: static_indoor_only
     prerequisites:
@@ -87,6 +91,6 @@ future:
     protocol:
       frozen_backbone: timm/vit_small_patch16_dinov3.lvd1689m
       vlm: cached_offline_only
-      candidate_generator: fixed_polar_no_goal_or_navmesh_access
+      candidates: K8_planner_trajectories_no_goal_or_navmesh_access
       labels: Habitat_GS_privileged_training_and_evaluation_only
-      methods: [M0_geometry_only, M1_vlm_only, M2_vlm_handcrafted, M3_dinov3_execfield, M4_oracle]
+      methods: [planner_only, vlm_only, dino_only, planner_vlm, planner_dino, fixed_fusion, learned_ranker, oracle]

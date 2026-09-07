@@ -1,40 +1,29 @@
-# Research Contract — ExecField
+# Research Contract — Trajectory Grounding
 
 ## Working title
 
-**ExecField: Privileged-Simulation-Trained Executability Field for VLM-Guided
+**Trajectory Grounding: Hierarchical VLM and Foundation-Feature Fusion for
 Image-Goal Navigation**
 
 ## Scientific question
 
-VLMs can express semantic navigation intent but cannot reliably determine
-whether a proposed local target is currently reachable, safe, useful for goal
-progress, or likely to fail. Can privileged outcomes from Habitat-GS train a
-robot-centric spatial executability field that calibrates frozen-VLM semantic
-priors and enables recovery when navigability changes?
+How can an indoor robot ground an image-goal's high-level semantic relevance
+into a choice among locally executable planner trajectories without asking a
+VLM to control the robot directly?
 
-## Method identity
+## Fixed system boundary
 
-VLM provides a semantic prior only. Habitat-GS provides training-only privileged
-labels: reachability, geodesic progress, collision/blockage, clearance,
-visibility and recovery outcomes. A lightweight ExecField maps local BEV
-geometry, semantic prior and execution history to spatial reachability,
-progress and failure fields. A conventional navigator executes the selected
-candidate; it is not the contribution.
+`Goal image + current RGB -> frozen DINOv3 and frozen VLM; local planner -> K
+candidate trajectories; DINOv3 corridor matching + VLM semantic scores +
+planner geometry -> lightweight trajectory ranker -> fixed executor.`
 
-## Deployment boundary
+The contribution is a reproducible hierarchical integration and its measured
+benefit, not a new VLM, foundation backbone, local planner, SLAM algorithm, or
+end-to-end controller. Habitat-GS supplies controlled indoor data and
+privileged outcome labels during training/evaluation only.
 
-At test time: goal image -> frozen/cached VLM semantic prior; current RGB-D ->
-local geometry/candidates; ExecField -> selected subgoal; navigation stack ->
-execution. No simulator oracle is available at test time. API calls are cached
-offline for simulation training; real-time API use is a later system demo.
+## Scope
 
-## Evidence required
-
-1. VLM semantic prior beats a semantic-free candidate baseline.
-2. Learned ExecField beats handcrafted feasibility scoring.
-3. ExecField recovery beats no recovery under changing navigability.
-
-Static ImageNav is the core benchmark. Dynamic Gaussian-avatar blockage is a
-separately reported recovery benchmark. GeoAnchor is archived preliminary work,
-not evidence for this paper.
+P1 evaluates static indoor Habitat-GS scene-disjoint train/validation/unseen
+splits. Dynamic interference, recovery, outdoor stress tests and Ranger Mini
+are subsequent, explicitly separate work.
