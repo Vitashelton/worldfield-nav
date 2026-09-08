@@ -1,0 +1,8 @@
+{
+  "task": "Navigate to the place shown by the goal image.",
+  "goal_description": "user supplied goal image",
+  "confirmed_goal_cues": [],
+  "recent_execution": [],
+  "failure_history_summary": "No recent local failure.",
+  "semantic_query_index": 0
+}
