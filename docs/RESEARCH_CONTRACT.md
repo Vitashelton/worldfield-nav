@@ -30,6 +30,23 @@ actions, waypoints, coordinates, candidate rankings, or planner state. The
 continuous local loop remains `candidate generator -> scorer -> fixed
 executor -> failure history -> re-score`.
 
+## Method identity
+
+The paper's learned component is the **Execution Bridge**: a lightweight,
+goal-conditioned branch-value model trained from matched Habitat-GS outcomes
+for the same state and multiple planner proposals.  It predicts whether a
+proposal is worth executing (reach, progress, collision/stuck risk); it does
+not generate a trajectory or replace the planner.  Failure memory is a
+robot-maintained record of rejected/failed proposal directions used by the
+rolling selector to avoid repeating a demonstrated local failure.
+
+The optional **Semantic Intent Bridge** is a product-system interface.  It
+maps an image/language task through a frozen VLM to a structured semantic task
+description once per task or rare semantic ambiguity.  It neither supplies
+physical control nor changes the core P1 benchmark.  Therefore the paper's
+central causal claim is `learned execution bridge > handcrafted geometry
+rules` under identical starts, goals, proposals and executor.
+
 ## Evidence
 
 P0 remains motivation. P1 reports static indoor and scene-disjoint unseen
