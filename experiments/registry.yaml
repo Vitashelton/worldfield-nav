@@ -87,15 +87,21 @@ future:
     retained_assets: outputs/formal/TrajectoryGrounding/P1
   FailureAware_P1:
     name: rolling_failure_aware_subgoal_selection
-    status: active
-    active_plan: docs/exec-plans/active/FAILURE_AWARE_ROLLING_SUBGOAL_P1.md
+    status: archived_after_goalpose_pivot
+    archived_plan: docs/exec-plans/completed/preliminary/FAILURE_AWARE_ROLLING_SUBGOAL_P1.md
     source: existing_verified_Habitat_GS_assets_only
-    scope: static_indoor_only
-    prerequisites:
-      ExecField_P0: completed_go
+    retained_assets: outputs/formal/TrajectoryGrounding/P1
+    reason: >
+      The branch-value outcome model is retained as preliminary infrastructure;
+      semantic target location versus executable task goal pose is now the
+      active paper problem.
+  GoalPose_P0:
+    name: semantic_goal_pose_problem_validation
+    status: active
+    active_plan: docs/exec-plans/active/GOALPOSE_P0.md
+    source: existing_verified_Habitat_GS_indoor_assets_only
     protocol:
       frozen_backbone: timm/vit_small_patch16_dinov3.lvd1689m
-      vlm: cached_offline_only
-      candidates: K8_planner_trajectories_no_goal_or_navmesh_access
-      labels: Habitat_GS_privileged_training_and_evaluation_only
-      methods: [geometry_nav2, vlm_only, vlm_rules, vlm_learned_scorer, oracle]
+      templates: [observe_doorway, approach_doorway, inspect_target, room_entrance]
+      methods: [target_center, nearest_free, clearance_heuristic, goal_pose_field, oracle]
+      semantic_labels: explicitly_curated_not_automatic

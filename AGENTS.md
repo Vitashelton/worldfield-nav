@@ -1,24 +1,55 @@
-# AGENTS.md — Failure-Aware Rolling Subgoal Selection
+# AGENTS.md — Goal-Pose Field Research Harness
 
-The active paper is **Failure-Aware Rolling Subgoal Selection for VLM-Guided
-Indoor Image-Goal Navigation**. Its learned component is a lightweight
-candidate scorer that uses frozen DINOv3 visual features, local geometry,
-candidate pose and execution history to predict short-horizon execution value.
+## Mission
 
-The one active plan governs work. Preserve P0, the 2,520 indoor episodes and
-20,160 candidate trajectories. Do not develop BEV fields, U-Nets,
-trajectory-image grounding, manifold/flow methods or a new planner. The K=8
-generator and fixed executor are shared by all methods. Candidate generation
-may not access final-goal direction or NavMesh; Habitat privileged outcomes
-are labels/evaluation only.
+The active paper studies **VLM-guided semantic goal-pose refinement for indoor
+mobile robot navigation**. The central distinction is between a semantic target
+location and an executable, task-appropriate robot goal pose `q=(x,y,theta)`.
+This project does not propose a new SLAM system, Nav2 planner, end-to-end VLA
+controller, world model or generic ImageNav benchmark.
 
-VLM is a task-level semantic interface, not a candidate trajectory controller.
-For standard ImageNav, the goal image conditions DINO directly and the P1
-benchmark makes no VLM API call. When an optional user language/ambiguous-image
-task needs semantic parsing, a VLM may run once at task start (or at a rare
-semantic ambiguity/recovery event) and return structured constraints only;
-it must never output coordinates, waypoints, actions, trajectories, NavMesh
-information, or candidate rankings. That result is cacheable per user task,
-not per simulator decision state. Dynamic ImageNav recovery follows static and
-unseen results; Ranger logging records only recoverable abort/costmap cases and
-does not authorize robot control.
+## Source of truth
+
+Read, in order: this file; `docs/RESEARCH_CONTRACT.md`; `docs/MODEL_SPEC.md`;
+`docs/BENCHMARK_SPEC.md`; and the single plan in `docs/exec-plans/active/`.
+If an implementation conflicts with them, stop and report the conflict.
+
+## System boundary
+
+Frozen VLM parses a user request into a bounded task/approach template. It does
+not output metric coordinates, waypoints, trajectories, NavMesh data, planner
+parameters or controls.
+
+Frozen DINOv3-S/16 supplies dense visual evidence between goal/current images.
+It is not a global-localization oracle and is never trained here.
+
+Depth/LiDAR/pose/costmap provide reachability, free space, clearance and metric
+coordinates. Goal-Pose Field ranks feasible poses around a semantic target
+using task-conditioned approach, visibility and geometric executability. Nav2
+or the Habitat agent executes the selected pose and is not a contribution.
+
+## Runtime and data policy
+
+Project root: `/root/autodl-tmp/worldfield_nav`. Reuse installed Habitat-GS,
+DINOv3, downloaded scene assets and prior outputs. Do not reinstall PyTorch,
+CUDA or Habitat-GS, rebuild extensions, or audit the environment broadly.
+
+Habitat-GS is used for controlled geometry, rendering, NavMesh evaluation and
+dynamic-avatar stress tests. Its outputs are not proof of real-robot transfer;
+Ranger evaluation is required for any transfer claim. Do not fabricate semantic
+labels: curated target anchors must be recorded as curated.
+
+## Evaluation standard
+
+Every formal method shares target hypotheses, candidate-pose lattice, geometry,
+executor and episodes. Compare target-center, nearest-free, clearance heuristic,
+Goal-Pose Field and evaluation-only oracle. Report executable/reachable goal
+rate, clearance, target visibility, task-relation satisfaction, SR/SPL, path
+length, final position and orientation errors, separately for seen/unseen.
+
+## Status and stopping
+
+WorldFlow, GeoAnchor, ExecField, TrajectoryGrounding and Failure-Aware P1 are
+preliminary/reusable infrastructure only. Do not rerun or extend them. The sole
+authorized task is the active Goal-Pose Field plan. When it passes, write
+results, update registry, archive the plan and stop.
