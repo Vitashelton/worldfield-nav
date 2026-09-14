@@ -10,7 +10,10 @@ Arrival-only execution reports nominal completion even when the relation predica
 
 - `paper_assets/tables/relationnav_pilot_summary.csv`
 - `paper_assets/figures/relationnav_pilot_results.png`
+- `paper_assets/figures/relationnav_pilot_story_figure.png`
+- `paper_assets/figures/relationnav_qualitative_storyboard.png`
 - `paper_assets/figures/relationnav_episode_completion_matrix.png`
 - `paper_assets/videos/relationnav_habitat_pilot.mp4`
+- `paper_assets/videos/relationnav_execution_story.mp4`
 
 The shallow boundary realization used by this pilot is a diagnostic stress protocol; it must not be presented as the final paper benchmark without scene-scale automatic generation and an executor protocol review.
