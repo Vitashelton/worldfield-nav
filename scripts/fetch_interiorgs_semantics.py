@@ -11,7 +11,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCENE_ROOT = ROOT / "data/scene_datasets/gs_scenes"
 OUT = ROOT / "data/interiorgs_semantics"
-BASE = "https://hf-mirror.com/datasets/spatialverse/InteriorGS/resolve/main"
+# Gated repositories must be downloaded from the official endpoint because
+# third-party mirrors are not guaranteed to forward authorization headers.
+BASE = os.environ.get(
+    "INTERIORGS_ENDPOINT",
+    "https://huggingface.co/datasets/spatialverse/InteriorGS/resolve/main",
+).rstrip("/")
 FILES = ("labels.json", "occupancy.json", "structure.json")
 
 
