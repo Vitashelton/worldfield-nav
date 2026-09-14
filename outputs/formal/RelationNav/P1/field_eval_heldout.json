@@ -1,0 +1,2758 @@
+[
+  {
+    "episode_id": "interior_0405_840145_0000",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5457582473754883,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6627509593963623,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.9012642502784729,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 5,
+        "score": 0.2909688949584961,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0001",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.4943411946296692,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9791368246078491,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6486477255821228,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0002",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.4886884391307831,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.8408397436141968,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.16526146233081818,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0003",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 2,
+        "score": 0.022979456931352615,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.7132598757743835,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07455844432115555,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0004",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.823083758354187,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6719434857368469,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6080163717269897,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0005",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5690884590148926,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6087458729743958,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0743412971496582,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0006",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.49352869391441345,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8890208005905151,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6985312104225159,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0007",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.7629144787788391,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5257863402366638,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8649645447731018,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0008",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.507581353187561,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5439486503601074,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.05873720347881317,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0009",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5182148218154907,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.8240179419517517,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8207910060882568,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 2,
+        "score": 0.3319608271121979,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0010",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.46928444504737854,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 2,
+        "score": 0.37585094571113586,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07853718847036362,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 7,
+        "score": 0.25491517782211304,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0011",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.439431756734848,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9586647748947144,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8409165740013123,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0012",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.6335527896881104,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.9847347736358643,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.1337522715330124,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0013",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.507677435874939,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9565634727478027,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6253253817558289,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0014",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5993279218673706,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.9420060515403748,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7603924870491028,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0015",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.9857960939407349,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.7028948664665222,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.06035228073596954,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0016",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.822543203830719,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.48811593651771545,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.06410036981105804,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0017",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.7434990406036377,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9613057971000671,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7930342555046082,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0018",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5038294792175293,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.8316401839256287,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8944368958473206,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0019",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.7377364635467529,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8126652836799622,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.17142172157764435,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 5,
+        "score": 0.20280764997005463,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0020",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.46605437994003296,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 2,
+        "score": 0.3632792532444,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07137580960988998,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0021",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.7036868929862976,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6219512820243835,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.653477668762207,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0022",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.530998706817627,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8880481123924255,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8389875888824463,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0023",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.6865670084953308,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7340086698532104,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0683739185333252,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0024",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.3148097097873688,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8228451609611511,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07063716650009155,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0025",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5155170559883118,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7882921695709229,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8770819902420044,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0026",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.6230178475379944,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8174020051956177,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.15424443781375885,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0027",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.6326292157173157,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5675107836723328,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.05404409021139145,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0028",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5202445387840271,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6345117092132568,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 2,
+        "score": 0.3158792555332184,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0029",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.522575318813324,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.39517131447792053,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.042530737817287445,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0030",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9459137320518494,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 2,
+        "score": 0.4639836847782135,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.485370397567749,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0031",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.611728310585022,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.5151563286781311,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8014748692512512,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0032",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.39531975984573364,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.5311692357063293,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.12370903789997101,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0033",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.7603892683982849,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5808842182159424,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.03660942241549492,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0034",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.6307365298271179,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5465776920318604,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.5274471044540405,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0035",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.9123178720474243,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.944470226764679,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6955479383468628,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0036",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5263686180114746,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.9794008135795593,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6323869228363037,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0037",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.7735357880592346,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.6415891647338867,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.06874432414770126,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0038",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5203155875205994,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.44215238094329834,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8055823445320129,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0039",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.5450081825256348,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6285533905029297,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.3767630457878113,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0040",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5068998336791992,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6469181776046753,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8709469437599182,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0041",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5079081654548645,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5671631097793579,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8558696508407593,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0042",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5795220136642456,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6589987277984619,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.059824250638484955,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0043",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5157057642936707,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.4416656494140625,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07679510116577148,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 6,
+        "score": 0.766994833946228,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0044",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9066604375839233,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.742344319820404,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.3834565281867981,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0045",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5177226662635803,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.490215003490448,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07394872605800629,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0046",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5661943554878235,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5972281694412231,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.841251790523529,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0047",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5278677940368652,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6076842546463013,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07166409492492676,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0048",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5090687870979309,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.9423693418502808,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7323024868965149,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0049",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.500023603439331,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5453450083732605,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.05019187927246094,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0050",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5133424997329712,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5139447450637817,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8606576323509216,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0051",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5611397624015808,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.36003804206848145,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0445643812417984,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0052",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5122482180595398,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 2,
+        "score": 0.39006099104881287,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.5643156170845032,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0053",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5745226144790649,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8432137966156006,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.08908973634243011,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0054",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5026388764381409,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7393254041671753,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8730619549751282,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0055",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.43321433663368225,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5078790187835693,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8350471258163452,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0056",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5702086091041565,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9791526198387146,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.0992371141910553,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0057",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.8916213512420654,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9299609661102295,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.026662928983569145,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0058",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5000770092010498,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5902401804924011,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8076009154319763,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0059",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5435305833816528,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5926356315612793,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.4436911642551422,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0060",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9125879406929016,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6186115741729736,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.056752707809209824,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0061",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5270916223526001,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.36204004287719727,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07967782020568848,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0062",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.516399085521698,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6491274833679199,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7331838011741638,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0063",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.4704485237598419,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6008475422859192,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.6912791728973389,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0064",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9124335050582886,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.9303553700447083,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.191927969455719,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0065",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.781148374080658,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5034007430076599,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.9005120396614075,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0066",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5053601861000061,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6038742065429688,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 2,
+        "score": 0.39813312888145447,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0067",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5642764568328857,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7117563486099243,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.09576047211885452,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0068",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.4676876366138458,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9802809357643127,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.4085025489330292,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 2,
+        "score": 0.05080858990550041,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0069",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.8222262859344482,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.883539080619812,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0589362196624279,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0070",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5032492280006409,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9701216816902161,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.79715895652771,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0071",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9480214715003967,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.7805966734886169,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.03474343195557594,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0072",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.869896650314331,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.5028774738311768,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.08128047734498978,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0073",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.6408599019050598,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.716016948223114,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.18486493825912476,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0074",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9135560393333435,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6515410542488098,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.05798635631799698,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0075",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5244205594062805,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7978737950325012,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8660315871238708,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0076",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5195143818855286,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.36536920070648193,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8973414301872253,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0077",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.9034070372581482,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7236006855964661,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.09273891150951385,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0078",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5194647908210754,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.987747073173523,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7446863055229187,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0079",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.03086972050368786,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.8129416704177856,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07563314586877823,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0080",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.6762344837188721,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.7841951251029968,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.831568717956543,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0081",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5358257293701172,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7089231014251709,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0868227481842041,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0082",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5429748892784119,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6388609409332275,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07620455324649811,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0083",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5224543213844299,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7148488163948059,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 3,
+        "score": 0.1420583873987198,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0084",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5174837708473206,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7153237462043762,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.11614889651536942,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 7,
+        "score": 0.21059150993824005,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0085",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.9713584780693054,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6872177124023438,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.4127374589443207,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0086",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5445452332496643,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5467181205749512,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07726877927780151,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0087",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5800891518592834,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7162057161331177,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.15563181042671204,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "OBSERVE",
+        "candidate": 7,
+        "score": 0.4278886318206787,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0088",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5350399017333984,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.43148335814476013,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.09307539463043213,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0089",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5778985619544983,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6129230260848999,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8243141174316406,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0090",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.5979152917861938,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6760780215263367,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.057563550770282745,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0091",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5054641962051392,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.9768096804618835,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.11736190319061279,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0092",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.6222995519638062,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.9546566605567932,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.014982898719608784,
+        "arrival": true,
+        "relation_done": true
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0093",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5726953744888306,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.7099214792251587,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.06029178947210312,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0094",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 4,
+        "score": 0.5887327194213867,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6202090978622437,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.767959713935852,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0095",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 6,
+        "score": 0.9663451313972473,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 5,
+        "score": 0.6670234203338623,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.07294873893260956,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0096",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.4354146122932434,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.5315065383911133,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 7,
+        "score": 0.0490899458527565,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0097",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5117177367210388,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 4,
+        "score": 0.6165043115615845,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.8011537790298462,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0098",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.5401538014411926,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 3,
+        "score": 0.7539459466934204,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.7515038251876831,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  },
+  {
+    "episode_id": "interior_0405_840145_0099",
+    "task_success": false,
+    "stages": [
+      {
+        "relation": "APPROACH",
+        "candidate": 5,
+        "score": 0.6026079058647156,
+        "arrival": true,
+        "relation_done": true
+      },
+      {
+        "relation": "CROSS",
+        "candidate": 7,
+        "score": 0.43749263882637024,
+        "arrival": true,
+        "relation_done": false
+      },
+      {
+        "relation": "ENTER",
+        "candidate": 5,
+        "score": 0.3758699297904968,
+        "arrival": true,
+        "relation_done": false
+      }
+    ]
+  }
+]
