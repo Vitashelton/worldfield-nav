@@ -133,9 +133,12 @@ def sample_start(sim, portal: dict, first: np.ndarray, rng: np.random.Generator)
     return None
 
 
-def save_decision(base: Path, sim, agent, episode_id: str, phase_index: int, current: np.ndarray, target: np.ndarray, phase: dict) -> dict:
-    direction = target - current
-    yaw = math.atan2(float(-direction[0]), float(-direction[2]))
+def save_decision(base: Path, sim, agent, episode_id: str, phase_index: int, current: np.ndarray, yaw: float, target: np.ndarray, phase: dict) -> dict:
+    """Save an online observation.
+
+    ``yaw`` comes from an initial random heading or the *previous* executed
+    segment.  It must never be derived from this phase's privileged target.
+    """
     rgb, depth, camera, c2w = render(sim, agent, current, yaw_rotation(yaw))
     paths = propose(camera, c2w)
     root = base / "decisions" / episode_id; root.mkdir(parents=True, exist_ok=True)
@@ -147,7 +150,7 @@ def save_decision(base: Path, sim, agent, episode_id: str, phase_index: int, cur
             "current_xyz": current.tolist(), "rgb": str((root / f"{stem}_rgb.png").relative_to(base)),
             "depth": str((root / f"{stem}_depth.npy").relative_to(base)),
             "candidate_overlay": str((root / f"{stem}_candidates.png").relative_to(base)),
-            "camera_xyz": camera.tolist(), "camera_c2w": c2w.tolist(),
+            "camera_xyz": camera.tolist(), "camera_c2w": c2w.tolist(), "camera_yaw_rad": float(yaw),
             "candidate_paths_goal_independent": [x.tolist() for x in paths],
             "target_xyz_privileged_for_supervision": target.tolist(), "completion_guard": phase["guard"]}
 
@@ -166,12 +169,18 @@ def generate_scene(scene: str, split: str, episodes: int, seed: int, entities: l
                 if start is not None: break
             else: continue
             eid = f"{scene}_{e:04d}"; current = start; decisions=[]; phase_success=[]
+            # Initial heading is deterministic per episode and independent of
+            # the hidden relation target.  Later headings are executor output.
+            heading = float(rng.uniform(-math.pi, math.pi))
             for i, phase in enumerate(phases):
                 target=np.asarray(phase["target_xyz_privileged"],np.float32)
-                decisions.append(save_decision(out, sim, agent, eid, i, current, target, phase))
+                decisions.append(save_decision(out, sim, agent, eid, i, current, heading, target, phase))
                 reachable,d=shortest(sim,current,target)
                 ok=bool(reachable and np.isfinite(d))
-                if ok: current=target
+                if ok:
+                    delta = target - current
+                    heading = math.atan2(float(-delta[0]), float(-delta[2]))
+                    current=target
                 phase_success.append(ok)
             rows.append({"episode_id":eid,"scene_id":scene,"split":split,"seed":seed,"start_xyz":start.tolist(),
                          "entities":{"portal":portal["entity_id"],"area":area["entity_id"],"landmark":landmark["entity_id"]},
