@@ -44,3 +44,10 @@ algorithm on a small held-out physical set, not a large training dataset.
 The claim is supported only if Goal-Pose Field improves task-appropriate,
 executable arrivals over target-center and standard geometric refinements in
 seen and scene-disjoint unseen indoor scenes, then in controlled Ranger tests.
+
+The formal Habitat-GS evidence is a multi-stage indoor transport task: the
+same high-level goal intent is retained while the robot successively traverses
+spatial phases such as corridor approach, doorway crossing, room entry and
+final target observation. At each phase boundary the system must select a new
+local executable terminal pose. The paper evaluates complete-task success and
+phase handoff quality, not a collection of independent static selections.
