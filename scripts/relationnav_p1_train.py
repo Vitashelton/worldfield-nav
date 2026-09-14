@@ -112,7 +112,8 @@ def evaluate(model, rows, anns, cache, indices, device):
         for at in range(0,len(indices),32):
             x,y=batch_maps(rows,anns,cache,indices[at:at+32],device); p=torch.sigmoid(model(x)); pred=p>.5
             inter=(pred&y.bool()).sum((1,2,3)).float(); union=(pred|y.bool()).sum((1,2,3)).float().clamp_min(1); recall=inter/y.sum((1,2,3)).clamp_min(1)
-            vals += list(zip((inter/union).cpu().tolist(),recall.cpu().tolist(),F.binary_cross_entropy(p,y).mean((1,2,3)).cpu().tolist()))
+            per_sample_bce=F.binary_cross_entropy(p,y,reduction="none").mean((1,2,3))
+            vals += list(zip((inter/union).cpu().tolist(),recall.cpu().tolist(),per_sample_bce.cpu().tolist()))
     a=np.asarray(vals);return {"field_iou":float(a[:,0].mean()),"field_recall":float(a[:,1].mean()),"bce":float(a[:,2].mean()),"samples":len(indices)}
 
 
