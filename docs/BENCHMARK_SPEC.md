@@ -16,17 +16,17 @@ episodes. Candidate generation is independent of hidden final goals.
 
 ## Methods
 
-B0 fixed geometric portal offset; B1 nearest navigable entity-neighborhood
-point; B2 VLM direct candidate choice; B3 geometry-only relation grounding;
-Ours learned relation-conditioned field with transition verification and
-relation-preserving recovery; Oracle is evaluation only.
+B0 Arrival-only advances on executor goal arrival. B1 Same-goal retry retries
+the failed realization without semantic verification. B2 Relation-verified
+advances only after the declared predicate is true. Ours Relation-verified plus
+relation-preserving recovery reselects another admissible realization while
+retaining the same relation. Oracle is evaluation only.
 
 ## Metrics
 
-Field: region IoU, region recall and selected-cell validity.
-
 Relation: relation satisfaction, portal side-transition correctness, completion
-guard precision/recall, wrong-phase transition and recovery success.
+guard precision/recall, false-completion rate, wrong-phase transition and
+recovery success.
 
 Task: full task success, phase completion, SPL, final DTG, path length,
 collision, timeout, repeated failure and decision count. Report bootstrap

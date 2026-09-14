@@ -1,32 +1,29 @@
-# Model Specification — Relation-Conditioned Spatial Goal Field
+# Model Specification — Relation Execution Contract
 
-## Inputs
+## Contract
 
-The state contains entity evidence, relation, phase, observed local geometry,
-history and latest navigation event. Relations are APPROACH, CROSS, ENTER and
+For a stage ``(entity, relation)``, the system stores an ordinary admissible
+goal region, a relation-specific completion predicate, failure predicates and
+a relation-preserving recovery rule. Relations are APPROACH, CROSS, ENTER and
 OBSERVE. Entity evidence is an upstream visual hypothesis or curated simulator
 anchor, never hidden world coordinates at inference.
 
-Inputs are frozen DINOv3 dense features, aligned RGB-D/LiDAR metric lifting,
-relation token, entity visual evidence and history channels.
+Inputs to verification are robot pose, observed RGB-D/geometry, the declared
+entity geometry and the latest navigation event. Frozen DINOv3 may support an
+upstream entity observation interface, but it is not trained or used to
+hallucinate a relation field.
 
-## Learned field
+## Completion predicates
 
-Geometry-aware lifting projects frozen visual features and depth into a
-robot-centric grid. A lightweight relation-conditioned spatial decoder predicts
-a dense executable target field. The relation token modulates the decoder; no
-VLM, DINO backbone or planner is trained. Trainable parameters must remain
-below 5M.
-
-## Supervision
-
-Offline curated portal planes, area anchors, landmark anchors and NavMesh
-define relation-goal masks. APPROACH uses source-side approach cells; CROSS
-uses destination-side cells; ENTER uses cells inside a target area; OBSERVE
-uses cells with required landmark visibility. Dense BCE/Dice supervises masks.
+``APPROACH`` validates source-side portal-neighborhood condition. ``CROSS``
+validates a source-to-destination signed portal-side transition. ``ENTER``
+validates containment in the target area. ``OBSERVE`` validates target
+visibility in current camera geometry. A distance threshold alone cannot
+advance a task phase.
 
 ## Transition and recovery
 
-CROSS uses signed portal-side relation before/after execution as its completion
-guard. Failure retains entity/relation, adds failed local regions to history
-and re-queries the field. The controller never emits low-level controls.
+Failure retains entity/relation and records the failed candidate/route. Recovery
+selects another permissible goal realization but cannot advance, replace or
+reinterpret the high-level relation. The controller never emits low-level
+controls.
