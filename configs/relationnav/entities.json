@@ -371,23 +371,23 @@
       },
       "area_polygon_xz": [
         [
-          -7.0,
-          5.5
+          1.0,
+          4.1
         ],
         [
-          -4.5,
-          5.5
+          3.5,
+          4.1
         ],
         [
-          -4.5,
-          8.5
+          3.5,
+          5.8
         ],
         [
-          -7.0,
-          8.5
+          1.0,
+          5.8
         ]
       ],
-      "rationale": "Curated gallery observation region adjacent to the reviewed artwork."
+      "rationale": "Curated destination-side gallery entry region immediately beyond the reviewed corridor transition."
     }
   ]
 }

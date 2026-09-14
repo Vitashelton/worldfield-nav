@@ -127,7 +127,7 @@ def phase_rows(sim, agent, portal: dict, area: dict, landmark: dict, rng: np.ran
     # The contract permits three-to-four phases.  A scene is not discarded
     # merely because the curated target is not visible from the portal's
     # destination side; that fact is recorded by omitting OBSERVE.
-    if observe is not None:
+    if observe is not None and path_ok(sim, enter, observe, 0.0, 5.8):
         phases.append({"relation": "OBSERVE", "entity_id": landmark["entity_id"], "target_xyz_privileged": observe.tolist(), "guard": "landmark_visible"})
     return phases
 
