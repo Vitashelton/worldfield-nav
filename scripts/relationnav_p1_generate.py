@@ -91,6 +91,8 @@ def visible_target(sim, agent, position: np.ndarray, landmark: dict) -> bool:
 
 def anchor_camera_xz(entity: dict) -> np.ndarray:
     """Reference viewing position is an offline OBSERVE label, not inference."""
+    if "reference_observer_xz" in entity:
+        return np.asarray(entity["reference_observer_xz"], np.float32)
     aid=entity["visual_anchor"]["anchor_view_id"]; scene=entity["scene_id"]
     src=ROOT/"outputs/formal/GoalPose/P0/anchor_views"/f"anchor_view_candidates_{scene}.jsonl"
     for line in src.read_text().splitlines():
@@ -117,13 +119,17 @@ def phase_rows(sim, agent, portal: dict, area: dict, landmark: dict, rng: np.ran
     enter = pick_area_target(sim, area, rng)
     if approach is None or cross is None or enter is None: return None
     observe = pick_observe_target(sim, agent, landmark, enter, rng)
-    if observe is None: return None
-    return [
+    phases = [
         {"relation": "APPROACH", "entity_id": portal["entity_id"], "target_xyz_privileged": approach.tolist(), "guard": "source_portal_neighborhood"},
         {"relation": "CROSS", "entity_id": portal["entity_id"], "target_xyz_privileged": cross.tolist(), "guard": "signed_portal_side_change"},
         {"relation": "ENTER", "entity_id": area["entity_id"], "target_xyz_privileged": enter.tolist(), "guard": "inside_area_polygon"},
-        {"relation": "OBSERVE", "entity_id": landmark["entity_id"], "target_xyz_privileged": observe.tolist(), "guard": "landmark_visible"},
     ]
+    # The contract permits three-to-four phases.  A scene is not discarded
+    # merely because the curated target is not visible from the portal's
+    # destination side; that fact is recorded by omitting OBSERVE.
+    if observe is not None:
+        phases.append({"relation": "OBSERVE", "entity_id": landmark["entity_id"], "target_xyz_privileged": observe.tolist(), "guard": "landmark_visible"})
+    return phases
 
 
 def relation_label(portal: dict, area: dict, landmark: dict, relation: str, q: np.ndarray, sim, agent) -> bool:

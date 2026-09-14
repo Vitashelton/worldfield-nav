@@ -52,6 +52,7 @@ def point_poly(x,z,poly):
 
 
 def observer_xz(entity):
+    if "reference_observer_xz" in entity: return entity["reference_observer_xz"]
     aid=entity["visual_anchor"]["anchor_view_id"]; scene=entity["scene_id"]
     src=ROOT/"outputs/formal/GoalPose/P0/anchor_views"/f"anchor_view_candidates_{scene}.jsonl"
     for line in src.read_text().splitlines():

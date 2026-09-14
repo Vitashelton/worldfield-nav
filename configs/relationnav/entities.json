@@ -28,6 +28,7 @@
         "depth": "P0/anchor_views/interior_0405_840145_0000/view_08_depth.npy"
       },
       "rationale": "Curated visual landmark: laboratory desk/display region visible through the interior doorway."
+      ,"reference_observer_xz": [-9.8, -3.5]
     },
     {
       "entity_id": "arch_lounge_0135",
@@ -253,23 +254,23 @@
       },
       "area_polygon_xz": [
         [
-          -6.3,
-          -2.0
+          -11.1,
+          -4.8
         ],
         [
-          -3.9,
-          -2.0
+          -8.6,
+          -4.8
         ],
         [
-          -3.9,
-          0.4
+          -8.6,
+          -2.4
         ],
         [
-          -6.3,
-          0.4
+          -11.1,
+          -2.4
         ]
       ],
-      "rationale": "Curated office-side navigable region adjacent to the reviewed interior doorway."
+      "rationale": "Curated destination-side office region immediately beyond the reviewed interior doorway."
     },
     {
       "entity_id": "lounge_area_0135",
