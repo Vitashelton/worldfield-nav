@@ -1,34 +1,33 @@
-# Goal-Pose Field Benchmark
+# RelationNav Benchmark Specification
 
-Each curated case has a goal image, semantic target anchor, bounded approach
-template, robot start pose and hidden evaluation target pose/area. Anchors and
-templates are explicitly curated, never described as automatic labels.
+## Assets and split
 
-P0 reuses verified indoor scenes and a small curated set. It is retained as a
-mechanism/motivation study only. Formal expansion uses deterministic,
-scene-disjoint multi-stage indoor transport episodes. A single high-level
-intent persists across corridor, doorway, room-entry and final-observation
-phases; a local goal pose is recomputed only at phase boundaries.
+Use interior_0405_840145, interior_0135_840032, interior_0121_840013 and
+interior_0093_839966. Curate three to six portal, area or landmark entities
+per scene with visual anchors and geometric annotations. Use three scenes for
+development and one held out. This is a custom benchmark, not a public one.
 
-Methods: M0 target center; M1 target plus nearest free cell; M2 target plus
-clearance/reachability heuristic; M3 Task-Conditioned Goal-Pose Field; M4
-evaluation-only privileged oracle. All share target hypothesis, lattice,
-executor, footprint and termination.
+## Episodes
 
-At terminal-pose level report valid-goal rate, reachability, selected-pose
-clearance, target visibility, standoff error, heading error and task-relation
-satisfaction. At phase level report phase success, handoff success,
-wrong-terminal-pose rate, collision and timeout. At task level report complete
-transport success, SPL, normalized geodesic progress, final DTG, path length,
-replan count and execution time. Report scene-disjoint seen/unseen results,
-episode-level outcome matrices and bootstrap 95% confidence intervals.
+Each deterministic episode contains three or four phases: APPROACH portal,
+CROSS portal, ENTER target area, and optionally OBSERVE landmark. Generate
+multiple source sides and starts per entity; target at least 300 closed-loop
+episodes. Candidate generation is independent of hidden final goals.
 
-Candidate ranking at deployment may use only depth/LiDAR/pose-derived local
-geometry, VLM task intent, frozen visual evidence and execution history.
-NavMesh/hidden target poses may label or evaluate simulation outcomes but may
-not choose a deployed candidate.
+## Methods
 
-P0 must show at least three indoor cases where center/nearest-free selection is
-executable-poor or task-inappropriate while a field-selected pose is objectively
-executable and task-satisfying. If this requires fabricated annotations or
-privileged deployment input, stop.
+B0 fixed geometric portal offset; B1 nearest navigable entity-neighborhood
+point; B2 VLM direct candidate choice; B3 geometry-only relation grounding;
+Ours learned relation-conditioned field with transition verification and
+relation-preserving recovery; Oracle is evaluation only.
+
+## Metrics
+
+Field: region IoU, region recall and selected-cell validity.
+
+Relation: relation satisfaction, portal side-transition correctness, completion
+guard precision/recall, wrong-phase transition and recovery success.
+
+Task: full task success, phase completion, SPL, final DTG, path length,
+collision, timeout, repeated failure and decision count. Report bootstrap
+confidence intervals and held-out scene results.

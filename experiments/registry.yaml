@@ -111,10 +111,20 @@ future:
       It is not paper-level navigation evidence.
   GoalPose_P1:
     name: multistage_indoor_transport_goalpose_benchmark
-    status: active
-    active_plan: docs/exec-plans/active/GOALPOSE_P1_MULTISTAGE_HABITAT.md
+    status: archived_after_relationnav_pivot
+    archived_plan: docs/exec-plans/completed/preliminary/GOALPOSE_P1_MULTISTAGE_HABITAT.md
     source: existing_verified_Habitat_GS_indoor_assets_only
     protocol:
       semantic_intent: cached_low_frequency_vlm_template_only
       candidate_geometry: observed_depth_lidar_pose_only
       navmesh: evaluation_only
+  RelationNav_P1:
+    name: task_relation_grounded_spatial_transition_navigation
+    status: active
+    active_plan: docs/exec-plans/active/RELATIONNAV_P1.md
+    source: four_audited_InteriorGS_scenes_only
+    protocol:
+      relations: [APPROACH, CROSS, ENTER, OBSERVE]
+      geometry: RGB-D_lidar_pose_observed_only
+      supervision: curated_entity_annotations_plus_offline_navmesh
+      dynamic_indoor: unavailable_with_current_assets

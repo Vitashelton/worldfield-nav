@@ -1,71 +1,44 @@
-# Research Contract — Goal-Pose Field
+# Research Contract — RelationNav
 
 ## Working title
 
-**Vision-Language-Guided Semantic Goal-Pose Refinement for Mobile Robot Navigation**
+**RelationNav: Task-Relation-Grounded Spatial Transition Navigation for Indoor Mobile Robots**
 
 ## Scientific question
 
-After a robot identifies a semantic target, how can it select an executable,
-safe and task-appropriate robot goal pose rather than navigate to the target's
-estimated geometric center?
+Given a known spatial entity and active task relation, can a robot predict an
+executable local target region, verify the intended spatial transition after
+execution, and recover while preserving the same entity-relation intent?
 
-## Boundary
+Semantic entity plus task relation implies an executable spatial goal region,
+not one fixed coordinate.
 
-This is not generic ImageNav, language-to-object localization, SLAM, a new
-planner, planner-parameter tuning, end-to-end VLA control or simulator-only
-outcome learning. A target center can lie inside furniture, behind a door or
-inside an elevator; the robot instead needs a valid approach pose `q=(x,y,theta)`.
+## Task
 
-## Core computation
+A task contains nodes such as APPROACH(portal), CROSS(portal), ENTER(area) and
+OBSERVE(landmark). Each has an entity, relation, region-level completion guard
+and event-conditioned transition. CROSS completes only after the robot changes
+from the source side of a portal plane to its destination side.
 
-Frozen VLM maps goal image and optional language to a bounded task/approach
-template. Frozen DINOv3 maps goal/current RGB to visual target evidence.
-Depth, LiDAR and pose give a metric target hypothesis and local geometry. A
-candidate-pose lattice is scored by Goal-Pose Field `E(x,y,theta)` and its best
-pose is sent to the fixed Nav2 executor.
+## Method
 
-The field combines physical freedom/reachability, clearance, target visibility,
-task-conditioned standoff/orientation and target-hypothesis uncertainty.
-
-## Structured task-state management
-
-The deployed system maintains an explicit task state S_t containing a
-persistent image/task goal, qualitative semantic constraints, a discrete
-spatial phase, planner-generated candidate goals, failure/visit history, and
-the latest observable navigation event. The phase is one of approach, doorway
-crossing, room entry, final observation, or recovery.
-
-At a phase boundary the local planner regenerates executable candidate poses;
-GoalPose ranks them under the current phase constraints. Arrival, target
-visibility, insufficient progress, collision/abort and newly blocked space are
-observable events. They cause either a verified phase completion, candidate
-suppression and re-selection, or recovery-state transition. The high-level
-goal intent is preserved across these transitions.
+RelationNav predicts a local relation-goal field from entity visual evidence,
+relation, RGB-D geometry, pose and history. A fixed planner executes the
+selected local goal. Arrival, relation verification, collision, blockage and
+no-progress update task state. Failure retains the entity and relation,
+suppresses failed choices and re-grounds a replacement region.
 
 ## Roles
 
-The VLM outputs only a bounded template (`observe_doorway`, `approach_doorway`,
-`wait_at_elevator`, `inspect_target`), never coordinates/actions/trajectories.
-DINOv3-S/16 is frozen visual evidence, not text semantics, metric geometry or
-reliable global localization.
-
-The VLM is an interchangeable low-frequency intent interface, not the claimed
-planning algorithm or the source of geometric correctness.
-
-Habitat-GS supplies controlled NavMesh, visibility and clearance evaluation. It
-does not provide real-robot truth. Ranger Mini later validates the frozen
-algorithm on a small held-out physical set, not a large training dataset.
+VLM is a low-frequency intent interface. DINOv3 is frozen visual evidence.
+Depth/LiDAR/pose give geometry. RelationNav is the only learned method; the
+planner is fixed. Habitat-GS provides privileged labels and evaluation, not
+real-world transfer proof.
 
 ## Evidence
 
-The claim is supported only if Goal-Pose Field improves task-appropriate,
-executable arrivals over target-center and standard geometric refinements in
-seen and scene-disjoint unseen indoor scenes, then in controlled Ranger tests.
-
-The formal Habitat-GS evidence is a multi-stage indoor transport task: the
-same high-level goal intent is retained while the robot successively traverses
-spatial phases such as corridor approach, doorway crossing, room entry and
-final target observation. At each phase boundary the system must select a new
-local executable terminal pose. The paper evaluates complete-task success and
-phase handoff quality, not a collection of independent static selections.
+Compare fixed portal offsets, nearest-free goals, VLM direct candidate choice,
+geometry-only grounding, RelationNav and evaluation-only oracle on identical
+scene-disjoint multi-stage episodes. Report region prediction, relation
+verification, complete task success and relation-preserving recovery. Ranger
+Mini later provides small physical feasibility validation.
