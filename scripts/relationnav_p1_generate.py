@@ -221,7 +221,12 @@ def main():
     for split,scenes in SPLIT.items():
         for scene in scenes:
             if args.only_scene and args.only_scene != scene: continue
-            rows += generate_scene(scene,split,args.episodes_per_scene,args.seed,anns,out)
+            scene_rows = generate_scene(scene,split,args.episodes_per_scene,args.seed,anns,out)
+            # Persist each deterministic scene result independently. A slow or
+            # infeasible scene can never erase already completed splits.
+            per_scene = out / "scene_manifests"; per_scene.mkdir(exist_ok=True)
+            (per_scene / f"{scene}.json").write_text(json.dumps(scene_rows, indent=2) + "\n")
+            rows += scene_rows
     manifest={"protocol":"RelationNav P1; relation labels are offline curated-geometry supervision only.","split":SPLIT,"episodes":rows}
     (out/"dataset_manifest.json").write_text(json.dumps(manifest,indent=2)+"\n")
     print(json.dumps({"episodes":len(rows),"decisions":sum(len(x["phases"]) for x in rows),"out":str(out)},indent=2))
