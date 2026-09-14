@@ -28,12 +28,30 @@ pose is sent to the fixed Nav2 executor.
 The field combines physical freedom/reachability, clearance, target visibility,
 task-conditioned standoff/orientation and target-hypothesis uncertainty.
 
+## Structured task-state management
+
+The deployed system maintains an explicit task state S_t containing a
+persistent image/task goal, qualitative semantic constraints, a discrete
+spatial phase, planner-generated candidate goals, failure/visit history, and
+the latest observable navigation event. The phase is one of approach, doorway
+crossing, room entry, final observation, or recovery.
+
+At a phase boundary the local planner regenerates executable candidate poses;
+GoalPose ranks them under the current phase constraints. Arrival, target
+visibility, insufficient progress, collision/abort and newly blocked space are
+observable events. They cause either a verified phase completion, candidate
+suppression and re-selection, or recovery-state transition. The high-level
+goal intent is preserved across these transitions.
+
 ## Roles
 
 The VLM outputs only a bounded template (`observe_doorway`, `approach_doorway`,
 `wait_at_elevator`, `inspect_target`), never coordinates/actions/trajectories.
 DINOv3-S/16 is frozen visual evidence, not text semantics, metric geometry or
 reliable global localization.
+
+The VLM is an interchangeable low-frequency intent interface, not the claimed
+planning algorithm or the source of geometric correctness.
 
 Habitat-GS supplies controlled NavMesh, visibility and clearance evaluation. It
 does not provide real-robot truth. Ranger Mini later validates the frozen

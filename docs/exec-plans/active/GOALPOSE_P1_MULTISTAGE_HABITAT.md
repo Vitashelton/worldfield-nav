@@ -4,8 +4,10 @@
 
 Evaluate whether task-conditioned local goal-pose refinement improves complete
 indoor transport success when a single high-level image goal requires multiple
-spatial stages. This is the formal Habitat-GS benchmark; P0 is retained only
-as mechanism evidence.
+spatial stages. The experiment evaluates a structured task-state manager:
+semantic constraints drive phase-specific candidate selection, while navigation
+feedback and environment events advance, recover or reselect without changing
+the high-level goal. P0 is retained only as mechanism evidence.
 
 ## Fixed system boundary
 
@@ -21,9 +23,11 @@ fixed across methods.
 Create deterministic, scene-disjoint indoor transport episodes with three to
 four recorded phases drawn from: corridor approach, doorway approach, doorway
 crossing, room entry, and final target observation. Each episode retains one
-high-level goal intent. The benchmark must include seen validation and unseen
-scenes, at least 100 episodes per split, and preserve all seeds, starts,
-candidate lattices and executor settings.
+high-level goal intent. Store the phase graph, success guard, candidate
+lattice, candidate suppression history and state-transition event for every
+decision. The benchmark must include seen validation and unseen scenes, at
+least 100 episodes per split, and preserve all seeds, starts, candidate
+lattices and executor settings.
 
 ## Methods
 
@@ -38,7 +42,9 @@ Terminal pose: valid-goal rate, reachability, clearance, target visibility,
 standoff error, yaw error and task-relation satisfaction.
 
 Phase: phase success, handoff success, wrong-terminal-pose rate, collision,
-timeout and decision count.
+timeout and decision count. State management: correct phase-transition rate,
+recovery success after abort/blocked/no-progress event, repeated-failure rate,
+and high-level goal-intent retention.
 
 Complete task: transport success, SPL, normalized geodesic progress, final
 DTG, path length, replan count and execution time. Compute bootstrap 95%
@@ -55,8 +61,9 @@ confidence intervals and scene-disjoint seen/unseen tables.
 - paper_assets/videos/goalpose_p1_multistage_transport.mp4
 
 The video must show current RGB, phase/current goal intent, candidate terminal
-poses, selected local goal, fixed-executor trajectory and phase transition.
-Include at least corridor/doorway/room-entry cases and one failure comparison.
+poses, selected local goal, fixed-executor trajectory, state transition and
+failure/recovery history. Include corridor/doorway/room-entry cases and one
+failure comparison.
 
 ## Acceptance
 
