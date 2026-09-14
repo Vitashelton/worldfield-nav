@@ -98,6 +98,16 @@ def main() -> None:
     p.add_argument("--normal-yaw-rad", type=float, required=True); p.add_argument("--width-m", type=float, required=True)
     p.add_argument("--source-side", type=int, choices=[-1, 1], required=True)
     p.add_argument("--rationale", required=True)
+    l = sub.add_parser("add-landmark")
+    l.add_argument("--entity-id", required=True); l.add_argument("--scene", choices=SCENES, required=True)
+    l.add_argument("--anchor-view-id", required=True); l.add_argument("--pixel", type=int, nargs=2, required=True)
+    l.add_argument("--rationale", required=True)
+    a = sub.add_parser("add-area")
+    a.add_argument("--entity-id", required=True); a.add_argument("--scene", choices=SCENES, required=True)
+    a.add_argument("--anchor-view-id", required=True); a.add_argument("--pixel", type=int, nargs=2, required=True)
+    a.add_argument("--polygon-xz", type=float, nargs="+", required=True,
+                   help="At least three x z vertex pairs in world coordinates.")
+    a.add_argument("--rationale", required=True)
     args = ap.parse_args()
     if args.cmd == "init":
         if args.annotations.exists(): raise FileExistsError(args.annotations)
@@ -111,6 +121,29 @@ def main() -> None:
     anchor = load_anchor(args.anchor_view_id)
     if anchor["scene_id"] != args.scene: raise ValueError("anchor scene mismatch")
     point = backproject(anchor, *args.pixel)
+    if args.cmd == "add-landmark":
+        payload["entities"].append({
+            "entity_id": args.entity_id, "scene_id": args.scene, "kind": "landmark",
+            "annotation_status": "curated", "visual_anchor": {"anchor_view_id": args.anchor_view_id,
+            "pixel_uv": args.pixel, "world_point_xyz": point, "rgb": anchor["rgb"], "depth": anchor["depth"]},
+            "rationale": args.rationale,
+        })
+        issues = validate(payload)
+        if issues: raise ValueError("; ".join(issues))
+        write(args.annotations, payload); print(json.dumps(payload["entities"][-1], indent=2)); return
+    if args.cmd == "add-area":
+        if len(args.polygon_xz) < 6 or len(args.polygon_xz) % 2:
+            raise ValueError("--polygon-xz must contain at least three x z pairs")
+        polygon = [[args.polygon_xz[i], args.polygon_xz[i + 1]] for i in range(0, len(args.polygon_xz), 2)]
+        payload["entities"].append({
+            "entity_id": args.entity_id, "scene_id": args.scene, "kind": "area",
+            "annotation_status": "curated", "visual_anchor": {"anchor_view_id": args.anchor_view_id,
+            "pixel_uv": args.pixel, "world_point_xyz": point, "rgb": anchor["rgb"], "depth": anchor["depth"]},
+            "area_polygon_xz": polygon, "rationale": args.rationale,
+        })
+        issues = validate(payload)
+        if issues: raise ValueError("; ".join(issues))
+        write(args.annotations, payload); print(json.dumps(payload["entities"][-1], indent=2)); return
     normal = [math.sin(args.normal_yaw_rad), math.cos(args.normal_yaw_rad)]
     payload["entities"].append({
         "entity_id": args.entity_id, "scene_id": args.scene, "kind": "portal",

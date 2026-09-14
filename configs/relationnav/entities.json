@@ -7,5 +7,386 @@
     "interior_0121_840013",
     "interior_0093_839966"
   ],
-  "entities": []
+  "entities": [
+    {
+      "entity_id": "lab_display_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "landmark",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0405_840145_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -8.81003475189209,
+          1.6831390857696533,
+          -2.9415736198425293
+        ],
+        "rgb": "P0/anchor_views/interior_0405_840145_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0405_840145_0000/view_08_depth.npy"
+      },
+      "rationale": "Curated visual landmark: laboratory desk/display region visible through the interior doorway."
+    },
+    {
+      "entity_id": "arch_lounge_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "landmark",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0135_840032_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          3.69504976272583,
+          1.6847336292266846,
+          -0.14661180973052979
+        ],
+        "rgb": "P0/anchor_views/interior_0135_840032_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0135_840032_0000/view_08_depth.npy"
+      },
+      "rationale": "Curated visual landmark: arched lounge-to-adjacent-room opening."
+    },
+    {
+      "entity_id": "shop_door_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "landmark",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0121_840013_0000_view_00",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -0.9960063695907593,
+          1.6793854236602783,
+          11.905117988586426
+        ],
+        "rgb": "P0/anchor_views/interior_0121_840013_0000/view_00.png",
+        "depth": "P0/anchor_views/interior_0121_840013_0000/view_00_depth.npy"
+      },
+      "rationale": "Curated visual landmark: glass entrance door in the shop interior."
+    },
+    {
+      "entity_id": "gallery_painting_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "landmark",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0093_839966_0060_view_00",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -5.711801052093506,
+          1.6886703968048096,
+          9.761861801147461
+        ],
+        "rgb": "P0/anchor_views/interior_0093_839966_0060/view_00.png",
+        "depth": "P0/anchor_views/interior_0093_839966_0060/view_00_depth.npy"
+      },
+      "rationale": "Curated visual landmark: framed gallery artwork used for OBSERVE phases."
+    },
+    {
+      "entity_id": "office_portal_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "portal",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0405_840145_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -8.81003475189209,
+          1.6831390857696533,
+          -2.9415736198425293
+        ],
+        "rgb": "P0/anchor_views/interior_0405_840145_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0405_840145_0000/view_08_depth.npy"
+      },
+      "portal_plane": {
+        "point_world_xyz": [
+          -8.81003475189209,
+          1.6831390857696533,
+          -2.9415736198425293
+        ],
+        "normal_xz": [
+          -0.8660254049810364,
+          -0.49999999792743177
+        ],
+        "width_m": 1.1,
+        "source_side": -1,
+        "destination_side": 1
+      },
+      "rationale": "Visually reviewed open interior doorway. Plane normal is documented from the doorway-facing camera forward axis; source side is the anchor-camera side."
+    },
+    {
+      "entity_id": "lounge_arch_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "portal",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0135_840032_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          3.69504976272583,
+          1.6847336292266846,
+          -0.14661180973052979
+        ],
+        "rgb": "P0/anchor_views/interior_0135_840032_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0135_840032_0000/view_08_depth.npy"
+      },
+      "portal_plane": {
+        "point_world_xyz": [
+          3.69504976272583,
+          1.6847336292266846,
+          -0.14661180973052979
+        ],
+        "normal_xz": [
+          -0.8660254049810364,
+          -0.49999999792743177
+        ],
+        "width_m": 1.25,
+        "source_side": -1,
+        "destination_side": 1
+      },
+      "rationale": "Visually reviewed arched interior passage. Plane normal is documented from the doorway-facing camera forward axis; source side is the anchor-camera side."
+    },
+    {
+      "entity_id": "backroom_portal_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "portal",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0121_840013_0120_view_11",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -4.933024883270264,
+          1.6704285144805908,
+          8.601288795471191
+        ],
+        "rgb": "P0/anchor_views/interior_0121_840013_0120/view_11.png",
+        "depth": "P0/anchor_views/interior_0121_840013_0120/view_11_depth.npy"
+      },
+      "portal_plane": {
+        "point_world_xyz": [
+          -4.933024883270264,
+          1.6704285144805908,
+          8.601288795471191
+        ],
+        "normal_xz": [
+          -0.500000021132493,
+          0.8660253915835878
+        ],
+        "width_m": 1.1,
+        "source_side": -1,
+        "destination_side": 1
+      },
+      "rationale": "Visually reviewed internal shop-to-backroom doorway. Plane normal is documented from the doorway-facing camera forward axis; source side is the anchor-camera side."
+    },
+    {
+      "entity_id": "gallery_corridor_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "portal",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0093_839966_0000_view_00",
+        "pixel_uv": [
+          128,
+          112
+        ],
+        "world_point_xyz": [
+          2.186274528503418,
+          2.6134064197540283,
+          3.3461060523986816
+        ],
+        "rgb": "P0/anchor_views/interior_0093_839966_0000/view_00.png",
+        "depth": "P0/anchor_views/interior_0093_839966_0000/view_00_depth.npy"
+      },
+      "portal_plane": {
+        "point_world_xyz": [
+          2.186274528503418,
+          2.6134064197540283,
+          3.3461060523986816
+        ],
+        "normal_xz": [
+          0.0,
+          1.0
+        ],
+        "width_m": 1.2,
+        "source_side": -1,
+        "destination_side": 1
+      },
+      "rationale": "Visually reviewed gallery-corridor transition. Nearest valid observed pixel to the transition center is explicitly recorded; plane normal is the doorway-facing camera forward axis."
+    },
+    {
+      "entity_id": "office_area_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "area",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0405_840145_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -8.81003475189209,
+          1.6831390857696533,
+          -2.9415736198425293
+        ],
+        "rgb": "P0/anchor_views/interior_0405_840145_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0405_840145_0000/view_08_depth.npy"
+      },
+      "area_polygon_xz": [
+        [
+          -6.3,
+          -2.0
+        ],
+        [
+          -3.9,
+          -2.0
+        ],
+        [
+          -3.9,
+          0.4
+        ],
+        [
+          -6.3,
+          0.4
+        ]
+      ],
+      "rationale": "Curated office-side navigable region adjacent to the reviewed interior doorway."
+    },
+    {
+      "entity_id": "lounge_area_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "area",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0135_840032_0000_view_08",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          3.69504976272583,
+          1.6847336292266846,
+          -0.14661180973052979
+        ],
+        "rgb": "P0/anchor_views/interior_0135_840032_0000/view_08.png",
+        "depth": "P0/anchor_views/interior_0135_840032_0000/view_08_depth.npy"
+      },
+      "area_polygon_xz": [
+        [
+          5.7,
+          0.5
+        ],
+        [
+          8.4,
+          0.5
+        ],
+        [
+          8.4,
+          3.2
+        ],
+        [
+          5.7,
+          3.2
+        ]
+      ],
+      "rationale": "Curated lounge-side region adjacent to the reviewed arch passage."
+    },
+    {
+      "entity_id": "shop_area_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "area",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0121_840013_0000_view_00",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -0.9960063695907593,
+          1.6793854236602783,
+          11.905117988586426
+        ],
+        "rgb": "P0/anchor_views/interior_0121_840013_0000/view_00.png",
+        "depth": "P0/anchor_views/interior_0121_840013_0000/view_00_depth.npy"
+      },
+      "area_polygon_xz": [
+        [
+          -2.3,
+          5.4
+        ],
+        [
+          0.3,
+          5.4
+        ],
+        [
+          0.3,
+          7.8
+        ],
+        [
+          -2.3,
+          7.8
+        ]
+      ],
+      "rationale": "Curated central shop region used for ENTER phases."
+    },
+    {
+      "entity_id": "gallery_area_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "area",
+      "annotation_status": "curated",
+      "visual_anchor": {
+        "anchor_view_id": "interior_0093_839966_0060_view_00",
+        "pixel_uv": [
+          128,
+          128
+        ],
+        "world_point_xyz": [
+          -5.711801052093506,
+          1.6886703968048096,
+          9.761861801147461
+        ],
+        "rgb": "P0/anchor_views/interior_0093_839966_0060/view_00.png",
+        "depth": "P0/anchor_views/interior_0093_839966_0060/view_00_depth.npy"
+      },
+      "area_polygon_xz": [
+        [
+          -7.0,
+          5.5
+        ],
+        [
+          -4.5,
+          5.5
+        ],
+        [
+          -4.5,
+          8.5
+        ],
+        [
+          -7.0,
+          8.5
+        ]
+      ],
+      "rationale": "Curated gallery observation region adjacent to the reviewed artwork."
+    }
+  ]
 }
