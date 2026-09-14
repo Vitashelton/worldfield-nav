@@ -51,6 +51,15 @@ def point_poly(x,z,poly):
     return inside
 
 
+def observer_xz(entity):
+    aid=entity["visual_anchor"]["anchor_view_id"]; scene=entity["scene_id"]
+    src=ROOT/"outputs/formal/GoalPose/P0/anchor_views"/f"anchor_view_candidates_{scene}.jsonl"
+    for line in src.read_text().splitlines():
+        v=json.loads(line)
+        if v["anchor_view_id"]==aid: return v["camera_xyz"][0],v["camera_xyz"][2]
+    raise KeyError(aid)
+
+
 def batch_maps(rows, anns, cache, ids, device, grid=64):
     # Frozen descriptors are projected from camera coordinates. Inputs have no
     # privileged target position; labels below are separate offline supervision.
@@ -90,7 +99,7 @@ def batch_maps(rows, anns, cache, ids, device, grid=64):
             mask=(signed*desired>.35)&(signed*desired<1.8)&(tang.abs()<float(pl["width_m"])*.7)
         elif relation=="ENTER": mask=point_poly(wx,wz,entity["area_polygon_xz"])
         else:
-            p=entity["visual_anchor"]["world_point_xyz"];dist=((wx-float(p[0]))**2+(wz-float(p[2]))**2).sqrt();mask=(dist>.8)&(dist<2.3)
+            ox,oz=observer_xz(entity);dist=((wx-float(ox))**2+(wz-float(oz))**2).sqrt();mask=(dist<.75)
         labels[j,0]=mask.float()
     # 48 visual + 3 geometry + 1 visual entity similarity + 2 relation + 0 history = 54
     x=torch.cat([visual,geom,sim,rel],1)

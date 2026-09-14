@@ -89,8 +89,20 @@ def visible_target(sim, agent, position: np.ndarray, landmark: dict) -> bool:
     observed = float(depth[v, u]); return bool(np.isfinite(observed) and .02 < observed < 10.0 and abs(observed + local[2]) < .25)
 
 
+def anchor_camera_xz(entity: dict) -> np.ndarray:
+    """Reference viewing position is an offline OBSERVE label, not inference."""
+    aid=entity["visual_anchor"]["anchor_view_id"]; scene=entity["scene_id"]
+    src=ROOT/"outputs/formal/GoalPose/P0/anchor_views"/f"anchor_view_candidates_{scene}.jsonl"
+    for line in src.read_text().splitlines():
+        row=json.loads(line)
+        if row["anchor_view_id"]==aid: return np.asarray(row["camera_xyz"],np.float32)[[0,2]]
+    raise KeyError(aid)
+
+
 def pick_observe_target(sim, agent, landmark: dict, near: np.ndarray, rng: np.random.Generator) -> np.ndarray | None:
-    center = np.asarray(landmark["visual_anchor"]["world_point_xyz"], np.float32)[[0, 2]]
+    center = anchor_camera_xz(landmark)
+    q=snap(sim,center)
+    if q is not None and path_ok(sim,near,q,0.0,20.0) and visible_target(sim,agent,q,landmark): return q
     for _ in range(100):
         angle, radius = float(rng.uniform(-math.pi, math.pi)), float(rng.uniform(.9, 2.2))
         q = snap(sim, center + radius * np.array([math.sin(angle), math.cos(angle)], np.float32))
