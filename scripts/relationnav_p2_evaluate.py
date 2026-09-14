@@ -84,7 +84,8 @@ def shallow_and_deep(sim, agent, phase: dict, entities: dict, rng: np.random.Gen
         poly = np.asarray(entity["area_polygon_xz"], np.float32)
         center = poly.mean(0); edge = poly[0]
         candidate = edge + .28 * (center - edge) / max(float(np.linalg.norm(center - edge)), 1e-6)
-        shallow = np.asarray(sim.pathfinder.snap_point([candidate[0], deep[1], candidate[1]]), np.float32)
+        shallow = np.asarray(sim.pathfinder.snap_point(
+            np.asarray([candidate[0], deep[1], candidate[1]], np.float32)), np.float32)
         if not np.isfinite(shallow).all() or not point_in_poly(shallow[[0, 2]], poly):
             shallow = deep.copy()
     else:  # OBSERVE has no useful boundary-only proxy; retain an observed pose.
