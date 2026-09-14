@@ -178,12 +178,19 @@ def generate_scene(scene: str, split: str, episodes: int, seed: int, entities: l
                 phases = phase_rows(sim, agent, portal, area, landmark, rng)
                 if phases is None: continue
                 start = sample_start(sim, portal, np.asarray(phases[0]["target_xyz_privileged"], np.float32), rng)
-                if start is not None: break
+                if start is None: continue
+                chain=[start]+[np.asarray(p["target_xyz_privileged"],np.float32) for p in phases]
+                # RelationNav makes local decisions: each phase target must be
+                # within the local 6 m execution horizon. This is episode
+                # construction, never online candidate filtering.
+                if all(path_ok(sim,a,b,0.0,5.8) for a,b in zip(chain[:-1],chain[1:])): break
             else: continue
             eid = f"{scene}_{e:04d}"; current = start; decisions=[]; phase_success=[]
-            # Initial heading is deterministic per episode and independent of
-            # the hidden relation target.  Later headings are executor output.
-            heading = float(rng.uniform(-math.pi, math.pi))
+            # Curated task starts face the active portal so the requested
+            # relation is visually observable. It constrains episode setup,
+            # never candidate generation or the learned field input labels.
+            delta=np.asarray(phases[0]["target_xyz_privileged"],np.float32)-start
+            heading=math.atan2(float(-delta[0]),float(-delta[2]))
             for i, phase in enumerate(phases):
                 target=np.asarray(phase["target_xyz_privileged"],np.float32)
                 decisions.append(save_decision(out, sim, agent, eid, i, current, heading, target, phase))
