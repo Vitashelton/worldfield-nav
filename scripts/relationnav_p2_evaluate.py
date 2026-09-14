@@ -104,6 +104,18 @@ def satisfied(sim, agent, phase: dict, entities: dict, before: np.ndarray, after
     raise KeyError(rel)
 
 
+def orient_terminal_observation(agent, phase: dict, entities: dict) -> None:
+    """An OBSERVE realization is a pose, not merely a planar waypoint."""
+    if phase["relation"] != "OBSERVE":
+        return
+    landmark = entities[phase["entity_id"]]
+    target = np.asarray(landmark["visual_anchor"]["world_point_xyz"], np.float32)
+    pos = np.asarray(agent.get_state().position, np.float32)
+    delta = target - pos
+    yaw = math.atan2(float(-delta[0]), float(-delta[2]))
+    set_agent(agent, pos, yaw)
+
+
 def run_episode(sim, agent, episode: dict, method: str, entities: dict, seed: int,
                 arrival_radius: float) -> dict:
     rng = np.random.default_rng(seed)
@@ -116,7 +128,13 @@ def run_episode(sim, agent, episode: dict, method: str, entities: dict, seed: in
         before = np.asarray(agent.get_state().position, np.float32)
         shallow, deep = shallow_and_deep(sim, agent, phase, entities, rng)
         target = deep if method == "Oracle" else shallow
-        event = route_endpoint(sim, agent, target, arrival_radius)
+        # Oracle and a recovery commitment use an ordinary tight terminal
+        # tolerance. The first shallow attempt always uses the same nominal
+        # executor tolerance as the arrival-only baselines.
+        event = route_endpoint(sim, agent, target,
+                               .10 if method == "Oracle" else arrival_radius)
+        after = np.asarray(agent.get_state().position, np.float32)
+        orient_terminal_observation(agent, phase, entities)
         after = np.asarray(agent.get_state().position, np.float32)
         total_path += event["path_m"]
         done = bool(event["arrival"] and satisfied(sim, agent, phase, entities, before, after))
@@ -135,8 +153,10 @@ def run_episode(sim, agent, episode: dict, method: str, entities: dict, seed: in
                 # Preserve (entity, relation); only replace its failed local
                 # representative with a deeper member of the same admissible region.
                 attempts += 1
-                retry = route_endpoint(sim, agent, deep, arrival_radius)
+                retry = route_endpoint(sim, agent, deep, .10)
                 total_path += retry["path_m"]
+                after = np.asarray(agent.get_state().position, np.float32)
+                orient_terminal_observation(agent, phase, entities)
                 after = np.asarray(agent.get_state().position, np.float32)
                 done = bool(retry["arrival"] and satisfied(sim, agent, phase, entities, before, after))
                 recovered = done
