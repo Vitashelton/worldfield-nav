@@ -49,8 +49,9 @@ def main() -> None:
             "objects": len(labels if isinstance(labels, list) else labels.get("objects", labels.get("labels", []))),
         }
         manifest["scenes"].append(entry)
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        # Preserve completed scene metadata if a mirror/network request stalls.
+        OUT.mkdir(parents=True, exist_ok=True)
+        (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps(manifest, indent=2))
 
 
