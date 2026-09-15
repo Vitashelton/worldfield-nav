@@ -1,130 +1,45 @@
 schema_version: 1
-project: GeoAnchor
+project: TopoNav Harness
 preliminary_infrastructure:
-  WorldFlow_S0:
-    status: archived_after_research_pivot
-    output: outputs/exp001
-  WorldFlow_S1:
-    status: archived_after_research_pivot
-    output: outputs/exp002_counterfactual_ego_flow
-  WorldFlow_S2:
-    status: archived_after_research_pivot
-    output: outputs/exp003_transport_revelation
-  WorldFlow_B1:
-    status: archived_after_research_pivot
-    output: outputs/formal/B1
-  WorldFlow_C1:
-    status: archived_after_research_pivot
-    output: outputs/formal/C1/pilot
-    retained_value: reusable RGB/depth/sim-LiDAR-like geometry/pose infrastructure
-  WorldFlow_E0:
-    status: archived_after_research_pivot
-    archived_plan: docs/exec-plans/completed/preliminary/E0_environment_isolation.md
-  WorldFlow_C2:
-    status: archived_after_research_pivot
-    archived_plan: docs/exec-plans/completed/preliminary/C2_multimodal_latent_worldfield.md
-  reason: persistent multimodal field modeling is retained as preliminary infrastructure
-    but is no longer the paper identity.
-formal:
-  G1:
-    name: crossview_foundation_feature_audit
-    status: completed_go
-    completed_plan: docs/exec-plans/completed/G1_crossview_foundation_feature_audit.md
-    config: configs/benchmark/g1_crossview_feature_audit.yaml
-    source: outputs/formal/C1/pilot
-    execution_gate: cuda_gpu_required_no_cpu_fallback
-    runs:
-    - experiments/runs/G1/20260903T111320Z/run.json
-    - experiments/runs/G1/20260903T112107Z/run.json
-    - experiments/runs/G1/20260903T112144Z/run.json
-    - experiments/runs/G1/20260903T112749Z/run.json
-    - experiments/runs/G1/20260903T113109Z/run.json
-    last_run: experiments/runs/G1/20260903T113109Z/run.json
-    result: docs/results/G1_CROSSVIEW_FOUNDATION_FEATURE_AUDIT.md
-    decision: GO
-    decision_rationale: >
-      Across geometry-validated small and large view pairs, R@1 decreased
-      from 0.461 to 0.056 and positive cosine similarity from 0.957 to 0.797.
-      Large-view correspondences occurred in train, validation, and unseen scenes.
-  G2:
-    name: metricanchor_adapter
+  WorldFlow_S0: {status: archived_after_research_pivot, output: outputs/exp001}
+  WorldFlow_S1: {status: archived_after_research_pivot, output: outputs/exp002_counterfactual_ego_flow}
+  WorldFlow_S2: {status: archived_after_research_pivot, output: outputs/exp003_transport_revelation}
+  GeoAnchor_G1:
+    status: completed_preliminary
+    retained_value: geometry-validated cross-view audit and frozen DINO infrastructure
+  GeoAnchor_G2_G3:
     status: archived_after_task_mismatch
-    archived_plan: docs/archive/metricanchor_20260907/G2_G3_METRICANCHOR_SIMULATION.md
-    config: configs/benchmark/g2_g3_metricanchor.yaml
-    source: outputs/formal/C1/pilot
-    runs: []
-  G3:
-    name: metricanchor_habitat_localization_navigation
-    status: archived_protocol_mismatch
-    archived_plan: docs/archive/metricanchor_20260907/G2_G3_METRICANCHOR_SIMULATION.md
-    config: configs/benchmark/g2_g3_metricanchor.yaml
-    source: outputs/formal/C1/pilot
-    runs: []
-    limitation: >
-      G2 pairwise physical correspondence supervision was not a global
-      place-retrieval objective. The prototype G3 landmark-map result is
-      retained for debugging only and is not paper evidence.
-future:
-  execnav_imagegoal:
-    status: archived_after_execfield_refinement
-    archived_plan: docs/exec-plans/archive/execnav_pre_p0/EXECNAV_IMAGEGOAL.md
+    retained_value: code and diagnostics only; not paper evidence
   ExecField_P0:
-    name: oracle_executability_kill_test
-    status: completed_go
-    completed_plan: docs/exec-plans/completed/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
-    source: existing_Habitat_GS_assets_only
-    decision_gate: oracle_must_improve_over_identical_VLM_candidates
-    result: docs/results/EXECFIELD_P0_ORACLE_EXECUTABILITY.md
-    decision: GO
-  ExecField_P1:
-    name: archived_dinov3_executability_field_static_plan
-    status: archived_after_trajectory_grounding_refinement
-    archived_plan: docs/exec-plans/archive/execfield_pre_trajectory_grounding/EXECFIELD_P1_DINOV3_STATIC.md
-  TrajectoryGrounding_P1:
-    name: archived_candidate_generation_infrastructure
-    status: archived_after_failure_aware_refinement
-    archived_plan: docs/exec-plans/archive/trajectory_grounding_pre_failure_aware/TRAJECTORY_GROUNDING_P1_STATIC_INDOOR.md
-    retained_assets: outputs/formal/TrajectoryGrounding/P1
-  FailureAware_P1:
-    name: rolling_failure_aware_subgoal_selection
-    status: archived_after_goalpose_pivot
-    archived_plan: docs/exec-plans/completed/preliminary/FAILURE_AWARE_ROLLING_SUBGOAL_P1.md
-    source: existing_verified_Habitat_GS_assets_only
-    retained_assets: outputs/formal/TrajectoryGrounding/P1
-    reason: >
-      The branch-value outcome model is retained as preliminary infrastructure;
-      semantic target location versus executable task goal pose is now the
-      active paper problem.
-  GoalPose_P0:
-    name: semantic_goal_pose_problem_validation
-    status: completed_provisional
-    completed_plan: docs/exec-plans/completed/preliminary/GOALPOSE_P0.md
-    source: existing_verified_Habitat_GS_indoor_assets_only
+    status: completed_preliminary
+    retained_value: oracle-gap motivation on fixed ImageNav candidates
+  RelationNav_P1_P2:
+    status: archived_after_harness_refinement
+    retained_value: relation predicates, annotations, metric execution helpers
+
+formal:
+  TopoNav_P1:
+    name: static_semantic_topology_closed_loop_vlm_navigation
+    status: running
+    active_plan: docs/exec-plans/active/TOPONAV_HARNESS_P1.md
+    branch: research/goalpose
+    output: outputs/formal/TopoNav/P1
     protocol:
-      frozen_backbone: timm/vit_small_patch16_dinov3.lvd1689m
-      templates: [observe_doorway, approach_doorway, inspect_target, room_entrance]
-      methods: [target_center, nearest_free, clearance_heuristic, goal_pose_field, oracle]
-      semantic_labels: explicitly_curated_not_automatic
-    result: docs/results/GOALPOSE_P0_RESULTS.md
-    limitation: >
-      A 12-case single-stage mechanism study with provisional visual anchors.
-      It is not paper-level navigation evidence.
-  GoalPose_P1:
-    name: multistage_indoor_transport_goalpose_benchmark
-    status: archived_after_relationnav_pivot
-    archived_plan: docs/exec-plans/completed/preliminary/GOALPOSE_P1_MULTISTAGE_HABITAT.md
-    source: existing_verified_Habitat_GS_indoor_assets_only
-    protocol:
-      semantic_intent: cached_low_frequency_vlm_template_only
-      candidate_geometry: observed_depth_lidar_pose_only
-      navmesh: evaluation_only
-  RelationNav_P1:
-    name: task_relation_grounded_spatial_transition_navigation
-    status: active
-    active_plan: docs/exec-plans/active/RELATIONNAV_P1.md
-    source: four_audited_InteriorGS_scenes_only
-    protocol:
-      relations: [APPROACH, CROSS, ENTER, OBSERVE]
-      geometry: RGB-D_lidar_pose_observed_only
-      supervision: curated_entity_annotations_plus_offline_navmesh
-      dynamic_indoor: unavailable_with_current_assets
+      fixed_tasks: 80
+      task_mix: {S1_semantic_goal: 20, S2_relation_task: 30, S3_route_constrained: 30}
+      scenes: [interior_0047_839892, interior_0108_839984, interior_0135_840032]
+      vlm_backend: qwen3-vl:8b-instruct
+      vlm_temperature: 0
+      executor: fixed_Habitat_metric_executor
+      online_vlm_forbidden: [metric_coordinates, navmesh, oracle_route, hidden_goal_pose]
+      methods: [Direct-VLM, FullTopo-VLM, FullTopo+Validator, History-Agent, TopoNav-Harness]
+    required_outputs: [vlm_cache.jsonl, benchmark_episode_results.jsonl, benchmark_summary.json, paper_assets]
+    evidence_boundary: actual_Habitat_execution_logs_only
+
+future:
+  TopoNav_P2_dynamic:
+    status: blocked_by_TopoNav_P1
+    prerequisite: actual_official_dynamic_avatar_assets_and_P1_results
+  RangerMini_validation:
+    status: blocked_by_TopoNav_P1
+    interface: D435i_RGB + Mid-360S_LIO_current_pose + Nav2 + frozen_VLM_tool_protocol
