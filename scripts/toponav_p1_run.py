@@ -33,7 +33,7 @@ from toponav_harness import (AgentMemory, CompiledContext, ExecutionFeedback,
 ROOT = Path(__file__).resolve().parents[1]
 P1 = ROOT / "outputs/formal/TopoNav/P1"
 MANIFEST = P1 / "task_manifest.json"
-GRAPH = ROOT / "outputs/formal/RelationNav/topology/spatial_semantic_topology.json"
+GRAPH = ROOT / "outputs/formal/TopoNav/P1/semantic_topology.json"
 METHODS = ("Direct-VLM", "FullTopo-VLM", "FullTopo+Validator", "History-Agent", "TopoNav-Harness")
 MAX_STEPS = 6
 
@@ -255,7 +255,9 @@ def summarize(rows: list[dict]) -> list[dict]:
 def main() -> None:
     ap=argparse.ArgumentParser(); ap.add_argument("--methods",nargs="+",default=list(METHODS)); ap.add_argument("--limit",type=int); ap.add_argument("--task-id"); ap.add_argument("--out",default=str(P1)); args=ap.parse_args()
     out=Path(args.out); out.mkdir(parents=True,exist_ok=True); artifacts=out/"artifacts"; cache_file=out/"vlm_cache.jsonl"; cache=cache_load(cache_file)
-    manifest=json.loads(MANIFEST.read_text()); graph=json.loads(GRAPH.read_text()); nodes={n["node_id"]:n for n in graph["nodes"]}
+    manifest=json.loads(MANIFEST.read_text())
+    graph_path = GRAPH if GRAPH.exists() else ROOT / "outputs/formal/RelationNav/topology/spatial_semantic_topology.json"
+    graph=json.loads(graph_path.read_text()); nodes={n["node_id"]:n for n in graph["nodes"]}
     compiler=TopologyContextCompiler(graph, token_budget=1024); validator=TopologyToolValidator(compiler)
     tasks=manifest["tasks"]
     if args.task_id: tasks=[t for t in tasks if t["task_id"]==args.task_id]

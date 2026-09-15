@@ -13,7 +13,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-GRAPH = ROOT / "outputs/formal/RelationNav/topology/spatial_semantic_topology.json"
+GRAPH = ROOT / "outputs/formal/TopoNav/P1/semantic_topology.json"
 OUT = ROOT / "outputs/formal/TopoNav/P1"
 DEV_SCENES = (
     "interior_0047_839892",
@@ -47,7 +47,7 @@ def make_task(scene: str, kind: str, index: int, route: list[dict], nodes: dict,
         "goal_anchor_xz": center(nodes[target]),
         "required_relation": "CROSS",
         "relation_entity": portal,
-        "topology_snapshot": str(GRAPH.relative_to(ROOT)),
+        "topology_snapshot": "outputs/formal/TopoNav/P1/semantic_topology.json",
         "offline_only": {
             "goal_node_for_evaluation": target,
             "required_portal_for_evaluation": portal,
@@ -75,7 +75,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--total-tasks", type=int, default=80)
     args = ap.parse_args()
-    graph = json.loads(GRAPH.read_text())
+    graph_path = GRAPH if GRAPH.exists() else ROOT / "outputs/formal/RelationNav/topology/spatial_semantic_topology.json"
+    graph = json.loads(graph_path.read_text())
     nodes = {n["node_id"]: n for n in graph["nodes"]}
     adjacency: dict[str, list[dict]] = defaultdict(list)
     for edge in graph["edges"]:
