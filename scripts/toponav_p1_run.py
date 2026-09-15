@@ -124,6 +124,25 @@ def path_execute(sim, agent, target: np.ndarray, max_move: float = 30.0) -> tupl
     return ExecutionFeedback(status, None, travelled, max(0., float(distance - travelled)), False, "CROSS", reached), trace, float(distance)
 
 
+def transition_realization(sim, source: dict, target: dict, portal: dict) -> np.ndarray:
+    """Make a metric realization for exactly one symbolic portal transition.
+
+    The executor aims a short distance *past the selected portal* toward its
+    declared target area, rather than aiming at a room centre.  Thus selecting
+    a different named edge changes physical execution; the VLM never sees the
+    coordinates used here.
+    """
+    p = np.asarray(portal["geometry"]["center_xz"], np.float32)
+    dst = np.asarray(target["geometry"]["center_xz"], np.float32)
+    direction = dst - p
+    norm = float(np.linalg.norm(direction))
+    if norm < 1e-5:
+        direction = np.asarray(target["geometry"]["center_xz"], np.float32) - np.asarray(source["geometry"]["center_xz"], np.float32)
+        norm = max(float(np.linalg.norm(direction)), 1e-5)
+    inside = p + 0.85 * direction / norm
+    return np.asarray(sim.pathfinder.snap_point(np.array([inside[0], 0., inside[1]], np.float32)), np.float32)
+
+
 def parse(raw: dict[str, Any]) -> ToolCall | None:
     try:
         return ToolCall.parse(raw)
@@ -194,8 +213,7 @@ def run_task(task: dict, method: str, graph: dict, nodes: dict, compiler: Topolo
                 feedback = ExecutionFeedback.invalid(call.target, task["required_relation"])
                 history.append({"raw": raw, "call": asdict(call), "feedback": asdict(feedback), "validation": "unsupported_tool"}); break
             edge = next(e for e in compiler.adjacent(memory.current_node) if e.edge_id == call.target)
-            anchor = nodes[edge.target]["geometry"]["center_xz"]
-            target = np.asarray(sim.pathfinder.snap_point(np.array([anchor[0], 0., anchor[1]], np.float32)), np.float32)
+            target = transition_realization(sim, nodes[memory.current_node], nodes[edge.target], nodes[edge.edge_id])
             feedback, trace, geodesic = path_execute(sim, agent, target)
             feedback = ExecutionFeedback(feedback.status, call.target, feedback.travelled_m, feedback.remaining_m,
                                          feedback.collision, task["required_relation"], feedback.status == Outcome.SUCCESS)
