@@ -143,6 +143,20 @@ def transition_realization(sim, source: dict, target: dict, portal: dict) -> np.
     return np.asarray(sim.pathfinder.snap_point(np.array([inside[0], 0., inside[1]], np.float32)), np.float32)
 
 
+def source_realization(sim, source: dict, portal: dict) -> np.ndarray:
+    """Deterministic valid start just inside a source region at a known portal.
+
+    Structure-polygon centroids can fall in non-walkable furniture or holes.
+    This fallback is still goal-independent: it uses only the declared source
+    region and one adjacent portal, not task destination or NavMesh routing.
+    """
+    p = np.asarray(portal["geometry"]["center_xz"], np.float32)
+    c = np.asarray(source["geometry"]["center_xz"], np.float32)
+    d = c - p; norm = max(float(np.linalg.norm(d)), 1e-5)
+    inside = p + .85 * d / norm
+    return np.asarray(sim.pathfinder.snap_point(np.array([inside[0], 0., inside[1]], np.float32)), np.float32)
+
+
 def parse(raw: dict[str, Any]) -> ToolCall | None:
     try:
         return ToolCall.parse(raw)
@@ -157,6 +171,10 @@ def run_task(task: dict, method: str, graph: dict, nodes: dict, compiler: Topolo
         start2 = np.asarray(task["start_anchor_xz"], np.float32)
         raw_start = np.array([start2[0], 0., start2[1]], np.float32)
         start = np.asarray(sim.pathfinder.snap_point(raw_start), np.float32)
+        if not np.isfinite(start).all():
+            candidates = compiler.adjacent(task["start_node"])
+            if candidates:
+                start = source_realization(sim, nodes[task["start_node"]], nodes[candidates[0].edge_id])
         if not np.isfinite(start).all():
             return {"task_id": task["task_id"], "method": method, "status": "invalid_start"}
         set_agent(agent, start, 0.)
@@ -228,6 +246,7 @@ def run_task(task: dict, method: str, graph: dict, nodes: dict, compiler: Topolo
         final_dtg = float(np.linalg.norm(final[[0,2]] - goal2))
         return {"task_id": task["task_id"], "scene_id": task["scene_id"], "task_type": task["task_type"], "method": method,
                 "success": success, "path_length_m": total_path, "final_dtg_m": final_dtg, "tool_calls": len(history),
+                "actual_start_xyz": start.tolist(),
                 "valid_tool_calls": sum(x["validation"] in {"ok", "executor_adjacency"} for x in history),
                 "invalid_tool_calls": sum(x["validation"] not in {"ok", "executor_adjacency"} for x in history),
                 "relation_complete": memory.relation.complete, "vlm_latency_s": vlm_s, "cache_hits": cache_hits,
