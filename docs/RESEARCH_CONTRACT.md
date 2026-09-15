@@ -1,47 +1,33 @@
-# Research Contract — RelationNav: Relation-Verified Execution
+# Research Contract — TopoNav Harness
 
 ## Working title
 
-**RelationNav: Relation-Verified Execution for Multi-Stage Indoor Mobile Robot Navigation**
+**Semantic-Topology-Grounded Closed-Loop VLM Planning for Indoor Mobile Robot Navigation**
 
 ## Scientific question
 
-Given a known spatial entity and active task relation, can a robot verify that
-the intended physical relation was actually completed after navigation, and
-recover from a failed realization while preserving that entity-relation intent?
+How can a frozen vision-language model act as a high-level indoor-navigation
+agent without exposing it to metric controls or allowing open-ended reasoning
+to bypass robot execution constraints?
 
-Goal regions and relation-to-geometry compilation are established planning
-tools. They are inputs to this work, not claimed contributions.
+## Closed-loop contract
 
-## Task
+`task, topology state, selected images, memory -> compiled context -> VLM tool
+call -> validator -> fixed executor -> typed feedback -> updated memory`.
 
-A task contains nodes such as APPROACH(portal), CROSS(portal), ENTER(area) and
-OBSERVE(landmark). Each is an execution contract
-``(entity, relation, admissible region, completion predicate, failure
-predicate, recovery rule)``. CROSS completes only after the robot changes from
-the source side of a portal plane to its destination side; ENTER only after
-area containment; OBSERVE only after geometric visibility. Planner arrival is
-never itself a stage-completion event.
+VLM actions are named topology tools: `NAVIGATE`, `OBSERVE`, `BACKTRACK`, and
+`STOP`.  The harness alone maps a valid named transition to a metric goal.
 
-## Method
+## Method boundary
 
-RelationNav uses a relation verifier and a relation-preserving recovery
-protocol around a fixed planner. Arrival, relation verification, collision,
-blockage and no-progress update task state. Failure retains the entity and
-relation, suppresses only the failed realization, and selects another
-admissible realization from the same relation goal region.
+The method consists of task-relevant context compilation, topology-grounded
+tools, typed execution feedback, and relation-preserving recovery.  VLM,
+Habitat/NavMesh and the low-level planner are frozen external components.
 
-## Roles
+## Online/offline separation
 
-VLM is a low-frequency intent interface. DINOv3 is optional frozen visual
-evidence, not a spatial-field predictor. Depth/LiDAR/pose give geometry. The
-planner is fixed. Habitat-GS provides privileged labels and evaluation, not
-real-world transfer proof.
-
-## Evidence
-
-Compare arrival-only navigation, same-goal retry, relation-verified execution,
-relation-preserving recovery and an evaluation-only oracle on identical
-scene-disjoint multi-stage episodes. Report false completion, wrong-stage
-advance, relation completion, complete task success and recovery success.
-Ranger Mini later provides small physical feasibility validation.
+Topology anchors, NavMesh, relation predicates and hidden target pose may make
+episodes and evaluate outcomes offline.  The online VLM sees only task text,
+semantic node/transition descriptions, selected images, and prior typed
+feedback.  It does not see oracle routes, NavMesh, metric coordinates, or
+hidden goal pose.
