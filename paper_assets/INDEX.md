@@ -12,6 +12,7 @@ selected transition in Habitat-GS, and returns typed feedback.
 | Asset | Purpose |
 |---|---|
 | `figures/toponav_harness_architecture.html` | Editable/self-contained method architecture. |
+| `figures/toponav_method_and_contribution.png` | Paper Fig. 1: reused components versus the five observable harness stages. |
 | `figures/toponav_p1_main_results.png` | Main SR comparison and paired 80-episode outcome matrix. |
 | `figures/toponav_p1_paired_qualitative.png` | Three same-task Direct-VLM failure / Harness success replays. |
 | `tables/toponav_p1_main.csv` | Overall static benchmark with bootstrap confidence intervals. |
