@@ -18,6 +18,7 @@ OUT = ROOT / "outputs/formal/TopoNav/P1"
 DEV_SCENES = (
     "interior_0047_839892",
     "interior_0108_839984",
+    "interior_0135_840032",
     "interior_0184_840116",
     "interior_0405_840145",
 )
@@ -32,9 +33,9 @@ def name(node_id: str) -> str:
     return node_id.rsplit(":", 1)[-1].replace("_", " ")
 
 
-def make_task(scene: str, kind: str, index: int, edge: dict, nodes: dict,
+def make_task(scene: str, kind: str, index: int, route: list[dict], nodes: dict,
               alternatives: list[dict]) -> dict:
-    source, target, portal = edge["source"], edge["target"], edge["via"]
+    source, target, portal = route[0]["source"], route[-1]["target"], route[0]["via"]
     source_name, target_name, portal_name = map(name, (source, target, portal))
     base = {
         "task_id": f"{scene}:P1:{kind}:{index:03d}",
@@ -50,6 +51,7 @@ def make_task(scene: str, kind: str, index: int, edge: dict, nodes: dict,
         "offline_only": {
             "goal_node_for_evaluation": target,
             "required_portal_for_evaluation": portal,
+            "topology_hops_for_evaluation": len(route),
         },
     }
     if kind == "S1":
@@ -80,7 +82,7 @@ def main() -> None:
         if edge.get("edge_type") == "SPATIAL_ADJACENCY":
             adjacency[edge["source"]].append(edge)
 
-    pools: dict[str, dict[str, list[dict]]] = {}
+    pools: dict[str, list[list[dict]]] = {}
     for scene in DEV_SCENES:
         eligible = [
             e for source, edges in adjacency.items() for e in edges
@@ -91,9 +93,25 @@ def main() -> None:
             # The only curated-only scene contributes relation contracts, but
             # not route-choice claims.  It is not silently relabelled as S3.
             continue
-        branching = [e for e in eligible if len(adjacency[e["source"]]) > 1]
-        if branching:
-            pools[scene] = {"S1": eligible, "S2": eligible, "S3": branching}
+        # A topology-planning task must contain at least two real transitions.
+        # Direct source→goal portal hops are valid execution primitives but not
+        # evidence of high-level routing, so they are excluded from P1 tasks.
+        routes: list[list[dict]] = []
+        area_nodes = sorted({e["source"] for e in eligible} | {e["target"] for e in eligible})
+        for source in area_nodes:
+            queue = [(source, [])]; seen = {source}
+            while queue:
+                current, path = queue.pop(0)
+                if len(path) >= 2 and current != source:
+                    routes.append(path)
+                if len(path) >= 3:
+                    continue
+                for edge in adjacency[current]:
+                    if not edge["source"].startswith(scene + ":") or edge["target"] in seen:
+                        continue
+                    seen.add(edge["target"]); queue.append((edge["target"], path + [edge]))
+        if routes:
+            pools[scene] = routes
 
     # The development protocol is a single fixed 80-episode benchmark, not a
     # per-scene smoke subset.  Its task mix is globally frozen as 20/30/30.
@@ -112,12 +130,12 @@ def main() -> None:
     for kind, count in requested.items():
         for i in range(count):
             scene = scenes[i % len(scenes)]
-            pool = pools[scene][kind]
-            edge = pool[(i // len(scenes)) % len(pool)]
+            pool = pools[scene]
+            route = pool[(i // len(scenes)) % len(pool)]
             local_index = local_counts[scene]
             local_counts[scene] += 1
-            tasks.append(make_task(scene, kind, local_index, edge, nodes,
-                                   adjacency[edge["source"]]))
+            tasks.append(make_task(scene, kind, local_index, route, nodes,
+                                   adjacency[route[0]["source"]]))
 
     counts: dict[str, int] = defaultdict(int)
     for task in tasks:

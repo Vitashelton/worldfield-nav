@@ -124,6 +124,9 @@ class TopologyContextCompiler:
             for e in graph.get("edges", [])
             if e.get("edge_type", "SPATIAL_ADJACENCY") == "SPATIAL_ADJACENCY"
         ]
+        self._node_adjacency: dict[str, list[str]] = {}
+        for edge in self.edges:
+            self._node_adjacency.setdefault(edge.source, []).append(edge.target)
 
     @staticmethod
     def _edge(edge: dict[str, Any]) -> EdgeState:
@@ -139,6 +142,24 @@ class TopologyContextCompiler:
     def adjacent(self, node_id: str) -> list[EdgeState]:
         return [e for e in self.edges if e.source == node_id]
 
+    def _goal_hops(self, source: str, goals: set[str]) -> int | None:
+        """Static topology distance used for context relevance, not execution.
+
+        This is exactly the information a known building topology may provide:
+        it does not expose metric coordinates, NavMesh paths or a control
+        trajectory to the VLM.
+        """
+        queue: list[tuple[str, int]] = [(source, 0)]
+        seen = {source}
+        while queue:
+            node, hops = queue.pop(0)
+            if node in goals:
+                return hops
+            for nxt in self._node_adjacency.get(node, []):
+                if nxt not in seen:
+                    seen.add(nxt); queue.append((nxt, hops + 1))
+        return None
+
     def compile(
         self,
         task: str,
@@ -150,7 +171,8 @@ class TopologyContextCompiler:
         pool = image_pool or {}
         ranked: list[tuple[float, EdgeState]] = []
         for edge in self.adjacent(memory.current_node):
-            task_gain = 1.0 if edge.target in memory.goal_nodes else 0.0
+            hops = self._goal_hops(edge.target, memory.goal_nodes)
+            task_gain = 1.0 if edge.target in memory.goal_nodes else (0.45 / max(1, hops or 99))
             route_gain = 0.7 if edge.target in memory.route_nodes else 0.0
             failure_gain = 1.0 if edge.edge_id in memory.failed_edges else 0.0
             recent_penalty = 0.35 if edge.target in memory.recent_nodes else 0.0
@@ -172,6 +194,7 @@ class TopologyContextCompiler:
                 "status": "previously_failed" if edge.edge_id in memory.failed_edges else edge.status,
                 "retry_allowed": edge.retry_allowed,
                 "relevance": round(score, 3),
+                "goal_hops": self._goal_hops(edge.target, memory.goal_nodes),
             }
             cost = max(45, len(str(item)) // 3)
             if transitions and spent + cost > budget:

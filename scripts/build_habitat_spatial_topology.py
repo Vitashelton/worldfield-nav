@@ -31,7 +31,11 @@ def poly_xy(profile: list) -> np.ndarray:
 def center_profile(profile: list) -> np.ndarray:
     a = np.asarray(profile, np.float32)
     if a.ndim != 2 or not len(a): return np.zeros(2, np.float32)
-    return a[:, [0, 2]].mean(0) if a.shape[1] >= 3 else a[:, :2].mean(0)
+    # InteriorGS room profiles are [x,z], whereas hole profiles are [x,z,y].
+    # A previous version treated the third hole coordinate (height) as z,
+    # collapsing doors onto false room adjacencies.  A doorway center must stay
+    # in the horizontal x-z plane, therefore it is always the first two values.
+    return a[:, :2].mean(0)
 
 
 def point_poly_distance(p: np.ndarray, poly: np.ndarray) -> float:
@@ -84,7 +88,9 @@ def build_scene(scene: str, structure: dict[str, Any], entities: list[dict[str, 
 
 
 def draw(graph: dict, out: Path) -> None:
-    scenes = graph["scenes"]; fig, axes = plt.subplots(1, len(scenes), figsize=(5 * len(scenes), 5), squeeze=False); axes = axes[0]
+    scenes = graph["scenes"]
+    cols = 3; rows = int(np.ceil(len(scenes) / cols))
+    fig, axes = plt.subplots(rows, cols, figsize=(5.7 * cols, 5.1 * rows), squeeze=False); axes = axes.ravel()
     colors = {"area": "#4daf4a", "portal": "#e41a1c", "landmark": "#377eb8", "corridor": "#984ea3"}
     for ax, scene in zip(axes, scenes):
         ns = {n["node_id"]: n for n in graph["nodes"] if n["scene_id"] == scene}
@@ -96,14 +102,27 @@ def draw(graph: dict, out: Path) -> None:
             a=np.asarray(ns[e["source"]]["geometry"]["center_xz"]); b=np.asarray(ns[e["target"]]["geometry"]["center_xz"])
             if e["edge_type"] == "SPATIAL_ADJACENCY": ax.plot([a[0],b[0]],[a[1],b[1]],"-",color="#555",lw=2,alpha=.8)
         for n in ns.values():
-            p=np.asarray(n["geometry"]["center_xz"]); ax.scatter(*p,s=70,color=colors.get(n["kind"],"#222"),edgecolor="white",zorder=3); ax.text(p[0],p[1]+.18,n["node_id"].split(":")[-1],fontsize=7,ha="center")
-        ax.set_title(scene); ax.set_aspect("equal",adjustable="datalim"); ax.set_xlabel("world X (m)"); ax.set_ylabel("world Z (m)"); ax.grid(alpha=.15)
-    fig.suptitle("Habitat-GS spatial semantic topology (rooms, portals and alternatives)",fontsize=14); fig.tight_layout(); out.parent.mkdir(parents=True,exist_ok=True); fig.savefig(out,dpi=220,bbox_inches="tight"); plt.close(fig)
+            p=np.asarray(n["geometry"]["center_xz"]); ax.scatter(*p,s=76,color=colors.get(n["kind"],"#222"),edgecolor="white",zorder=3)
+            short=n["node_id"].split(":")[-1].replace("room_","R").replace("portal_","P").replace("landmark_","L")
+            ax.annotate(short,xy=p,xytext=(4,5),textcoords="offset points",fontsize=6.6,ha="left",va="bottom",bbox={"boxstyle":"round,pad=.12","fc":"white","ec":"none","alpha":.82})
+        ax.set_title(scene,fontsize=11,pad=8); ax.set_aspect("equal",adjustable="datalim"); ax.set_xlabel("world X (m)"); ax.set_ylabel("world Z (m)"); ax.grid(alpha=.15)
+        from matplotlib.lines import Line2D
+        ax.legend(handles=[Line2D([0],[0],marker="o",color="w",label="area",markerfacecolor="#4daf4a",markersize=7),Line2D([0],[0],marker="o",color="w",label="portal",markerfacecolor="#e41a1c",markersize=7),Line2D([0],[0],marker="o",color="w",label="landmark",markerfacecolor="#377eb8",markersize=7)],loc="best",fontsize=7,framealpha=.9)
+    for ax in axes[len(scenes):]: ax.axis("off")
+    fig.suptitle("Habitat-GS spatial semantic topology\nsolid links = spatial alternatives; labels are abbreviated",fontsize=16); fig.tight_layout(rect=(0,0,1,.93)); out.parent.mkdir(parents=True,exist_ok=True); fig.savefig(out,dpi=220,bbox_inches="tight"); plt.close(fig)
 
 
 def main() -> None:
     ap=argparse.ArgumentParser(); ap.add_argument("--output",type=Path,default=ROOT/"outputs/formal/RelationNav/topology/spatial_semantic_topology.json"); ap.add_argument("--figure",type=Path,default=ROOT/"paper_assets/figures/relationnav_spatial_topology.png"); args=ap.parse_args()
-    ann=json.loads(ANN.read_text()); scenes=ann["scenes"]; nodes=[]; edges=[]
+    ann=json.loads(ANN.read_text())
+    asset_root=ROOT/"data/scene_datasets/gs_scenes/train"
+    discovered={
+        "interior_"+p.parent.name
+        for p in SEM.glob("*/structure.json")
+        if (asset_root/("interior_"+p.parent.name)/(("interior_"+p.parent.name)+".gs.ply")).is_file()
+        and (asset_root/("interior_"+p.parent.name)/(("interior_"+p.parent.name)+".navmesh")).is_file()
+    }
+    scenes=sorted(set(ann["scenes"]) | discovered); nodes=[]; edges=[]
     for scene_id in scenes:
         key=scene_id.replace("interior_",""); path=SEM/key/"structure.json"
         if path.exists():
