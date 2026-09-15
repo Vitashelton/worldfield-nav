@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "graph_type": "curated_semantic_spatial_topology",
+  "scenes": [
+    "interior_0405_840145",
+    "interior_0135_840032",
+    "interior_0121_840013",
+    "interior_0093_839966"
+  ],
+  "nodes": [
+    {
+      "node_id": "lab_display_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "landmark",
+      "geometry": {
+        "center_xz": [
+          -8.81003475189209,
+          -2.9415736198425293
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "arch_lounge_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "landmark",
+      "geometry": {
+        "center_xz": [
+          3.69504976272583,
+          -0.14661180973052979
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "shop_door_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "landmark",
+      "geometry": {
+        "center_xz": [
+          -0.9960063695907593,
+          11.905117988586426
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "gallery_painting_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "landmark",
+      "geometry": {
+        "center_xz": [
+          -5.711801052093506,
+          9.761861801147461
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "office_portal_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "portal",
+      "geometry": {
+        "center_xz": [
+          -8.81003475189209,
+          -2.9415736198425293
+        ],
+        "plane": {
+          "point_world_xyz": [
+            -8.81003475189209,
+            1.6831390857696533,
+            -2.9415736198425293
+          ],
+          "normal_xz": [
+            -0.8660254049810364,
+            -0.49999999792743177
+          ],
+          "width_m": 1.1,
+          "source_side": -1,
+          "destination_side": 1
+        }
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "lounge_arch_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "portal",
+      "geometry": {
+        "center_xz": [
+          3.69504976272583,
+          -0.14661180973052979
+        ],
+        "plane": {
+          "point_world_xyz": [
+            3.69504976272583,
+            1.6847336292266846,
+            -0.14661180973052979
+          ],
+          "normal_xz": [
+            -0.8660254049810364,
+            -0.49999999792743177
+          ],
+          "width_m": 1.25,
+          "source_side": -1,
+          "destination_side": 1
+        }
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "backroom_portal_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "portal",
+      "geometry": {
+        "center_xz": [
+          -4.933024883270264,
+          8.601288795471191
+        ],
+        "plane": {
+          "point_world_xyz": [
+            -4.933024883270264,
+            1.6704285144805908,
+            8.601288795471191
+          ],
+          "normal_xz": [
+            -0.500000021132493,
+            0.8660253915835878
+          ],
+          "width_m": 1.1,
+          "source_side": -1,
+          "destination_side": 1
+        }
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "gallery_corridor_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "portal",
+      "geometry": {
+        "center_xz": [
+          2.186274528503418,
+          3.3461060523986816
+        ],
+        "plane": {
+          "point_world_xyz": [
+            2.186274528503418,
+            2.6134064197540283,
+            3.3461060523986816
+          ],
+          "normal_xz": [
+            0.0,
+            1.0
+          ],
+          "width_m": 1.2,
+          "source_side": -1,
+          "destination_side": 1
+        }
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "office_area_0405",
+      "scene_id": "interior_0405_840145",
+      "kind": "area",
+      "geometry": {
+        "polygon_xz": [
+          [
+            -11.1,
+            -4.8
+          ],
+          [
+            -8.6,
+            -4.8
+          ],
+          [
+            -8.6,
+            -2.4
+          ],
+          [
+            -11.1,
+            -2.4
+          ]
+        ],
+        "center_xz": [
+          -9.850000381469727,
+          -3.5999999046325684
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "lounge_area_0135",
+      "scene_id": "interior_0135_840032",
+      "kind": "area",
+      "geometry": {
+        "polygon_xz": [
+          [
+            5.7,
+            0.5
+          ],
+          [
+            8.4,
+            0.5
+          ],
+          [
+            8.4,
+            3.2
+          ],
+          [
+            5.7,
+            3.2
+          ]
+        ],
+        "center_xz": [
+          7.050000190734863,
+          1.8499999046325684
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "shop_area_0121",
+      "scene_id": "interior_0121_840013",
+      "kind": "area",
+      "geometry": {
+        "polygon_xz": [
+          [
+            -2.3,
+            5.4
+          ],
+          [
+            0.3,
+            5.4
+          ],
+          [
+            0.3,
+            7.8
+          ],
+          [
+            -2.3,
+            7.8
+          ]
+        ],
+        "center_xz": [
+          -1.0,
+          6.600000381469727
+        ]
+      },
+      "annotation_status": "curated"
+    },
+    {
+      "node_id": "gallery_area_0093",
+      "scene_id": "interior_0093_839966",
+      "kind": "area",
+      "geometry": {
+        "polygon_xz": [
+          [
+            1.0,
+            4.1
+          ],
+          [
+            3.5,
+            4.1
+          ],
+          [
+            3.5,
+            5.8
+          ],
+          [
+            1.0,
+            5.8
+          ]
+        ],
+        "center_xz": [
+          2.25,
+          4.949999809265137
+        ]
+      },
+      "annotation_status": "curated"
+    }
+  ],
+  "edges": [
+    {
+      "source": "office_area_0405",
+      "target": "office_portal_0405",
+      "relation": "APPROACH",
+      "directed": true
+    },
+    {
+      "source": "office_portal_0405",
+      "target": "office_area_0405",
+      "relation": "CROSS",
+      "directed": true
+    },
+    {
+      "source": "office_portal_0405",
+      "target": "office_area_0405",
+      "relation": "ENTER",
+      "directed": true
+    },
+    {
+      "source": "office_area_0405",
+      "target": "lab_display_0405",
+      "relation": "OBSERVE",
+      "directed": true
+    },
+    {
+      "source": "lounge_area_0135",
+      "target": "lounge_arch_0135",
+      "relation": "APPROACH",
+      "directed": true
+    },
+    {
+      "source": "lounge_arch_0135",
+      "target": "lounge_area_0135",
+      "relation": "CROSS",
+      "directed": true
+    },
+    {
+      "source": "lounge_arch_0135",
+      "target": "lounge_area_0135",
+      "relation": "ENTER",
+      "directed": true
+    },
+    {
+      "source": "lounge_area_0135",
+      "target": "arch_lounge_0135",
+      "relation": "OBSERVE",
+      "directed": true
+    },
+    {
+      "source": "shop_area_0121",
+      "target": "backroom_portal_0121",
+      "relation": "APPROACH",
+      "directed": true
+    },
+    {
+      "source": "backroom_portal_0121",
+      "target": "shop_area_0121",
+      "relation": "CROSS",
+      "directed": true
+    },
+    {
+      "source": "backroom_portal_0121",
+      "target": "shop_area_0121",
+      "relation": "ENTER",
+      "directed": true
+    },
+    {
+      "source": "shop_area_0121",
+      "target": "shop_door_0121",
+      "relation": "OBSERVE",
+      "directed": true
+    },
+    {
+      "source": "gallery_area_0093",
+      "target": "gallery_corridor_0093",
+      "relation": "APPROACH",
+      "directed": true
+    },
+    {
+      "source": "gallery_corridor_0093",
+      "target": "gallery_area_0093",
+      "relation": "CROSS",
+      "directed": true
+    },
+    {
+      "source": "gallery_corridor_0093",
+      "target": "gallery_area_0093",
+      "relation": "ENTER",
+      "directed": true
+    },
+    {
+      "source": "gallery_area_0093",
+      "target": "gallery_painting_0093",
+      "relation": "OBSERVE",
+      "directed": true
+    }
+  ],
+  "provenance": {
+    "source": "configs/relationnav/entities.json",
+    "navmesh_used_for_graph_construction": false,
+    "curated_entities_only": true
+  }
+}
